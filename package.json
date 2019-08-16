@@ -1,0 +1,46 @@
+{
+  "name": "polka-explorer",
+  "version": "0.1.0",
+  "author": "nj.wangwenhan@gmail.com",
+  "license": "ISC",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "analyz": "npm_config_report=true vue-cli-service build",
+    "testbuild": "vue-cli-service build --mode test"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "bignumber.js": "^7.2.1",
+    "clipboard": "^2.0.1",
+    "countup.js": "^1.9.3",
+    "element-ui": "^2.4.6",
+    "lodash": "^4.17.10",
+    "md5": "^2.2.1",
+    "moment": "^2.24.0",
+    "normalize.css": "^8.0.0",
+    "nprogress": "^0.2.0",
+    "query-string": "5",
+    "vue": "^2.5.17",
+    "vue-i18n": "^8.0.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "xlsx": "^0.15.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
+    "babel-plugin-component": "^1.1.1",
+    "compression-webpack-plugin": "^2.0.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "svg-sprite-loader": "^3.8.0",
+    "vue-cli-plugin-element": "^1.0.0",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "optionalDependencies": {
+    "axios": "0.18.0"
+  }
+}

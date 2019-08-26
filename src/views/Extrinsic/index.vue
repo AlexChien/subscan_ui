@@ -6,7 +6,7 @@
         :selectList="selectList"
         placeholder="Search by Block / Extrinsic / Account"
       />
-      <div class="table-top">
+      <div class="table-top space-between align-items-center">
         <div class="for-block">
           <span>For</span>
           <span>{{` All （${total}）`}}</span>
@@ -20,7 +20,7 @@
           <el-table-column prop="extrinsic_index" label="Extrinsic ID" width="160">
             <template slot-scope="scope">
               <div class="link">
-                <span>{{scope.row.extrinsic_index}}</span>
+                <span @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)">{{scope.row.extrinsic_index}}</span>
               </div>
             </template>
           </el-table-column>
@@ -28,7 +28,7 @@
             <template slot-scope="scope">
               <div class="link">
                 <div class="link">
-                  <span>{{scope.row.block_num}}</span>
+                  <span @click="$router.push(`/block/${scope.row.block_num}`)">{{scope.row.block_num}}</span>
                 </div>
               </div>
             </template>
@@ -42,7 +42,7 @@
                   :content="scope.row.extrinsic_hash"
                   placement="top-start"
                 >
-                  <span>{{scope.row.extrinsic_hash|hashFormat}}</span>
+                  <span @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)">{{scope.row.extrinsic_hash|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>
@@ -56,16 +56,16 @@
             </template>
           </el-table-column>
           <el-table-column prop="call_module" label="Action" width="180"></el-table-column>
-          <el-table-column width="120">
+          <!-- <el-table-column width="120">
             <template slot-scope="scope">
               <div class="detail-btn">
                 <icon-svg icon-class="detail-arrow" />
               </div>
             </template>
-          </el-table-column>
+          </el-table-column> -->
         </el-table>
       </div>
-      <div class="table-bottom">
+      <div class="table-bottom space-between align-items-center">
         <div class="download">
           <csv-download @downloadClick="downloadClick" />
         </div>
@@ -82,7 +82,7 @@ import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat } from "Utils/filters";
 export default {
-  name: "Dashboard",
+  name: "Extrinsic",
   components: {
     SearchInput,
     CsvDownload,
@@ -186,9 +186,6 @@ export default {
     }
     .table-top {
       margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       .for-block {
         font-size: 14px;
         font-weight: bold;
@@ -224,9 +221,6 @@ export default {
     }
     .table-bottom {
       margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       .download {
         width: 196px;
         height: 30px;
@@ -246,7 +240,7 @@ export default {
           background-color: #fff;
           border-color: #dbdbdb;
           &::after {
-            border-color: #5930dd;
+            border-color: $main-color;
             border-width: 2px;
             height: 10px;
             left: 7px;

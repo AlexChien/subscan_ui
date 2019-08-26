@@ -1,7 +1,7 @@
 <template>
   <div class="latest-blocks-wrapper">
-    <div class="header-content">
-      <div class="header-left">
+    <div class="header-content space-between">
+      <div class="header-left align-items-center">
         <icon-svg class="icon" icon-class="latest-blocks" />
         <span class="title">Latest blocks</span>
       </div>
@@ -43,13 +43,9 @@ export default {
 <style lang="scss" scoped>
 .latest-blocks-wrapper {
   .header-content {
-    display: flex;
-    justify-content: space-between;
     margin-bottom: 10px;
     .header-left {
       height: 30px;
-      display: flex;
-      align-items: center;
       .icon {
         font-size: 30px;
       }

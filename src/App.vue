@@ -66,5 +66,11 @@ export default {
     border-radius: 4px;
     border: 1px solid rgba(231, 234, 243, 1);
   }
+  .not-found-img{
+    display: block;
+    margin: 0 auto;
+    width: 290px;
+    height: 250px;
+  }
 }
 </style>

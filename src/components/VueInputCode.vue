@@ -1,7 +1,7 @@
 <template>
     <div class="vue_input_code">
-        <div class="input" @click="focusInput" :style="{'height':height}">
-            <div class="input-code" :class="{first: inputCodeNum===0, last: inputCodeNum === 6}" :style="{left: left, 'z-index': zIndex, 'height': height, 'width': blockSize - 1 + '%'}">
+        <div class="input align-items-center" @click="focusInput" :style="{'height':height}">
+            <div class="input-code align-items-center" :class="{first: inputCodeNum===0, last: inputCodeNum === 6}" :style="{left: left, 'z-index': zIndex, 'height': height, 'width': blockSize - 1 + '%'}">
                 <template v-if="type==='number'">
                     <input ref="input_code" type="tel" :style="{'font-size': inputSize, 'color': inputColor}" @keyup="inputCodeEvent($event)" @blur="blurInput" v-model="inputCode" autofocus maxlength="1" @keyup.delete="deleteInput">
                 </template>
@@ -183,14 +183,10 @@ input {
 .vue_input_code .input {
     width: 100%;
     position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: row;
     flex-direction: row;
     -ms-flex-pack: center;
     justify-content: center;
     -ms-flex-align: center;
-    align-items: center;
 }
 .vue_input_code .input > div {
     border: 1px solid #ccc;
@@ -222,14 +218,10 @@ input {
     margin-left: 1%;
     border: none;
     background: none;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: row;
     flex-direction: row;
     -ms-flex-pack: center;
     justify-content: center;
     -ms-flex-align: center;
-    align-items: center;
 }
 .vue_input_code .input > span {
     border: 1px solid #ccc;

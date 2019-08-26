@@ -1,11 +1,11 @@
 <template>
-  <div class="block-item-wrapper">
+  <div class="block-item-wrapper space-between">
     <div class="block-left">
-      <div class="block-num">
+      <div class="block-num align-items-center">
         <div class="label">Block#</div>
-        <div class="value">{{+blockData.block_num|toThousandslsFilter}}</div>
+        <div class="value" @click="$router.push(`/block/${blockData.block_num}`)">{{+blockData.block_num|toThousandslsFilter}}</div>
       </div>
-      <div class="block-includes">
+      <div class="block-includes align-items-center">
         <div class="label">Includes</div>
         <div class="value">
           <div
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <div class="block-right">{{blockData.block_timestamp|timeAgo}}</div>
+    <div class="block-right align-items-center">{{blockData.block_timestamp|timeAgo}}</div>
   </div>
 </template>
 
@@ -44,8 +44,6 @@ export default {
   box-sizing: border-box;
   height: 80px;
   padding: 16px 0 20px;
-  display: flex;
-  justify-content: space-between;
   .block-left {
     .block-num {
       transform: translateY(-3px);
@@ -90,16 +88,12 @@ export default {
     }
     .block-num,
     .block-includes {
-      display: flex;
-      align-items: center;
       .label {
         width: 59px;
       }
     }
   }
   .block-right {
-    display: flex;
-    align-items: center;
     font-size: 14px;
     font-weight: 600;
     color: rgba(152, 149, 159, 1);

@@ -1,40 +1,40 @@
 import store from "Plugins/store";
 import axios from "Plugins/axios";
 import { Message } from "element-ui";
-import { API_DEFAULT_CONFIG } from "Config";
-const md5 = require("md5");
+// import { API_DEFAULT_CONFIG } from "Config";
+// const md5 = require("md5");
 
 export function requestSuccessFunc(config) {
   // 自定义请求拦截逻辑，可以处理权限，请求发送监控等
-  const method = config.method.toUpperCase();
-  let queryStr = "";
-  const timestamp = Date.parse(new Date()) / 1000;
-  let params;
-  if (method === "GET") {
-    params = {
-      timestamp,
-      key: API_DEFAULT_CONFIG.apiKey,
-      ...config.params
-    };
-  } else {
-    params = {
-      timestamp,
-      key: API_DEFAULT_CONFIG.apiKey,
-      ...config.data
-    };
-  }
-  let keys = Object.keys(params);
-  let keysArray = keys.sort();
-  keysArray.forEach(v => {
-    queryStr += v + "=" + encodeURI(params[v]) + "&";
-  });
-  queryStr = queryStr.substr(0, queryStr.length - 1);
-  const sign = md5(queryStr);
-  config.params = {
-    ...config.params,
-    timestamp,
-    sign
-  };
+  // const method = config.method.toUpperCase();
+  // let queryStr = "";
+  // const timestamp = Date.parse(new Date()) / 1000;
+  // let params;
+  // if (method === "GET") {
+  //   params = {
+  //     timestamp,
+  //     key: API_DEFAULT_CONFIG.apiKey,
+  //     ...config.params
+  //   };
+  // } else {
+  //   params = {
+  //     timestamp,
+  //     key: API_DEFAULT_CONFIG.apiKey,
+  //     ...config.data
+  //   };
+  // }
+  // let keys = Object.keys(params);
+  // let keysArray = keys.sort();
+  // keysArray.forEach(v => {
+  //   queryStr += v + "=" + encodeURI(params[v]) + "&";
+  // });
+  // queryStr = queryStr.substr(0, queryStr.length - 1);
+  // const sign = md5(queryStr);
+  // config.params = {
+  //   ...config.params,
+  //   timestamp,
+  //   sign
+  // };
   // 国际化
   config.headers["Accept-Language"] = store.state.global.language;
   return config;

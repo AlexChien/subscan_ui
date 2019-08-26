@@ -6,11 +6,11 @@
         :selectList="selectList"
         placeholder="Search by Block / Extrinsic / Account"
       />
-      <div class="metadata-chart-wrapper">
+      <div class="metadata-chart-wrapper space-between">
         <metadata class="metadata-component" />
         <chart class="chart-component" />
       </div>
-      <div class="blocks-transfers-wrapper">
+      <div class="blocks-transfers-wrapper space-between">
         <latest-blocks class="latest-blocks-component" />
         <transfers class="transfers-component" />
       </div>
@@ -66,7 +66,7 @@ export default {
     },
     async getData() {
       const end = moment();
-      const start = moment().subtract(40, "days");
+      const start = moment().subtract(15, "days");
       Promise.all([
         this.$store.dispatch("SetMetadata"),
         this.$store.dispatch("SetLatestBlocks", { row: 25, page: 0 }),
@@ -86,8 +86,6 @@ export default {
     }
     .metadata-chart-wrapper {
       margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
       height: 156px;
       .metadata-component {
         width: 780px;
@@ -98,8 +96,6 @@ export default {
     }
     .blocks-transfers-wrapper {
       margin-top: 30px;
-      display: flex;
-      justify-content: space-between;
       .latest-blocks-component,
       .transfers-component {
         width: 580px;

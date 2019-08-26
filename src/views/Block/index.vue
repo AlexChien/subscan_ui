@@ -10,7 +10,7 @@
         <el-table :data="blockData" style="width: 100%">
           <el-table-column prop="block_num" label="Block" width="180">
             <template slot-scope="scope">
-              <div class="link">
+              <div class="link" @click="$router.push(`/block/${scope.row.block_num}`)">
                 <span>{{scope.row.block_num}}</span>
               </div>
             </template>
@@ -26,11 +26,11 @@
             </template>
           </el-table-column>
           <el-table-column prop="event_count" label="Events" width="120">
-            <template slot-scope="scope">
+            <!-- <template slot-scope="scope">
               <div :class="{link:scope.row.event_count>0}">
                 <span>{{scope.row.event_count}}</span>
               </div>
-            </template>
+            </template> -->
           </el-table-column>
           <el-table-column prop="validator" label="Validator" fit>
             <template slot-scope="scope">
@@ -55,14 +55,14 @@
                   :content="scope.row.hash"
                   placement="top-end"
                 >
-                  <span>{{scope.row.hash|hashFormat}}</span>
+                  <span @click="$router.push(`/block/${scope.row.hash}`)">{{scope.row.hash|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <div class="table-bottom">
+      <div class="table-bottom space-between align-items-center">
         <div class="download">
           <csv-download @downloadClick="downloadClick" />
         </div>
@@ -80,7 +80,7 @@ import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat } from "Utils/filters";
 export default {
-  name: "Dashboard",
+  name: "Block",
   components: {
     SearchInput,
     CsvDownload,
@@ -144,12 +144,19 @@ export default {
     },
     downloadClick() {
       const tableData = [
-        ["Block", "Block Timestamp", "Extrinsics", "Events", "Validator", "Block hash"]
+        [
+          "Block",
+          "Block Timestamp",
+          "Extrinsics",
+          "Events",
+          "Validator",
+          "Block hash"
+        ]
       ];
       this.blockData.forEach(item => {
         let arr = [
           item.block_num,
-          moment(item.block_timestamp*1000).format(),
+          moment(item.block_timestamp * 1000).format(),
           item.extrinsics_count,
           item.event_count,
           item.validator,
@@ -160,7 +167,10 @@ export default {
       const worksheet = XLSX.utils.aoa_to_sheet(tableData);
       const new_workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(new_workbook, worksheet, "SheetJS");
-      XLSX.writeFile(new_workbook, `block-${this.blockData[this.blockData.length-1].block_num}-${this.blockData[0].block_num}.csv`);
+      XLSX.writeFile(
+        new_workbook,
+        `block-${this.blockData[this.blockData.length - 1].block_num}-${this.blockData[0].block_num}.csv`
+      );
     },
     currentChange(pageSize) {
       this.isLoading = true;
@@ -188,9 +198,6 @@ export default {
     }
     .table-bottom {
       margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       .download {
         width: 196px;
         height: 30px;

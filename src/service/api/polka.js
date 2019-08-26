@@ -34,5 +34,32 @@ export default [
     baseURL: "",
     path: "/scan/daily",
     options: {}
+  },{
+    name: "getBlockByKey",
+    method: "POST",
+    desc: "获取单个块数据",
+    baseURL: "",
+    path: "/scan/block",
+    options: {
+      noShowDefaultError: true
+    }
+  },{
+    name: "getExtrinsicByKey",
+    method: "POST",
+    desc: "获取单个extrinsics数据",
+    baseURL: "",
+    path: "/scan/extrinsic",
+    options: {
+      noShowDefaultError: true
+    }
+  },{
+    name: "getSearchRes",
+    method: "POST",
+    desc: "获取搜索结果",
+    baseURL: "",
+    path: "/scan/search",
+    options: {
+      noShowDefaultError: true
+    }
   }
 ];

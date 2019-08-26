@@ -1,16 +1,16 @@
 <template>
   <div class="transfer-item-wrapper">
-    <div class="transfer-item-top">
-      <div class="left">
+    <div class="transfer-item-top space-between align-items-center">
+      <div class="left align-items-center">
         <div class="label">Hash</div>
         <el-tooltip class="item" effect="light" :content="transferData.hash" placement="top-start">
-          <div class="value hash-v">{{transferData.hash}}</div>
+          <div class="value hash-v" @click="$router.push(`/extrinsic/${transferData.hash}`)">{{transferData.hash}}</div>
         </el-tooltip>
       </div>
       <div class="right">{{transferData.block_timestamp|timeAgo}}</div>
     </div>
-    <div class="transfer-item-bottom">
-      <div class="left">
+    <div class="transfer-item-bottom space-between align-items-center">
+      <div class="left align-items-center">
         <div class="label">From</div>
         <div class="value">
           <el-tooltip
@@ -19,11 +19,11 @@
             :content="transferData.from"
             placement="top-start"
           >
-            <div class="from">{{transferData.from}}</div>
+            <div class="from" @click="$router.push(`/account/${transferData.from}`)">{{transferData.from}}</div>
           </el-tooltip>
           <div class="separator">&nbsp;To&nbsp;&nbsp;</div>
           <el-tooltip class="item" effect="light" :content="transferData.to" placement="top-start">
-            <div class="to">{{transferData.to}}</div>
+            <div class="to" @click="$router.push(`/account/${transferData.to}`)">{{transferData.to}}</div>
           </el-tooltip>
         </div>
       </div>
@@ -54,12 +54,7 @@ export default {
   padding: 16px 0 20px;
   .transfer-item-top,
   .transfer-item-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     .left {
-      display: flex;
-      align-items: center;
       .label {
         width: 59px;
       }

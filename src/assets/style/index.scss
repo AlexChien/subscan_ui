@@ -132,3 +132,12 @@ input:-webkit-autofill {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+}
+.align-items-center {
+  display: flex;
+  align-items: center;
+}

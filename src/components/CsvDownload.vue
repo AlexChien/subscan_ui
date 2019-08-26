@@ -1,7 +1,7 @@
 <template>
   <div class="csv-download-component" @click="$emit('downloadClick')">
     <icon-svg class="icon" icon-class="download"/>
-    <div class="label">Download CSV File</div>
+    <div class="label align-items-center">Download CSV File</div>
   </div>
 </template>
 
@@ -23,8 +23,6 @@ export default {};
     font-size: 30px;
   }
   .label {
-    display: flex;
-    align-items: center;
     font-size: 14px;
     font-weight: 600;
     color: rgba(48, 43, 60, 1);

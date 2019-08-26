@@ -1,6 +1,6 @@
 <template>
   <div class="footer-bar">
-    <div class="container">
+    <div class="container space-between align-items-center">
       <div class="copyright">Subscan © 2019</div>
       <div class="contact">
         <div class="contact-item mail">
@@ -24,10 +24,7 @@ export default {
 .footer-bar {
   background: #302b3c;
   .container {
-    display: flex;
-    justify-content: space-between;
     height: 50px;
-    align-items: center;
     .copyright {
       color: #7b70ae;
       font-size: 14px;

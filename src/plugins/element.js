@@ -26,8 +26,8 @@ import {
   // MenuItem,
   // Form,
   // FormItem,
-  // Tabs,
-  // TabPane,
+  Tabs,
+  TabPane,
   Table,
   TableColumn,
   Tooltip,
@@ -71,8 +71,8 @@ Vue.use(Tooltip);
 // Vue.use(MenuItem)
 // Vue.use(Form)
 // Vue.use(FormItem)
-// Vue.use(Tabs)
-// Vue.use(TabPane)
+Vue.use(Tabs)
+Vue.use(TabPane)
 Vue.use(Table)
 Vue.use(TableColumn)
 // Vue.use(Pagination)

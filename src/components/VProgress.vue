@@ -3,7 +3,7 @@
         <div class="progress-content">
             <div class="bar" :style="{width:percent+'%'}"></div>
         </div>
-        <div class="text" v-if="isShowText">
+        <div class="text space-between" v-if="isShowText">
             <div class="left">{{percent}}%</div>
             <div class="right">{{`${num}/${total} ${unit}`}}</div>
         </div>
@@ -60,8 +60,6 @@ export default {
         }
     }
     .text {
-        display: flex;
-        justify-content: space-between;
         font-size: 14px;
         padding-top: 5px;
     }

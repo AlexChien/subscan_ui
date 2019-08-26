@@ -1,20 +1,20 @@
 <template>
   <div class="nav-bar-wrapper">
-    <div class="container">
+    <div class="container space-between align-items-center">
       <router-link class="logo" to="/" tag="div"></router-link>
-      <div class="right-menu">
-        <ul class="nav-item-list">
+      <div class="right-menu align-items-center">
+        <ul class="nav-item-list align-items-center">
           <router-link class="nav-item" to="/block" tag="li" active-class="choosed">Blocks</router-link>
           <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">Extrinsics</router-link>
           <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">Transactions</router-link>
         </ul>
         <el-dropdown class="dropdown" trigger="click">
-          <span class="el-dropdown-link">
+          <span class="el-dropdown-link align-items-center">
             <div class="choosed-source">{{sourceSelectedLabel}}</div>
             <icon-svg icon-class="dropdown-arrow" class="dropdown-icon" />
           </span>
           <el-dropdown-menu slot="dropdown" class="menu-dropdown">
-            <li class="menu-dropdown-item" v-for="item in sourceList" :key="item.value">
+            <li class="menu-dropdown-item align-items-center" v-for="item in sourceList" :key="item.value">
               <i class="choosed-icon" :class="{show: sourceSelected===item.value}"></i>
               <span class="menu-dropdown-item-label">{{item.label}}</span>
             </li>
@@ -64,10 +64,7 @@ export default {
   position: relative;
   color: #fff;
   .container {
-    display: flex;
-    align-items: center;
     height: 100%;
-    justify-content: space-between;
     .logo {
       height: 100%;
       width: 50px;
@@ -76,11 +73,7 @@ export default {
       cursor: pointer;
     }
     .right-menu {
-      display: flex;
-      align-items: center;
       .nav-item-list {
-        display: flex;
-        align-items: center;
         .nav-item {
           height: 50px;
           line-height: 50px;
@@ -89,22 +82,18 @@ export default {
           user-select: none;
           font-weight: 600;
           margin-right: 15px;
-          // &:hover {
-          //   color: #fff;
-          // }
-          // &.choosed {
-          //   color: #fff;
-          // }
+          &:last-child{
+            margin-right: 0;
+          }
         }
       }
       .dropdown {
+        margin-left: 15px;
         background: #fff;
         border-radius: 2px;
         .el-dropdown-link {
           padding: 0 10px;
           font-weight: 600;
-          display: flex;
-          align-items: center;
           cursor: pointer;
           .dropdown-icon {
             font-size: 11px;
@@ -129,8 +118,6 @@ export default {
   border-radius: 4px;
   border: 1px solid rgba(219, 219, 219, 1);
   .menu-dropdown-item {
-    display: flex;
-    align-items: center;
     line-height: 22px;
     height: 22px;
     padding: 10px 24px;

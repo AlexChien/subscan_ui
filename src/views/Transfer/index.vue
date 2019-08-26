@@ -6,7 +6,7 @@
         :selectList="selectList"
         placeholder="Search by Block / Extrinsic / Account"
       />
-      <div class="table-top">
+      <div class="table-top space-between align-items-center">
         <div class="for-block">
           <span>For</span>
           <span>{{` All （${total}）`}}</span>
@@ -17,21 +17,21 @@
           <el-table-column prop="extrinsic_index" label="Extrinsic ID" width="120">
             <template slot-scope="scope">
               <div class="link">
-                <span>{{scope.row.extrinsic_index}}</span>
+                <span @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)">{{scope.row.extrinsic_index}}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column prop="block_num" label="Block" width="120">
             <template slot-scope="scope">
               <div class="link">
-                <span>{{scope.row.block_num}}</span>
+                <span @click="$router.push(`/block/${scope.row.block_num}`)">{{scope.row.block_num}}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column prop="block_timestamp" label="Age" width="150">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column prop="from" label="From" width="160">
+          <el-table-column prop="from" label="From" width="150">
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -45,12 +45,12 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column width="60">
+          <el-table-column width="40">
             <template>
               <icon-svg class="icon" icon-class="from-to-arrow"/>
             </template>
           </el-table-column>
-          <el-table-column prop="to" label="To" width="160">
+          <el-table-column prop="to" label="To" width="150">
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -67,12 +67,12 @@
           <el-table-column prop="amount" label="Value" fit>
             <template slot-scope="scope">{{`${scope.row.amount} DOT`}}</template>
           </el-table-column>
-          <el-table-column prop="success" label="Result" width="90">
+          <el-table-column prop="success" label="Result" width="70">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>
           </el-table-column>
-          <el-table-column prop="hash" label="Hash" width="160">
+          <el-table-column prop="hash" label="Hash" width="150">
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -81,14 +81,14 @@
                   :content="scope.row.hash"
                   placement="top-end"
                 >
-                  <span>{{scope.row.hash|hashFormat}}</span>
+                  <span @click="$router.push(`/extrinsic/${scope.row.hash}`)">{{scope.row.hash|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <div class="table-bottom">
+      <div class="table-bottom space-between align-items-center">
         <div class="download">
           <csv-download @downloadClick="downloadClick" />
         </div>
@@ -106,7 +106,7 @@ import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat } from "Utils/filters";
 export default {
-  name: "Dashboard",
+  name: "Transfer",
   components: {
     SearchInput,
     CsvDownload,
@@ -224,9 +224,6 @@ export default {
     }
     .table-top {
       margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       .for-block {
         font-size: 14px;
         font-weight: bold;
@@ -262,9 +259,6 @@ export default {
     }
     .table-bottom {
       margin-top: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       .download {
         width: 196px;
         height: 30px;

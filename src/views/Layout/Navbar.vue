@@ -14,9 +14,16 @@
             <icon-svg icon-class="dropdown-arrow" class="dropdown-icon" />
           </span>
           <el-dropdown-menu slot="dropdown" class="menu-dropdown">
-            <li class="menu-dropdown-item align-items-center" v-for="item in sourceList" :key="item.value">
+            <li
+              class="menu-dropdown-item align-items-center"
+              v-for="item in sourceList"
+              :key="item.value"
+            >
               <i class="choosed-icon" :class="{show: sourceSelected===item.value}"></i>
-              <span class="menu-dropdown-item-label">{{item.label}}</span>
+              <span
+                class="menu-dropdown-item-label"
+                @click="changeSource(item.value)"
+              >{{item.label}}</span>
             </li>
           </el-dropdown-menu>
         </el-dropdown>
@@ -25,11 +32,11 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "NavBar",
   data() {
     return {
-      sourceSelected: "darwinia",
       sourceList: [
         {
           label: "Darwinia",
@@ -47,12 +54,18 @@ export default {
       return this.sourceList.find(item => {
         return item.value === this.sourceSelected;
       }).label;
-    }
+    },
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected
+    })
   },
   methods: {
     changeLanguage(language) {
       GLOBAL.vbus.$emit("CHANGE_LANGUAGE", language);
       this.$store.dispatch("SetLanguage", language);
+    },
+    changeSource(source) {
+      this.$store.dispatch("SetSourceSelected", source);
     }
   }
 };
@@ -60,7 +73,7 @@ export default {
 <style lang="scss" scoped>
 .nav-bar-wrapper {
   height: 50px;
-  background-color: $main-color;
+  background: var(--navbar-bg);
   position: relative;
   color: #fff;
   .container {
@@ -82,7 +95,7 @@ export default {
           user-select: none;
           font-weight: 600;
           margin-right: 15px;
-          &:last-child{
+          &:last-child {
             margin-right: 0;
           }
         }
@@ -95,6 +108,7 @@ export default {
           padding: 0 10px;
           font-weight: 600;
           cursor: pointer;
+          user-select: none;
           .dropdown-icon {
             font-size: 11px;
           }
@@ -119,7 +133,7 @@ export default {
   border: 1px solid rgba(219, 219, 219, 1);
   .menu-dropdown-item {
     line-height: 22px;
-    height: 22px;
+    height: 42px;
     padding: 10px 24px;
     cursor: pointer;
     .menu-dropdown-item-label {

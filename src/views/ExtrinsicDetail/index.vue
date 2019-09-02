@@ -12,9 +12,10 @@
           <div class="header-left">
             <div class="extrinsic-num">{{`Extrinsic#${extrinsicNum}`}}</div>
           </div>
-          <mini-search-input
+          <search-input
             class="header-right"
             placeholder="Search by Block / Extrinsic / Account"
+            :isMini="true"
           />
         </div>
         <div class="extrinsic-info-list subscan-card" v-loading="isLoading">
@@ -52,7 +53,10 @@
           <div class="info-item" v-if="extrinsicInfo.signature">
             <div class="label">Sender</div>
             <div class="value link copy align-items-center">
-              <div>{{extrinsicInfo.account_id}}</div>
+              <div class="icon identicon">
+                <identicon :size="24" theme="polkadot" :value="extrinsicInfo.account_id" />
+              </div>
+              <div @click="$router.push(`/account/${extrinsicInfo.account_id}`)">{{extrinsicInfo.account_id}}</div>
               <div
                 class="copy-btn"
                 v-if="extrinsicInfo.account_id"
@@ -65,7 +69,10 @@
             <div class="info-item">
               <div class="label">Destination</div>
               <div class="value link copy align-items-center">
-                <div>{{extrinsicInfo.transfer.to}}</div>
+                <div class="icon identicon">
+                  <identicon :size="24" theme="polkadot" :value="extrinsicInfo.transfer.to" />
+                </div>
+                <div @click="$router.push(`/account/${extrinsicInfo.transfer.to}`)">{{extrinsicInfo.transfer.to}}</div>
                 <div
                   class="copy-btn"
                   v-if="extrinsicInfo.transfer.to"
@@ -110,9 +117,10 @@
           v-if="extrinsicInfo.signature"
         >
           <el-tabs v-model="activeTab">
-            <el-tab-pane 
-             :label="`Events${extrinsicInfo.event.length>0?` (${extrinsicInfo.event.length})`:''}`"
-             name="event">
+            <el-tab-pane
+              :label="`Events${extrinsicInfo.event.length>0?` (${extrinsicInfo.event.length})`:''}`"
+              name="event"
+            >
               <el-table :data="extrinsicInfo.event" style="width: 100%">
                 <el-table-column label="Event ID" fit>
                   <template slot-scope="props">{{props.row.event_index}}</template>
@@ -161,13 +169,15 @@
 </template>
 
 <script>
-import MiniSearchInput from "Components/MiniSearchInput";
+import Identicon from "@polkadot/vue-identicon";
+import SearchInput from "Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 export default {
   name: "ExtrinsicDetail",
   components: {
-    MiniSearchInput
+    SearchInput,
+    Identicon
   },
   filters: {
     timeAgo,
@@ -261,7 +271,7 @@ export default {
         line-height: 30px;
         text-align: center;
         color: #fff;
-        background: $main-color;
+        background: var(--main-color);
         font-size: 26px;
         border-radius: 4px;
         cursor: pointer;
@@ -302,12 +312,12 @@ export default {
         width: 900px;
         overflow-wrap: break-word;
         &.link {
-          color: $main-color;
+          color: var(--main-color);
           cursor: pointer;
         }
         &.copy {
           .copy-btn {
-            background: rgba(230, 1, 122, 0.5);
+            background: var(--main-color-light);
             border-radius: 2px;
             font-size: 10px;
             font-weight: 600;
@@ -323,6 +333,9 @@ export default {
           font-size: 24px;
           margin-right: 10px;
           vertical-align: -0.3em;
+          &.identicon {
+            font-size: 32px;
+          }
         }
       }
     }
@@ -346,7 +359,7 @@ export default {
       color: #302b3c;
     }
     .link {
-      color: $main-color;
+      color: var(--main-color);
       span {
         cursor: pointer;
       }
@@ -407,14 +420,14 @@ export default {
           .el-tabs__nav {
             .el-tabs__active-bar {
               height: 4px;
-              background-color: $main-color;
+              background-color: var(--main-color);
             }
             .el-tabs__item {
               height: 50px;
               line-height: 50px;
               &.is-active,
               &:hover {
-                color: $main-color;
+                color: var(--main-color);
               }
             }
           }

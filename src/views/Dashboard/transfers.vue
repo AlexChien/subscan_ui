@@ -20,22 +20,28 @@
         v-for="transfer in transfers"
         :key="transfer.extrinsic_index"
         :transferData="transfer"
+        :currentTime="currentTime"
       />
     </el-scrollbar>
   </div>
 </template>
 
 <script>
-import transferItem from './transferItem';
+import transferItem from "./transferItem";
 import { mapState } from "vuex";
 export default {
-  components:{
+  components: {
     transferItem
   },
   computed: {
     ...mapState({
       transfers: state => state.polka.transfers
     })
+  },
+  props: {
+    currentTime: {
+      type: Number
+    }
   }
 };
 </script>
@@ -62,7 +68,7 @@ export default {
         height: 30px;
         line-height: 30px;
         width: 90px;
-        background: rgba(230, 1, 122, 1);
+        background: var(--main-color);
         border-radius: 2px;
         text-align: center;
         color: #fff;

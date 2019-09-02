@@ -11,8 +11,8 @@
         <chart class="chart-component" />
       </div>
       <div class="blocks-transfers-wrapper space-between">
-        <latest-blocks class="latest-blocks-component" />
-        <transfers class="transfers-component" />
+        <latest-blocks class="latest-blocks-component" :currentTime="currentTime" />
+        <transfers class="transfers-component" :currentTime="currentTime" />
       </div>
     </div>
   </div>
@@ -36,6 +36,7 @@ export default {
   },
   data() {
     return {
+      currentTime: Date.now(),
       selectList: [
         {
           label: "All",
@@ -58,22 +59,45 @@ export default {
   },
   created() {
     this.init();
+    this.w = new Worker(process.env.BASE_URL + "timeWorker.js");
+    this.w.onmessage = () => {
+      this.changeTime();
+    };
   },
-
+  beforeDestroy() {
+    // 销毁 worker
+    if (this.w && typeof this.w.terminate === "function") {
+      this.w.terminate();
+    }
+    this.$loop.removeLoop("dashborad");
+  },
   methods: {
-    init() {
-      this.getData();
+    async init() {
+      // await this.getData();
+      this.$loop.addLoop(
+        "dashborad",
+        () => {
+          return this.getData();
+        },
+        true
+      );
     },
     async getData() {
       const end = moment();
       const start = moment().subtract(15, "days");
-      Promise.all([
+      await Promise.all([
         this.$store.dispatch("SetMetadata"),
         this.$store.dispatch("SetLatestBlocks", { row: 25, page: 0 }),
         // this.$store.dispatch("SetLatestExtrinsics", { row: 25, page: 0 }),
         this.$store.dispatch("SetTransfers", { row: 25, page: 0 }),
-        this.$store.dispatch("SetDailyChart", { start: start.format('YYYY-MM-DD'), end: end.format('YYYY-MM-DD') })
+        this.$store.dispatch("SetDailyChart", {
+          start: start.format("YYYY-MM-DD"),
+          end: end.format("YYYY-MM-DD")
+        })
       ]);
+    },
+    changeTime() {
+      this.currentTime = Date.now();
     }
   }
 };

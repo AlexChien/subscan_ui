@@ -3,7 +3,10 @@
     <div class="block-left">
       <div class="block-num align-items-center">
         <div class="label">Block#</div>
-        <div class="value" @click="$router.push(`/block/${blockData.block_num}`)">{{+blockData.block_num|toThousandslsFilter}}</div>
+        <div
+          class="value"
+          @click="$router.push(`/block/${blockData.block_num}`)"
+        >{{+blockData.block_num|toThousandslsFilter}}</div>
       </div>
       <div class="block-includes align-items-center">
         <div class="label">Includes</div>
@@ -19,7 +22,7 @@
         </div>
       </div>
     </div>
-    <div class="block-right align-items-center">{{blockData.block_timestamp|timeAgo}}</div>
+    <div class="block-right align-items-center">{{blockData.block_timestamp|timeAgo(currentTime)}}</div>
   </div>
 </template>
 
@@ -30,6 +33,9 @@ export default {
     blockData: {
       type: Object,
       required: true
+    },
+    currentTime: {
+      type: Number
     }
   },
   filters: {
@@ -57,7 +63,7 @@ export default {
         transform: translateY(-1px);
         font-size: 18px;
         font-weight: 600;
-        color: rgba(230, 1, 122, 1);
+        color: var(--main-color);
       }
     }
     .block-includes {
@@ -71,7 +77,7 @@ export default {
         display: flex;
         font-size: 12px;
         font-weight: 400;
-        color: rgba(230, 1, 122, 1);
+        color: var(--main-color);
         .event {
           margin-left: 10px;
         }
@@ -80,7 +86,7 @@ export default {
           cursor: pointer;
         }
         .extrinsics.empty,
-        .evnet.empty {
+        .event.empty {
           cursor: auto;
           color: rgba(152, 149, 159, 1);
         }

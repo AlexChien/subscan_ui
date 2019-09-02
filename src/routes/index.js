@@ -39,7 +39,13 @@ export default [
       import(/* webpackChunkName: "account" */ "Views/Account")
   },
   {
+    name: "404",
+    path: "/404",
+    component: () =>
+      import(/* webpackChunkName: "404" */ "Views/ErrorPage/404")
+  },
+  {
     path: "*",
-    redirect: "/"
+    redirect: "/404"
   }
 ];

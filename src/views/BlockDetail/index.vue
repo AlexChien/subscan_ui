@@ -18,9 +18,10 @@
               <icon-svg class="icon" icon-class="arrow-right" />
             </div>
           </div>
-          <mini-search-input
+          <search-input
             class="header-right"
             placeholder="Search by Block / Extrinsic / Account"
+            :isMini="true"
           />
         </div>
         <div class="block-info-list subscan-card" v-loading="isLoading">
@@ -205,13 +206,13 @@
 </template>
 
 <script>
-import MiniSearchInput from "Components/MiniSearchInput";
+import SearchInput from "Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 export default {
   name: "BlockDetail",
   components: {
-    MiniSearchInput
+    SearchInput
   },
   filters: {
     timeAgo,
@@ -312,7 +313,7 @@ export default {
         line-height: 30px;
         text-align: center;
         color: #fff;
-        background: $main-color;
+        background: var(--main-color);
         font-size: 26px;
         border-radius: 4px;
         cursor: pointer;
@@ -352,12 +353,12 @@ export default {
         padding-left: 10px;
         flex: auto;
         &.link {
-          color: $main-color;
+          color: var(--main-color);
           cursor: pointer;
         }
         &.copy {
           .copy-btn {
-            background: rgba(230, 1, 122, 0.5);
+            background: var(--main-color-light);
             border-radius: 2px;
             font-size: 10px;
             font-weight: 600;
@@ -391,7 +392,7 @@ export default {
       color: #302b3c;
     }
     .link {
-      color: $main-color;
+      color: var(--main-color);
       span {
         cursor: pointer;
       }
@@ -456,14 +457,14 @@ export default {
           .el-tabs__nav {
             .el-tabs__active-bar {
               height: 4px;
-              background-color: $main-color;
+              background-color: var(--main-color);
             }
             .el-tabs__item {
               height: 50px;
               line-height: 50px;
               &.is-active,
               &:hover {
-                color: $main-color;
+                color: var(--main-color);
               }
             }
           }

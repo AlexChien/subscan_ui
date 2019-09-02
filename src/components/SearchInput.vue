@@ -6,6 +6,7 @@
         popper-class="serach-select-out"
         v-model="select1"
         slot="prepend"
+        v-if="!isMini"
       >
         <el-option
           class="serach-select-option"
@@ -35,11 +36,17 @@ export default {
     },
     selectList: {
       type: Array,
-      required: true
+      default: ()=>{
+        return []
+      }
+    },
+    isMini: {
+      type: Boolean,
+      default: false
     }
   },
   created() {
-    this.select1 = this.selectList[0].value;
+    this.select1 = this.selectList[0] ? this.selectList[0].value : "";
   },
   computed: {
     selectListFilter() {
@@ -64,7 +71,7 @@ export default {
     .serach-button {
       height: 100%;
       width: 110px;
-      background: $main-color;
+      background: var(--main-color);
       color: #fff;
       font-size: 14px;
       font-weight: 600;
@@ -83,7 +90,7 @@ export default {
     background-color: #fff;
   }
   .el-input-group__append {
-    border-color: $main-color;
+    border-color: var(--main-color);
   }
   .el-input.is-active .el-input__inner,
   .el-input__inner:focus,
@@ -123,7 +130,7 @@ export default {
     display: none;
   }
   .el-select-dropdown__item.serach-select-option.selected {
-    color: $main-color;
+    color: var(--main-color);
     display: none;
   }
 }

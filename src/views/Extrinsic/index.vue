@@ -7,9 +7,19 @@
         placeholder="Search by Block / Extrinsic / Account"
       />
       <div class="table-top space-between align-items-center">
-        <div class="for-block">
-          <span>For</span>
-          <span>{{` All （${total}）`}}</span>
+        <div class="for-block align-items-center">
+          <div>For</div>
+          <template v-if="$route.query.address">
+            <div class="icon">
+              <identicon :size="30" theme="polkadot" :value="$route.query.address" />
+            </div>
+            <div
+              class="link"
+              @click="$router.push(`/account/${$route.query.address}`)"
+            >{{` ${$route.query.address} `}}</div>
+          </template>
+          <div v-else class="all">All</div>
+          <div>{{`(${total})`}}</div>
         </div>
         <div class="signed-checkbox">
           <el-checkbox v-model="signedChecked" @change="signedChange">Signed only</el-checkbox>
@@ -20,7 +30,9 @@
           <el-table-column prop="extrinsic_index" label="Extrinsic ID" width="160">
             <template slot-scope="scope">
               <div class="link">
-                <span @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)">{{scope.row.extrinsic_index}}</span>
+                <span
+                  @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
+                >{{scope.row.extrinsic_index}}</span>
               </div>
             </template>
           </el-table-column>
@@ -28,7 +40,9 @@
             <template slot-scope="scope">
               <div class="link">
                 <div class="link">
-                  <span @click="$router.push(`/block/${scope.row.block_num}`)">{{scope.row.block_num}}</span>
+                  <span
+                    @click="$router.push(`/block/${scope.row.block_num}`)"
+                  >{{scope.row.block_num}}</span>
                 </div>
               </div>
             </template>
@@ -42,7 +56,9 @@
                   :content="scope.row.extrinsic_hash"
                   placement="top-start"
                 >
-                  <span @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)">{{scope.row.extrinsic_hash|hashFormat}}</span>
+                  <span
+                    @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)"
+                  >{{scope.row.extrinsic_hash|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>
@@ -56,13 +72,21 @@
             </template>
           </el-table-column>
           <el-table-column prop="call_module" label="Action" width="180"></el-table-column>
-          <!-- <el-table-column width="120">
-            <template slot-scope="scope">
-              <div class="detail-btn">
-                <icon-svg icon-class="detail-arrow" />
+          <el-table-column width="120" type="expand">
+            <template slot-scope="props">
+              <div class="expand-form">
+                <div
+                  class="form-item align-items-center"
+                  v-for="item in props.row.params"
+                  :key="item.name"
+                >
+                  <div class="label">{{item.name}} :</div>
+                  <div class="value" v-if="item.name==='now'">{{item.value|parseTimeToUtc}}</div>
+                  <div class="value" v-else>{{item.value}}</div>
+                </div>
               </div>
             </template>
-          </el-table-column> -->
+          </el-table-column>
         </el-table>
       </div>
       <div class="table-bottom space-between align-items-center">
@@ -75,18 +99,20 @@
   </div>
 </template>
 <script>
+import Identicon from "@polkadot/vue-identicon";
 import XLSX from "xlsx";
 import moment from "moment";
 import SearchInput from "Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
-import { timeAgo, hashFormat } from "Utils/filters";
+import { timeAgo, hashFormat, parseTimeToUtc } from "Utils/filters";
 export default {
   name: "Extrinsic",
   components: {
     SearchInput,
     CsvDownload,
-    Pagination
+    Pagination,
+    Identicon
   },
   data() {
     return {
@@ -117,7 +143,8 @@ export default {
   },
   filters: {
     timeAgo,
-    hashFormat
+    hashFormat,
+    parseTimeToUtc
   },
   created() {
     this.init();
@@ -132,7 +159,11 @@ export default {
       const data = await this.$api["polkaGetExtrinsics"]({
         row: 25,
         page,
-        signed: this.signedChecked ? "signed" : "all"
+        signed: this.signedChecked ? "signed" : "all",
+        address: this.$route.query.address
+      });
+      data.extrinsics.forEach(item => {
+        item.params = JSON.parse(item.params);
       });
       this.extrinsicsData = data.extrinsics;
       this.total = +data.count;
@@ -146,7 +177,7 @@ export default {
           "Extrinsic Hash",
           "Block Timestamp",
           "Result",
-          "Action",
+          "Action"
         ]
       ];
       this.extrinsicsData.forEach(item => {
@@ -169,7 +200,7 @@ export default {
       );
     },
     currentChange(pageSize) {
-      this.getExtrinsicData(pageSize);
+      this.getExtrinsicData(--pageSize);
       this.currentPage = pageSize;
     },
     signedChange() {
@@ -190,6 +221,18 @@ export default {
         font-size: 14px;
         font-weight: bold;
         color: rgba(48, 43, 60, 1);
+        .icon {
+          padding-left: 10px;
+          transform: translateY(2px);
+        }
+        .link {
+          padding: 0 10px;
+          color: var(--main-color);
+          cursor: pointer;
+        }
+        .all {
+          padding: 0 10px;
+        }
       }
     }
     .extrinsic-table {
@@ -197,7 +240,7 @@ export default {
       margin-top: 10px;
       padding: 13px 20px;
       .link {
-        color: $main-color;
+        color: var(--main-color);
         span {
           cursor: pointer;
         }
@@ -217,6 +260,25 @@ export default {
         text-align: center;
         cursor: pointer;
         user-select: none;
+      }
+      .expand-form {
+        background: #f3f5f9;
+        padding: 10px 28px;
+        .form-item {
+          min-height: 40px;
+          line-height: 40px;
+          font-size: 14px;
+          font-weight: 600;
+          color: rgba(48, 43, 60, 1);
+          .label {
+            min-width: 114px;
+          }
+          .value {
+            padding-left: 10px;
+            width: 900px;
+            overflow-wrap: break-word;
+          }
+        }
       }
     }
     .table-bottom {
@@ -240,7 +302,7 @@ export default {
           background-color: #fff;
           border-color: #dbdbdb;
           &::after {
-            border-color: $main-color;
+            border-color: var(--main-color);
             border-width: 2px;
             height: 10px;
             left: 7px;
@@ -286,6 +348,28 @@ export default {
         td {
           font-weight: 600;
           padding: 0;
+          &.el-table__expand-column {
+            .el-table__expand-icon {
+              width: 48px;
+              height: 26px;
+              background: rgba(255, 255, 255, 1);
+              border-radius: 4px;
+              border: 1px solid rgba(219, 219, 219, 1);
+              font-size: 10px;
+              text-align: center;
+              cursor: pointer;
+              user-select: none;
+              .el-icon {
+                transition: transform 0.2s ease-in-out;
+              }
+              &.el-table__expand-icon--expanded {
+                transform: rotate(0);
+                .el-icon {
+                  transform: rotate(90deg);
+                }
+              }
+            }
+          }
         }
       }
     }

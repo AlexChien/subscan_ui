@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="[sourceSelected]">
     <navbar />
     <div class="main">
       <router-view />
@@ -12,12 +12,18 @@
 import Navbar from "Views/Layout/Navbar";
 import FooterBar from "Views/Layout/FooterBar";
 const queryString = require("query-string");
+import { mapState } from "vuex";
 
 export default {
   name: "App",
   components: {
     navbar: Navbar,
     footerBar: FooterBar
+  },
+  computed: {
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected
+    })
   },
   created() {
     // 接受路由中携带语言参数lang
@@ -66,11 +72,27 @@ export default {
     border-radius: 4px;
     border: 1px solid rgba(231, 234, 243, 1);
   }
-  .not-found-img{
+  .not-found-img {
     display: block;
     margin: 0 auto;
     width: 290px;
     height: 250px;
+  }
+
+  &.darwinia {
+    --main-color: #5930dd;
+    --main-color-light: rgba(89, 48, 221, 0.5);
+    --navbar-bg: linear-gradient(
+      315deg,
+      rgba(254, 56, 118, 1) 0%,
+      rgba(124, 48, 221, 1) 71%,
+      rgba(58, 48, 221, 1) 100%
+    );
+  }
+  &.alexander {
+    --main-color: #e6017a;
+    --main-color-light: rgba(230, 1, 122, 0.5);
+    --navbar-bg: #e6017a;
   }
 }
 </style>

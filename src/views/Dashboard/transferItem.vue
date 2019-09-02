@@ -4,10 +4,13 @@
       <div class="left align-items-center">
         <div class="label">Hash</div>
         <el-tooltip class="item" effect="light" :content="transferData.hash" placement="top-start">
-          <div class="value hash-v" @click="$router.push(`/extrinsic/${transferData.hash}`)">{{transferData.hash}}</div>
+          <div
+            class="value hash-v"
+            @click="$router.push(`/extrinsic/${transferData.hash}`)"
+          >{{transferData.hash}}</div>
         </el-tooltip>
       </div>
-      <div class="right">{{transferData.block_timestamp|timeAgo}}</div>
+      <div class="right">{{transferData.block_timestamp|timeAgo(currentTime)}}</div>
     </div>
     <div class="transfer-item-bottom space-between align-items-center">
       <div class="left align-items-center">
@@ -19,7 +22,10 @@
             :content="transferData.from"
             placement="top-start"
           >
-            <div class="from" @click="$router.push(`/account/${transferData.from}`)">{{transferData.from}}</div>
+            <div
+              class="from"
+              @click="$router.push(`/account/${transferData.from}`)"
+            >{{transferData.from}}</div>
           </el-tooltip>
           <div class="separator">&nbsp;To&nbsp;&nbsp;</div>
           <el-tooltip class="item" effect="light" :content="transferData.to" placement="top-start">
@@ -27,7 +33,9 @@
           </el-tooltip>
         </div>
       </div>
-      <div class="right">{{transferData.amount}} DOT</div>
+      <div
+        class="right"
+      >{{`${transferData.amount} ${transferData.module==="balances"?'RING':transferData.module==="kton"?"KTON":''}`}}</div>
     </div>
   </div>
 </template>
@@ -39,6 +47,9 @@ export default {
     transferData: {
       type: Object,
       required: true
+    },
+    currentTime: {
+      type: Number
     }
   },
   filters: {
@@ -71,7 +82,7 @@ export default {
       .value {
         font-size: 14px;
         font-weight: 600;
-        color: $main-color;
+        color: var(--main-color);
         cursor: pointer;
         width: 308px;
         overflow: hidden;
@@ -99,7 +110,7 @@ export default {
         .to {
           cursor: pointer;
           font-weight: 400;
-          color: rgba(230, 1, 122, 1);
+          color: var(--main-color);
           width: 86px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -114,7 +125,7 @@ export default {
     .right {
       font-size: 14px;
       font-weight: bold;
-      color: $main-color;
+      color: var(--main-color);
       line-height: 20px;
     }
   }

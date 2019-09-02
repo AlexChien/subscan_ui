@@ -1,8 +1,7 @@
 import moment from "moment";
-export function timeAgo(time) {
+export function timeAgo(time, now = Date.now()) {
   time = +time * 1000;
   const d = new Date(time);
-  const now = Date.now();
 
   const diff = parseInt((now - d) / 1000);
 

@@ -174,7 +174,7 @@ export default {
     },
     currentChange(pageSize) {
       this.isLoading = true;
-      this.getBlockData(pageSize);
+      this.getBlockData(--pageSize);
     }
   }
 };
@@ -190,7 +190,7 @@ export default {
       margin-top: 10px;
       padding: 13px 20px;
       .link {
-        color: $main-color;
+        color: var(--main-color);
         span {
           cursor: pointer;
         }

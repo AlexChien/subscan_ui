@@ -9,11 +9,64 @@ import { mapState } from "vuex";
 export default {
   computed: {
     ...mapState({
-      dailyChart: state => state.polka.dailyChart
+      dailyChart: state => state.polka.dailyChart,
+      sourceSelected: state => state.global.sourceSelected
     })
+  },
+  created() {
+    GLOBAL.vbus.$on("CHANGE_SOURCE", source => {
+      myChart.setOption({
+        series: {
+          areaStyle: {
+            color: {
+              type: "linear",
+              x: 0,
+              y: 0,
+              x2: 0,
+              y2: 1,
+              colorStops: [
+                {
+                  offset: 0,
+                  color:
+                    source === "darwinia"
+                      ? "rgba(138, 193, 243, 1)"
+                      : "rgba(236, 153, 160, 1)"
+                },
+                {
+                  offset: 0.6,
+                  color:
+                    source === "darwinia"
+                      ? "rgba(138, 193, 243, 0.9)"
+                      : "rgba(236, 153, 160, 0.9)"
+                },
+                {
+                  offset: 0.8,
+                  color:
+                    source === "darwinia"
+                      ? "rgba(231, 243, 254, 1)"
+                      : "rgba(253, 239, 241, 1)"
+                },
+                {
+                  offset: 1,
+                  color: "rgba(255, 255, 255, 1)"
+                }
+              ]
+            }
+          },
+          lineStyle: {
+            width: 1,
+            color:
+              source === "darwinia"
+                ? "rgba(138, 193, 243, 1)"
+                : "rgba(236, 153, 160, 1)"
+          }
+        }
+      });
+    });
   },
   beforeDestroy() {
     myChart = null;
+    GLOBAL.vbus.$off("CHANGE_SOURCE");
   },
   watch: {
     dailyChart(nevV, oldV) {
@@ -93,26 +146,38 @@ export default {
                 colorStops: [
                   {
                     offset: 0,
-                    color: "rgba(236, 153, 160, 1)"
+                    color:
+                      this.sourceSelected === "darwinia"
+                        ? "rgba(138, 193, 243, 1)"
+                        : "rgba(236, 153, 160, 1)"
                   },
                   {
                     offset: 0.6,
-                    color: "rgba(236, 153, 160,0.9)"
+                    color:
+                      this.sourceSelected === "darwinia"
+                        ? "rgba(138, 193, 243, 0.9)"
+                        : "rgba(236, 153, 160, 0.9)"
                   },
                   {
                     offset: 0.8,
-                    color: "rgba(253, 239, 241, 1)"
+                    color:
+                      this.sourceSelected === "darwinia"
+                        ? "rgba(231, 243, 254, 1)"
+                        : "rgba(253, 239, 241, 1)"
                   },
                   {
                     offset: 1,
-                    color: "rgba(255,255,255,1)"
+                    color: "rgba(255, 255, 255, 1)"
                   }
                 ]
               }
             },
             lineStyle: {
               width: 1,
-              color: "rgba(236, 153, 160,1)"
+              color:
+                this.sourceSelected === "darwinia"
+                  ? "rgba(138, 193, 243, 1)"
+                  : "rgba(236, 153, 160, 1)"
             },
             // itemStyle: {
             //   normal: {

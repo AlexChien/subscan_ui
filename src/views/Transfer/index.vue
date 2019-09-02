@@ -7,9 +7,19 @@
         placeholder="Search by Block / Extrinsic / Account"
       />
       <div class="table-top space-between align-items-center">
-        <div class="for-block">
-          <span>For</span>
-          <span>{{` All （${total}）`}}</span>
+        <div class="for-block align-items-center">
+          <div>For</div>
+          <template v-if="$route.query.address">
+            <div class="icon">
+              <identicon :size="30" theme="polkadot" :value="$route.query.address" />
+            </div>
+            <div
+              class="link"
+              @click="$router.push(`/account/${$route.query.address}`)"
+            >{{` ${$route.query.address} `}}</div>
+          </template>
+          <div v-else class="all">All</div>
+          <div>{{`(${total})`}}</div>
         </div>
       </div>
       <div class="transfer-table subscan-card" v-loading="isLoading">
@@ -17,7 +27,9 @@
           <el-table-column prop="extrinsic_index" label="Extrinsic ID" width="120">
             <template slot-scope="scope">
               <div class="link">
-                <span @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)">{{scope.row.extrinsic_index}}</span>
+                <span
+                  @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
+                >{{scope.row.extrinsic_index}}</span>
               </div>
             </template>
           </el-table-column>
@@ -40,14 +52,16 @@
                   :content="scope.row.from"
                   placement="top-start"
                 >
-                  <span>{{scope.row.from|hashFormat}}</span>
+                  <span
+                    @click="$router.push(`/account/${scope.row.from}`)"
+                  >{{scope.row.from|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>
           </el-table-column>
           <el-table-column width="40">
             <template>
-              <icon-svg class="icon" icon-class="from-to-arrow"/>
+              <icon-svg class="icon" icon-class="from-to-arrow" />
             </template>
           </el-table-column>
           <el-table-column prop="to" label="To" width="150">
@@ -59,13 +73,17 @@
                   :content="scope.row.to"
                   placement="top-start"
                 >
-                  <span>{{scope.row.to|hashFormat}}</span>
+                  <span
+                    @click="$router.push(`/account/${scope.row.to}`)"
+                  >{{scope.row.to|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>
           </el-table-column>
           <el-table-column prop="amount" label="Value" fit>
-            <template slot-scope="scope">{{`${scope.row.amount} DOT`}}</template>
+            <template
+              slot-scope="scope"
+            >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
           </el-table-column>
           <el-table-column prop="success" label="Result" width="70">
             <template slot-scope="scope">
@@ -81,7 +99,9 @@
                   :content="scope.row.hash"
                   placement="top-end"
                 >
-                  <span @click="$router.push(`/extrinsic/${scope.row.hash}`)">{{scope.row.hash|hashFormat}}</span>
+                  <span
+                    @click="$router.push(`/extrinsic/${scope.row.hash}`)"
+                  >{{scope.row.hash|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>
@@ -98,6 +118,7 @@
   </div>
 </template>
 <script>
+import Identicon from "@polkadot/vue-identicon";
 import XLSX from "xlsx";
 import moment from "moment";
 import { mapState } from "vuex";
@@ -110,13 +131,13 @@ export default {
   components: {
     SearchInput,
     CsvDownload,
-    Pagination
+    Pagination,
+    Identicon
   },
   data() {
     return {
       isLoading: false,
       transfersData: [],
-      currentPage: 0,
       total: 0,
       selectList: [
         {
@@ -163,9 +184,10 @@ export default {
     async getTransferData(page = 0) {
       const data = await this.$api["polkaGetTransfers"]({
         row: 25,
-        page
+        page,
+        address: this.$route.query.address
       });
-      this.transfersData = data.transfers;
+      this.transfersData = data.transfers || [];
       this.total = +data.count;
       this.isLoading = false;
       if (page == 0) {
@@ -207,11 +229,7 @@ export default {
       );
     },
     currentChange(pageSize) {
-      this.getTransferData(pageSize);
-      this.currentPage = pageSize;
-    },
-    signedChange() {
-      this.getTransferData(this.currentPage);
+      this.getTransferData(--pageSize);
     }
   }
 };
@@ -228,6 +246,18 @@ export default {
         font-size: 14px;
         font-weight: bold;
         color: rgba(48, 43, 60, 1);
+        .icon {
+          padding-left: 10px;
+          transform: translateY(2px);
+        }
+        .link {
+          padding: 0 10px;
+          color: var(--main-color);
+          cursor: pointer;
+        }
+        .all {
+          padding: 0 10px;
+        }
       }
     }
     .transfer-table {
@@ -235,7 +265,7 @@ export default {
       margin-top: 10px;
       padding: 13px 20px;
       .link {
-        color: $main-color;
+        color: var(--main-color);
         span {
           cursor: pointer;
         }

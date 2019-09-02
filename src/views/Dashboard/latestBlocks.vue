@@ -20,6 +20,7 @@
         v-for="block in latestBlocks"
         :key="block.block_num"
         :blockData="block"
+        :currentTime="currentTime"
       />
     </el-scrollbar>
   </div>
@@ -36,6 +37,11 @@ export default {
     ...mapState({
       latestBlocks: state => state.polka.latestBlocks
     })
+  },
+  props: {
+    currentTime: {
+      type: Number
+    }
   }
 };
 </script>
@@ -62,7 +68,7 @@ export default {
         height: 30px;
         line-height: 30px;
         width: 90px;
-        background: rgba(230, 1, 122, 1);
+        background: var(--main-color);
         border-radius: 2px;
         text-align: center;
         color: #fff;

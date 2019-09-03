@@ -2,6 +2,11 @@
   <div class="block-detail-wrapper subscan-content">
     <div class="container">
       <template v-if="notFound">
+        <search-input
+          class="search-input"
+          :selectList="selectList"
+          placeholder="Search by Block / Extrinsic / Account"
+        />
         <div class="not-found">
           <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
           <div class="no-data">No Data</div>
@@ -112,7 +117,9 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="call_module" label="Action" fit>
-                  <template slot-scope="scope">{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
+                  <template
+                    slot-scope="scope"
+                  >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
                 </el-table-column>
                 <el-table-column width="120" type="expand">
                   <template slot-scope="props">
@@ -156,9 +163,7 @@
                   </template>
                 </el-table-column>
                 <el-table-column label="Action" fit>
-                  <template slot-scope="props">
-                    {{`${props.row.module_id}(${props.row.event_id})`}}
-                  </template>
+                  <template slot-scope="props">{{`${props.row.module_id}(${props.row.event_id})`}}</template>
                 </el-table-column>
                 <el-table-column width="120" type="expand">
                   <template slot-scope="props">
@@ -206,7 +211,7 @@
 </template>
 
 <script>
-import SearchInput from "Components/SearchInput";
+import SearchInput from "@/views/Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 export default {
@@ -228,12 +233,30 @@ export default {
       blockInfo: {},
       activeTab: "extrinsic",
       notFound: false,
-      isLoading: false
+      isLoading: false,
+      selectList: [
+        {
+          label: "All",
+          value: "all"
+        },
+        {
+          label: "Block",
+          value: "block"
+        },
+        {
+          label: "Extrinsic",
+          value: "extrinsic"
+        },
+        {
+          label: "Account",
+          value: "account"
+        }
+      ]
     };
   },
   created() {
     const key = this.$route.params.key;
-    const reg = /^[0-9]\d*$/;
+    const reg = /^[0-9]+$/;
     const isNum = reg.test(key);
     isNum && (this.blockNum = key);
     this.isLoading = true;
@@ -251,7 +274,7 @@ export default {
     },
     async getBlockInfo() {
       const key = this.$route.params.key;
-      const reg = /^[0-9]\d*$/;
+      const reg = /^[0-9]+$/;
       const isNum = reg.test(key);
       this.$api["polkaGetBlockByKey"]({
         [isNum ? "block_num" : "block_hash"]: isNum ? +key : key
@@ -303,6 +326,9 @@ export default {
 
 <style lang="scss" scoped>
 .block-detail-wrapper {
+  .search-input {
+    height: 50px;
+  }
   .block-detail-header {
     height: 50px;
     .header-left {

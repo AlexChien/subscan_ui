@@ -2,6 +2,11 @@
   <div class="account-wrapper subscan-content">
     <div class="container">
       <template v-if="notFound">
+        <search-input
+          class="search-input"
+          :selectList="selectList"
+          placeholder="Search by Block / Extrinsic / Account"
+        />
         <div class="not-found">
           <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
           <div class="no-data">No Data</div>
@@ -220,7 +225,7 @@
 
 <script>
 import Identicon from "@polkadot/vue-identicon";
-import SearchInput from "Components/SearchInput";
+import SearchInput from "@/views/Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 export default {
@@ -252,7 +257,25 @@ export default {
       activeTab: "transfer",
       notFound: false,
       isLoading: false,
-      isIntroLoading: false
+      isIntroLoading: false,
+      selectList: [
+        {
+          label: "All",
+          value: "all"
+        },
+        {
+          label: "Block",
+          value: "block"
+        },
+        {
+          label: "Extrinsic",
+          value: "extrinsic"
+        },
+        {
+          label: "Account",
+          value: "account"
+        }
+      ]
     };
   },
   created() {
@@ -331,6 +354,9 @@ export default {
 
 <style lang="scss" scoped>
 .account-wrapper {
+  .search-input {
+    height: 50px;
+  }
   .account-header {
     height: 50px;
     .header-left {

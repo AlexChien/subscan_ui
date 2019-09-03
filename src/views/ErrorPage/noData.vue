@@ -7,8 +7,8 @@
         placeholder="Search by Block / Extrinsic / Account"
       />
       <div class="not-found">
-        <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
-        <div class="no-data">No Data</div>
+        <img class="not-found-img" src="./../../assets/images/no-data@2x.png" alt="404" />
+        <div class="no-data">No related data found</div>
       </div>
     </div>
   </div>

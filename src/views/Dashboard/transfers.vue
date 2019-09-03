@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     ...mapState({
-      transfers: state => state.polka.transfers
+      transfers: state => state.polka.transfers || []
     })
   },
   props: {

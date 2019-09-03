@@ -2,14 +2,14 @@
   <div class="footer-bar">
     <div class="container space-between align-items-center">
       <div class="copyright">Subscan © 2019</div>
-      <div class="contact">
+      <!-- <div class="contact">
         <div class="contact-item mail">
           <icon-svg icon-class="mail" class="icon" />
         </div>
         <div class="contact-item earth">
           <icon-svg icon-class="earth" class="icon" />
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

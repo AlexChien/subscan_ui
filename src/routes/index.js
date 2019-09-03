@@ -13,7 +13,8 @@ export default [
   {
     name: "blockDetail",
     path: "/block/:key",
-    component: () => import(/* webpackChunkName: "BlockDetail" */ "Views/BlockDetail")
+    component: () =>
+      import(/* webpackChunkName: "BlockDetail" */ "Views/BlockDetail")
   },
   {
     name: "extrinsic",
@@ -24,25 +25,28 @@ export default [
   {
     name: "extrinsicDetail",
     path: "/extrinsic/:key",
-    component: () => import(/* webpackChunkName: "extrinsicDetail" */ "Views/ExtrinsicDetail")
+    component: () =>
+      import(/* webpackChunkName: "extrinsicDetail" */ "Views/ExtrinsicDetail")
   },
   {
     name: "transfer",
     path: "/transfer",
-    component: () =>
-      import(/* webpackChunkName: "transfer" */ "Views/Transfer")
+    component: () => import(/* webpackChunkName: "transfer" */ "Views/Transfer")
   },
   {
     name: "account",
     path: "/account/:key",
-    component: () =>
-      import(/* webpackChunkName: "account" */ "Views/Account")
+    component: () => import(/* webpackChunkName: "account" */ "Views/Account")
   },
   {
     name: "404",
     path: "/404",
-    component: () =>
-      import(/* webpackChunkName: "404" */ "Views/ErrorPage/404")
+    component: () => import(/* webpackChunkName: "404" */ "Views/ErrorPage/404")
+  },
+  {
+    name: "noData",
+    path: "/noData",
+    component: () => import(/* webpackChunkName: "noData" */ "Views/ErrorPage/noData")
   },
   {
     path: "*",

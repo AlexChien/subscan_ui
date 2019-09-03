@@ -2,6 +2,11 @@
   <div class="extrinsic-detail-wrapper subscan-content">
     <div class="container">
       <template v-if="notFound">
+        <search-input
+          class="search-input"
+          :selectList="selectList"
+          placeholder="Search by Block / Extrinsic / Account"
+        />
         <div class="not-found">
           <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
           <div class="no-data">No Data</div>
@@ -56,7 +61,9 @@
               <div class="icon identicon">
                 <identicon :size="24" theme="polkadot" :value="extrinsicInfo.account_id" />
               </div>
-              <div @click="$router.push(`/account/${extrinsicInfo.account_id}`)">{{extrinsicInfo.account_id}}</div>
+              <div
+                @click="$router.push(`/account/${extrinsicInfo.account_id}`)"
+              >{{extrinsicInfo.account_id}}</div>
               <div
                 class="copy-btn"
                 v-if="extrinsicInfo.account_id"
@@ -72,7 +79,9 @@
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="extrinsicInfo.transfer.to" />
                 </div>
-                <div @click="$router.push(`/account/${extrinsicInfo.transfer.to}`)">{{extrinsicInfo.transfer.to}}</div>
+                <div
+                  @click="$router.push(`/account/${extrinsicInfo.transfer.to}`)"
+                >{{extrinsicInfo.transfer.to}}</div>
                 <div
                   class="copy-btn"
                   v-if="extrinsicInfo.transfer.to"
@@ -170,7 +179,7 @@
 
 <script>
 import Identicon from "@polkadot/vue-identicon";
-import SearchInput from "Components/SearchInput";
+import SearchInput from "@/views/Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 export default {
@@ -195,7 +204,25 @@ export default {
       },
       activeTab: "event",
       notFound: false,
-      isLoading: false
+      isLoading: false,
+      selectList: [
+        {
+          label: "All",
+          value: "all"
+        },
+        {
+          label: "Block",
+          value: "block"
+        },
+        {
+          label: "Extrinsic",
+          value: "extrinsic"
+        },
+        {
+          label: "Account",
+          value: "account"
+        }
+      ]
     };
   },
   created() {
@@ -218,7 +245,7 @@ export default {
     },
     async getExtrinsicInfo() {
       const key = this.$route.params.key;
-      const reg = /^[0-9,/-]*$/;
+      const reg = /^[0-9]+-[0-9]+$/;
       const isNum = reg.test(key);
       this.$api["polkaGetExtrinsicByKey"]({
         [isNum ? "extrinsic_index" : "hash"]: key
@@ -261,6 +288,9 @@ export default {
 
 <style lang="scss" scoped>
 .extrinsic-detail-wrapper {
+  .search-input {
+    height: 50px;
+  }
   .extrinsic-detail-header {
     height: 50px;
     .header-left {

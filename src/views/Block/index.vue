@@ -75,7 +75,7 @@
 import XLSX from "xlsx";
 import moment from "moment";
 import { mapState } from "vuex";
-import SearchInput from "Components/SearchInput";
+import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat } from "Utils/filters";

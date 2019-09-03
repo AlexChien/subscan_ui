@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     ...mapState({
-      latestBlocks: state => state.polka.latestBlocks
+      latestBlocks: state => state.polka.latestBlocks || []
     })
   },
   props: {

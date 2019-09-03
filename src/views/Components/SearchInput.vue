@@ -1,10 +1,10 @@
 <template>
   <div class="search-input-wrapper">
-    <el-input class="serach-input" :placeholder="placeholder" v-model="input1">
+    <el-input class="serach-input" :placeholder="placeholder" v-model="inputValue">
       <el-select
         class="serach-select"
         popper-class="serach-select-out"
-        v-model="select1"
+        v-model="selectValue"
         slot="prepend"
         v-if="!isMini"
       >
@@ -16,17 +16,20 @@
           :value="item.value"
         ></el-option>
       </el-select>
-      <el-button class="serach-button" slot="append">Search</el-button>
+      <el-button class="serach-button" slot="append" @click="search" :loading="isBtnLoading">Search</el-button>
     </el-input>
   </div>
 </template>
 
 <script>
+const { ss58Decode } = require("oo7-substrate");
 export default {
   data() {
     return {
-      input1: "",
-      select1: ""
+      inputValue: "",
+      selectValue: "",
+      isOnSearch: false,
+      isBtnLoading: false
     };
   },
   props: {
@@ -36,8 +39,8 @@ export default {
     },
     selectList: {
       type: Array,
-      default: ()=>{
-        return []
+      default: () => {
+        return [];
       }
     },
     isMini: {
@@ -46,13 +49,47 @@ export default {
     }
   },
   created() {
-    this.select1 = this.selectList[0] ? this.selectList[0].value : "";
+    this.selectValue = this.selectList[0] ? this.selectList[0].value : "";
   },
   computed: {
     selectListFilter() {
       return this.selectList.filter(item => {
-        return item.value !== this.select1;
+        return item.value !== this.selectValue;
       });
+    }
+  },
+  methods: {
+    search() {
+      let blockNumReg = /^[0-9]+$/;
+      let extrinsicNumReg = /^[0-9]+-[0-9]+$/;
+      let blockHashOrExtrinsicHashReg = /^0x[0-9a-fA-F]{64}$/;
+      if (blockNumReg.test(this.inputValue)) {
+        // blockNum
+        this.$router.push(`/block/${this.inputValue}`);
+      } else if (extrinsicNumReg.test(this.inputValue)) {
+        // extrinsicNum
+        this.$router.push(`/extrinsic/${this.inputValue}`);
+      } else if (blockHashOrExtrinsicHashReg.test(this.inputValue)) {
+        // blockHashOrExtrinsicHash
+        this.isBtnLoading = true;
+        this.$api["polkaCheckHash"]({
+          hash: this.inputValue
+        })
+          .then(res => {
+            this.isBtnLoading = false;
+            this.$router.push(`/${res.hash_type}/${this.inputValue}`);
+          })
+          .catch(() => {
+            this.isBtnLoading = false;
+            this.$router.push(`/noData`);
+          });
+      } else {
+        if (ss58Decode(this.inputValue)) {
+          this.$router.push(`/account/${this.inputValue}`);
+        } else {
+          this.$router.push(`/noData`);
+        }
+      }
     }
   }
 };
@@ -91,6 +128,9 @@ export default {
   }
   .el-input-group__append {
     border-color: var(--main-color);
+    .el-button.is-loading:before {
+      right: -2px;
+    }
   }
   .el-input.is-active .el-input__inner,
   .el-input__inner:focus,

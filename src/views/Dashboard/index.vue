@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import SearchInput from "Components/SearchInput";
+import SearchInput from "@/views/Components/SearchInput";
 import Metadata from "./metadata";
 import Chart from "./chart";
 import LatestBlocks from "./latestBlocks";

@@ -112,7 +112,7 @@
               <div
                 v-for="item in extrinsicInfo.params"
                 :key="item.type"
-              >{{`"${item.name}": ${item.value}`}}</div>
+              >{{`"${item.name}": ${JSON.stringify(item.value)}`}}</div>
             </div>
           </div>
           <div class="info-item" v-if="extrinsicInfo.signature">

@@ -1,6 +1,11 @@
 <template>
   <div class="search-input-wrapper">
-    <el-input class="serach-input" :placeholder="placeholder" v-model="inputValue">
+    <el-input
+      class="serach-input"
+      :placeholder="placeholder"
+      v-model="inputValue"
+      @keyup.enter.native="search"
+    >
       <el-select
         class="serach-select"
         popper-class="serach-select-out"
@@ -16,7 +21,12 @@
           :value="item.value"
         ></el-option>
       </el-select>
-      <el-button class="serach-button" slot="append" @click="search" :loading="isBtnLoading">Search</el-button>
+      <el-button
+        class="serach-button"
+        slot="append"
+        @click="search"
+        :loading="isBtnLoading"
+      >Search</el-button>
     </el-input>
   </div>
 </template>

@@ -92,7 +92,19 @@
             </div>
             <div class="info-item">
               <div class="label">Value</div>
-              <div class="value">{{extrinsicInfo.transfer.amount}}</div>
+              <div class="value align-items-center">
+                <div class="currency-icon">
+                  <img
+                    v-if="extrinsicInfo.transfer.module==='kton'"
+                    src="./../../assets/images/kton@2x.png"
+                    alt="kton"
+                  />
+                  <img v-else src="./../../assets/images/ring@2x.png" alt="ring" />
+                </div>
+                <div
+                  class="currency-num"
+                >{{`${extrinsicInfo.transfer.amount} ${extrinsicInfo.transfer.module==="balances"?'RING':extrinsicInfo.transfer.module==="kton"?"KTON":''}`}}</div>
+              </div>
             </div>
           </template>
           <div class="info-item" v-if="extrinsicInfo.signature">
@@ -365,6 +377,15 @@ export default {
           vertical-align: -0.3em;
           &.identicon {
             font-size: 32px;
+          }
+        }
+        .currency-icon {
+          margin-right: 10px;
+          img {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            transform: translateY(-2px);
           }
         }
       }

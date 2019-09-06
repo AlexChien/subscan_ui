@@ -171,9 +171,9 @@
                       <div
                         class="form-item align-items-center"
                         v-for="item in props.row.params"
-                        :key="item.name"
+                        :key="item.type"
                       >
-                        <div class="label">{{item.name}} :</div>
+                        <div class="label">{{item.type}} :</div>
                         <div class="value">{{item.value}}</div>
                       </div>
                     </div>
@@ -290,7 +290,7 @@ export default {
           res.events.forEach(item => {
             let params = JSON.parse(item.params);
             item.params = params.filter(param => {
-              return param.name;
+              return param.type;
             });
           });
           res.logs.forEach(item => {

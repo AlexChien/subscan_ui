@@ -2,6 +2,7 @@
   <div class="footer-bar">
     <div class="container space-between align-items-center">
       <div class="copyright">Subscan © 2019</div>
+      <div class="poweredby">Developed By Subscan Team</div>
       <!-- <div class="contact">
         <div class="contact-item mail">
           <icon-svg icon-class="mail" class="icon" />
@@ -26,6 +27,11 @@ export default {
   .container {
     height: 50px;
     .copyright {
+      color: #7b70ae;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .poweredby{
       color: #7b70ae;
       font-size: 14px;
       font-weight: bold;

@@ -171,10 +171,10 @@
                     <div class="expand-form">
                       <div
                         class="form-item align-items-center"
-                        v-for="item in props.row.params"
-                        :key="item.name"
+                        v-for="(item, index) in props.row.params"
+                        :key="item.type + index"
                       >
-                        <div class="label">{{item.name}} :</div>
+                        <div class="label">{{item.type}} :</div>
                         <div class="value">{{item.value}}</div>
                       </div>
                     </div>
@@ -271,7 +271,7 @@ export default {
             res.event.forEach(item => {
               let params = JSON.parse(item.params);
               item.params = params.filter(param => {
-                return param.name;
+                return param.type;
               });
             });
           }

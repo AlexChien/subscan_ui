@@ -107,7 +107,6 @@ export default {
 
  <style lang="scss" scoped>
 .search-input-wrapper {
-  background: #fff;
   .serach-input {
     height: 100%;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
@@ -118,11 +117,11 @@ export default {
     .serach-button {
       height: 100%;
       width: 110px;
-      background: var(--main-color);
+      background: var(--main-button-color);
       color: #fff;
       font-size: 14px;
       font-weight: 600;
-      border-radius: 0 4px 4px 0;
+      border-radius: 0 0px 0px 0;
     }
   }
 }
@@ -137,7 +136,9 @@ export default {
     background-color: #fff;
   }
   .el-input-group__append {
-    border-color: var(--main-color);
+    border-color: var(--main-button-color);
+    overflow: hidden;
+
     .el-button.is-loading:before {
       right: -2px;
     }

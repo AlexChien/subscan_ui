@@ -68,7 +68,7 @@ export default {
         height: 30px;
         line-height: 30px;
         width: 90px;
-        background: var(--main-color);
+        background: var(--main-button-color);
         border-radius: 2px;
         text-align: center;
         color: #fff;

@@ -8,25 +8,29 @@
           <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">Extrinsics</router-link>
           <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">Transactions</router-link>
         </ul>
-        <el-dropdown class="dropdown" trigger="click">
-          <span class="el-dropdown-link align-items-center">
-            <div class="choosed-source">{{sourceSelectedLabel}}</div>
-            <icon-svg icon-class="dropdown-arrow" class="dropdown-icon" />
-          </span>
-          <el-dropdown-menu slot="dropdown" class="menu-dropdown">
-            <li
-              class="menu-dropdown-item align-items-center"
-              v-for="item in sourceList"
-              :key="item.value"
-            >
-              <i class="choosed-icon" :class="{show: sourceSelected===item.value}"></i>
-              <span
-                class="menu-dropdown-item-label"
-                @click="changeSource(item.value)"
-              >{{item.label}}</span>
-            </li>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <!--<el-dropdown class="dropdown" trigger="click">-->
+          <!--<span class="el-dropdown-link align-items-center">-->
+            <!--<div class="choosed-source">{{sourceSelectedLabel}}</div>-->
+            <!--<icon-svg icon-class="dropdown-arrow" class="dropdown-icon" />-->
+          <!--</span>-->
+          <!--<el-dropdown-menu slot="dropdown" class="menu-dropdown">-->
+            <!--<li-->
+              <!--class="menu-dropdown-item align-items-center"-->
+              <!--v-for="item in sourceList"-->
+              <!--:key="item.value"-->
+            <!--&gt;-->
+              <!--<i class="choosed-icon" :class="{show: sourceSelected===item.value}"></i>-->
+              <!--<span-->
+                <!--class="menu-dropdown-item-label"-->
+                <!--@click="changeSource(item.value)"-->
+              <!--&gt;{{item.label}}</span>-->
+            <!--</li>-->
+          <!--</el-dropdown-menu>-->
+        <!--</el-dropdown>-->
+
+        <div class="crayfish-button">
+
+        </div>
       </div>
     </div>
   </div>
@@ -80,9 +84,9 @@ export default {
     height: 100%;
     .logo {
       height: 100%;
-      width: 50px;
+      width: 250px;
       background: url("../../assets/images/logo@2x.png") no-repeat left center;
-      background-size: 50px 25px;
+      background-size: 125px 25px;
       cursor: pointer;
     }
     .right-menu {
@@ -119,6 +123,14 @@ export default {
             margin-right: 5px;
           }
         }
+      }
+
+      .crayfish-button{
+        width: 96px;
+        height: 33px;
+        margin-left: 10px;
+        background: url("../../assets/images/crayfish-button.png") no-repeat left center;
+        background-size: contain;
       }
     }
   }

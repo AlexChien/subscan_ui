@@ -82,6 +82,7 @@ export default {
   &.darwinia {
     --main-color: #5930dd;
     --main-color-light: rgba(89, 48, 221, 0.5);
+    --main-button-color:  #302b3c;
     --navbar-bg: linear-gradient(
       315deg,
       rgba(254, 56, 118, 1) 0%,
@@ -92,7 +93,10 @@ export default {
   &.alexander {
     --main-color: #e6017a;
     --main-color-light: rgba(230, 1, 122, 0.5);
+    --main-button-color:  #e6017a;
     --navbar-bg: #e6017a;
   }
+
+  --black-color: #302b3c;
 }
 </style>

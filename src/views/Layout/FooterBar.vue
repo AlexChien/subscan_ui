@@ -1,16 +1,20 @@
 <template>
   <div class="footer-bar">
     <div class="container space-between align-items-center">
-      <div class="copyright">Subscan © 2019</div>
-      <div class="poweredby">Developed By Subscan Team</div>
-      <!-- <div class="contact">
-        <div class="contact-item mail">
-          <icon-svg icon-class="mail" class="icon" />
-        </div>
-        <div class="contact-item earth">
-          <icon-svg icon-class="earth" class="icon" />
-        </div>
-      </div> -->
+      <div class="copyright">Subscan © 2019 - Developed By Subscan Team</div>
+
+      <div class="contact">
+        <a target="_blank" rel="noopener" href="mailto:hello@subscan.io">
+          <div class="contact-item mail">
+            <icon-svg icon-class="mail" class="icon" />
+          </div>
+        </a>
+
+        <!--<div class="contact-item earth">-->
+          <!--<icon-svg icon-class="earth" class="icon" />-->
+        <!--</div>-->
+
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +39,7 @@ export default {
       color: #7b70ae;
       font-size: 14px;
       font-weight: bold;
+      margin-left: 10px;
     }
     .contact {
       display: flex;

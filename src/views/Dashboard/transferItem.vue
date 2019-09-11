@@ -35,13 +35,15 @@
       </div>
       <div
         class="right"
-      >{{`${transferData.amount} ${transferData.module==="balances"?'RING':transferData.module==="kton"?"KTON":''}`}}</div>
+      >{{`${transferData.amount} ${this.formatSymbol(transferData.module)}`}}</div>
     </div>
   </div>
 </template>
 
 <script>
 import { timeAgo } from "Utils/filters";
+import { mapState } from "vuex";
+
 export default {
   props: {
     transferData: {
@@ -52,8 +54,22 @@ export default {
       type: Number
     }
   },
+  computed: {
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected
+    })
+  },
   filters: {
     timeAgo
+  },
+  methods: {
+    formatSymbol(module) {
+      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
+        return ''
+      }
+
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
+    }
   }
 };
 </script>

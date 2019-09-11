@@ -13,7 +13,7 @@
       wrap-class="data-list subscan-card"
       view-class="view-box"
       :native="false"
-      v-loading="transfers.length===0"
+      v-loading="typeof transfers === 'undefined'"
     >
       <transfer-item
         class="transfer-item"
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     ...mapState({
-      transfers: state => state.polka.transfers || []
+      transfers: state => state.polka.transfers || undefined
     })
   },
   props: {

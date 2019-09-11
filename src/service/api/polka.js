@@ -1,5 +1,13 @@
 export default [
   {
+    name: "getNow",
+    method: "POST",
+    desc: "获取时间信息",
+    baseURL: "",
+    path: "/now",
+    options: {}
+  },
+  {
     name: "getBlocks",
     method: "POST",
     desc: "获取块信息",

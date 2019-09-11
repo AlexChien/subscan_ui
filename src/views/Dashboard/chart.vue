@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import moment from "moment";
 let myChart;
 import { mapState } from "vuex";
 export default {
@@ -76,7 +75,7 @@ export default {
         const xAxisData = [];
         const data = [];
         this.dailyChart.forEach(item => {
-          xAxisData.push(moment(item.time_utc).format("YYYY-MM-DD"));
+          xAxisData.push(item.time);
           data.push(item.transfer_count);
         });
         myChart.setOption({
@@ -95,7 +94,7 @@ export default {
       const xAxisData = [];
       const data = [];
       this.dailyChart.forEach(item => {
-        xAxisData.push(moment(item.time_utc).format("YYYY-MM-DD"));
+        xAxisData.push(item.time);
         data.push(item.transfer_count);
       });
       myChart = window.echarts.init(this.$refs.chart);

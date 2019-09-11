@@ -69,7 +69,8 @@ export default {
       this.$store.dispatch("SetLanguage", language);
     },
     changeSource(source) {
-      this.$store.dispatch("SetSourceSelected", source);
+      // this.$store.dispatch("SetSourceSelected", source);
+      window.location.href = this.$const[`SYMBOL/${source}`]['domain']['value'];
     }
   }
 };

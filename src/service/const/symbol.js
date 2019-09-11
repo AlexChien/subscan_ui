@@ -12,6 +12,9 @@ export default [{
     kton: {
       value: "KTON",
       icon: kton_icon
+    },
+    domain: {
+      value: 'https://crayfish.subscan.io'
     }
   }
 }, {
@@ -20,6 +23,9 @@ export default [{
     balances: {
       value: "KSM",
       icon: ksm_icon
+    },
+    domain: {
+      value: 'https://kusama.subscan.io'
     }
   }
 }]

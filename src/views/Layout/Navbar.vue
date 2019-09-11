@@ -8,29 +8,29 @@
           <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">Extrinsics</router-link>
           <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">Transactions</router-link>
         </ul>
-        <!--<el-dropdown class="dropdown" trigger="click">-->
-          <!--<span class="el-dropdown-link align-items-center">-->
+        <el-dropdown class="dropdown" trigger="click">
+          <span class="el-dropdown-link align-items-center">
             <!--<div class="choosed-source">{{sourceSelectedLabel}}</div>-->
-            <!--<icon-svg icon-class="dropdown-arrow" class="dropdown-icon" />-->
-          <!--</span>-->
-          <!--<el-dropdown-menu slot="dropdown" class="menu-dropdown">-->
-            <!--<li-->
-              <!--class="menu-dropdown-item align-items-center"-->
-              <!--v-for="item in sourceList"-->
-              <!--:key="item.value"-->
-            <!--&gt;-->
-              <!--<i class="choosed-icon" :class="{show: sourceSelected===item.value}"></i>-->
-              <!--<span-->
-                <!--class="menu-dropdown-item-label"-->
-                <!--@click="changeSource(item.value)"-->
-              <!--&gt;{{item.label}}</span>-->
-            <!--</li>-->
-          <!--</el-dropdown-menu>-->
-        <!--</el-dropdown>-->
+            <div :class="`network-button ${sourceSelectedValue}-button`"></div>
 
-        <div class="crayfish-button">
 
-        </div>
+          </span>
+          <el-dropdown-menu slot="dropdown" class="menu-dropdown">
+            <li
+              class="menu-dropdown-item align-items-center"
+              v-for="item in sourceList"
+              :key="item.value"
+            >
+              <i class="choosed-icon" :class="{show: sourceSelected===item.value}"></i>
+              <span
+                class="menu-dropdown-item-label"
+                @click="changeSource(item.value)"
+              >{{item.label}}</span>
+            </li>
+          </el-dropdown-menu>
+        </el-dropdown>
+
+
       </div>
     </div>
   </div>
@@ -43,21 +43,21 @@ export default {
     return {
       sourceList: [
         {
-          label: "Darwinia",
+          label: "Crayfish",
           value: "darwinia"
         },
         {
-          label: "Alexander",
-          value: "alexander"
+          label: "Kusama",
+          value: "kusama"
         }
       ]
     };
   },
   computed: {
-    sourceSelectedLabel() {
+    sourceSelectedValue() {
       return this.sourceList.find(item => {
         return item.value === this.sourceSelected;
-      }).label;
+      }).value;
     },
     ...mapState({
       sourceSelected: state => state.global.sourceSelected
@@ -106,10 +106,11 @@ export default {
       }
       .dropdown {
         margin-left: 15px;
+        margin-right: 1px;
         background: #fff;
         border-radius: 2px;
         .el-dropdown-link {
-          padding: 0 10px;
+          /*padding: 0 10px;*/
           font-weight: 600;
           cursor: pointer;
           user-select: none;
@@ -125,11 +126,20 @@ export default {
         }
       }
 
-      .crayfish-button{
-        width: 96px;
-        height: 33px;
-        margin-left: 10px;
+      .network-button{
+        width: 116px;
+        height: 30px;
         background: url("../../assets/images/crayfish-button.png") no-repeat left center;
+        background-size: contain;
+      }
+
+      .crayfish-button {
+        background: url("../../assets/images/crayfish-button.png") no-repeat left center;
+        background-size: contain;
+      }
+
+      .kusama-button {
+        background: url("../../assets/images/kusama-button.png") no-repeat left center;
         background-size: contain;
       }
     }

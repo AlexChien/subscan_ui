@@ -93,17 +93,7 @@
             <div class="info-item">
               <div class="label">Value</div>
               <div class="value align-items-center">
-                <div class="currency-icon">
-                  <img
-                    v-if="extrinsicInfo.transfer.module==='kton'"
-                    src="./../../assets/images/kton@2x.png"
-                    alt="kton"
-                  />
-                  <img v-else src="./../../assets/images/ring@2x.png" alt="ring" />
-                </div>
-                <div
-                  class="currency-num"
-                >{{`${extrinsicInfo.transfer.amount} ${extrinsicInfo.transfer.module==="balances"?'RING':extrinsicInfo.transfer.module==="kton"?"KTON":''}`}}</div>
+                <balances :amount="extrinsicInfo.transfer.amount" :module="extrinsicInfo.transfer.module"></balances>
               </div>
             </div>
           </template>
@@ -194,11 +184,15 @@ import Identicon from "@polkadot/vue-identicon";
 import SearchInput from "@/views/Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
+import { mapState } from "vuex";
+import Balances from './Balances'
+
 export default {
   name: "ExtrinsicDetail",
   components: {
     SearchInput,
-    Identicon
+    Identicon,
+    Balances
   },
   filters: {
     timeAgo,
@@ -237,6 +231,11 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected
+    })
+  },
   created() {
     const key = this.$route.params.key;
     const reg = /^[0-9,/-]*$/;
@@ -254,6 +253,13 @@ export default {
     init() {
       this.getExtrinsicInfo();
       this.activeTab = "event";
+    },
+    formatSymbol(module) {
+      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
+        return ''
+      }
+
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
     },
     async getExtrinsicInfo() {
       const key = this.$route.params.key;

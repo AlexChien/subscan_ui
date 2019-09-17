@@ -35,9 +35,13 @@
           <div class="asset subscan-card" v-loading="isIntroLoading">
             <div class="title">Asset</div>
             <div class="desc">
-              <div class="desc-item align-items-center">
+              <div class="desc-item align-items-center no-border-bottom">
                 <div class="label">Balance</div>
-                <div class="value">{{accountInfo.account.balance}}</div>
+                <div class="value"><balances :amount="accountInfo.account.balance" module="balances"></balances></div>
+              </div>
+              <div class="desc-item align-items-center">
+                <div class="label"></div>
+                <div class="value"><balances :amount="accountInfo.account.kton_balance" module="kton"></balances></div>
               </div>
             </div>
           </div>
@@ -124,6 +128,7 @@
                   <template
                     slot-scope="scope"
                   >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
+
                 </el-table-column>
                 <el-table-column prop="success" label="Result" width="70">
                   <template slot-scope="scope">
@@ -228,11 +233,14 @@ import Identicon from "@polkadot/vue-identicon";
 import SearchInput from "@/views/Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
+import Balances from '../ExtrinsicDetail/Balances'
+
 export default {
   name: "Account",
   components: {
     SearchInput,
-    Identicon
+    Identicon,
+    Balances
   },
   filters: {
     timeAgo,
@@ -407,7 +415,7 @@ export default {
         .desc-item {
           height: 50px;
           line-height: 50px;
-          &:not(:last-child) {
+          &:not(:last-child):not(.no-border-bottom) {
             border-bottom: 1px solid #e7eaf3;
           }
           .label,

@@ -6,7 +6,7 @@
         <ul class="nav-item-list align-items-center">
           <router-link class="nav-item" to="/block" tag="li" active-class="choosed">Blocks</router-link>
           <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">Extrinsics</router-link>
-          <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">Transactions</router-link>
+          <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">Transfers</router-link>
         </ul>
         <el-dropdown class="dropdown" trigger="click">
           <span class="el-dropdown-link align-items-center">

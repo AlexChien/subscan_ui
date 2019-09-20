@@ -59,7 +59,7 @@ export default {
   },
   created() {
     this.init();
-    this.w = new Worker(process.env.BASE_URL + "timeWorker.js");
+    this.w = new Worker('/' + "timeWorker.js");
     this.w.onmessage = () => {
       this.changeTime();
     };

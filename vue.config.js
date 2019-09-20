@@ -67,6 +67,30 @@ module.exports = {
       );
       // 添加source map
       config.devtool = "cheap-module-source-map";
+      config.optimization = {
+        splitChunks: {
+          chunks: 'async',
+          minSize: 200000,
+          maxSize: 400000,
+          minChunks: 1,
+          maxAsyncRequests: 5,
+          maxInitialRequests: 3,
+          automaticNameDelimiter: '~',
+          automaticNameMaxLength: 30,
+          name: true,
+          cacheGroups: {
+            vendors: {
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10
+            },
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true
+            }
+          }
+        }
+      }
     }
   },
   css: {

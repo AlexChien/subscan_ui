@@ -174,7 +174,7 @@ export default {
 
   methods: {
     init() {
-      if (this.transfers.length > 0) {
+      if (this.transfers && this.transfers.length > 0) {
         this.transfersData = this.transfers;
       } else {
         this.isLoading = true;

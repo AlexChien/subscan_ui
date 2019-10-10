@@ -8,7 +8,8 @@ const productionGzipExtensions = ["js", "css"];
 
 module.exports = {
   outputDir: "web", // 当运行 vue-cli-service build 时生成的生产环境构建文件的目录。注意目标目录在构建之前会被清除 (构建时传入 --no-clean 可关闭该行为)
-  publicPath: "https://subscan.l2me.com/", // 部署应用包时的基本 URL。
+  publicPath:
+    process.env.NODE_ENV === "production" ? "https://subscan.l2me.com/" : "/", // 部署应用包时的基本 URL。
 
   // productionSourceMap: false,
   chainWebpack: config => {
@@ -71,13 +72,13 @@ module.exports = {
 
       config.optimization = {
         splitChunks: {
-          chunks: 'async',
+          chunks: "async",
           minSize: 200000,
           maxSize: 400000,
           minChunks: 1,
           maxAsyncRequests: 5,
           maxInitialRequests: 3,
-          automaticNameDelimiter: '~',
+          automaticNameDelimiter: "~",
           automaticNameMaxLength: 30,
           name: true,
           cacheGroups: {
@@ -92,7 +93,7 @@ module.exports = {
             }
           }
         }
-      }
+      };
     }
   },
   css: {

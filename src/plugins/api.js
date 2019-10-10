@@ -63,7 +63,7 @@ class MakeApi {
           };
           return axios(
             _normoalize(
-              _assign(obj, _assign({}, options, outerOptions)),
+              { ...obj, customConfig: _assign({}, options, outerOptions) },
               outerParams
             )
           );

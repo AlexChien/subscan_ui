@@ -60,7 +60,9 @@
           <div class="info-item">
             <div class="label">Validators</div>
             <div class="value link copy align-items-center">
-              <div>{{blockInfo.validator}}</div>
+              <div
+                @click="$router.push(`/account/${blockInfo.validator}`)"
+              >{{blockInfo.validator}}</div>
               <div
                 class="copy-btn"
                 v-if="blockInfo.validator"

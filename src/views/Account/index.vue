@@ -202,7 +202,11 @@
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
                 </el-table-column>
-                <el-table-column prop="call_module" label="Action" width="180"></el-table-column>
+                <el-table-column prop="call_module" label="Action" width="180">
+                  <template
+                    slot-scope="scope"
+                  >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
+                </el-table-column>
                 <el-table-column width="120" type="expand">
                   <template slot-scope="props">
                     <div class="expand-form">

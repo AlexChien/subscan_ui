@@ -183,7 +183,10 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane v-if="blockInfo.logs&&blockInfo.logs.length" label="Log" name="log">
+            <el-tab-pane
+              v-if="blockInfo.logs&&blockInfo.logs.length"
+              :label="`Log${blockInfo.logs&&blockInfo.logs.length > 0 ? ` (${blockInfo.logs.length})` : ''}`"
+              name="log">
               <el-table :data="blockInfo.logs" style="width: 100%">
                 <el-table-column prop="log_index" label="Log Index" fit></el-table-column>
                 <el-table-column prop="block_num" label="Block" fit></el-table-column>

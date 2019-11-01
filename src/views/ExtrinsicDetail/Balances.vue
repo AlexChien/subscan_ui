@@ -36,10 +36,12 @@
     },
     methods: {
       formatSource(module, type) {
-        if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-          return ''
+        let source = this.$const[`SYMBOL/${this.sourceSelected}`];
+        if (source && source[module]) {
+            return source[module][type] || '';
+        } else {
+            return '';
         }
-        return this.$const[`SYMBOL/${this.sourceSelected}`][module][type] || '';
       }
     }
   };

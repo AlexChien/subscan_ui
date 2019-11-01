@@ -13,9 +13,9 @@
       <div class="right">{{transferData.block_timestamp|timeAgo(currentTime)}}</div>
     </div>
     <div class="transfer-item-bottom space-between align-items-center">
-      <div class="left align-items-center">
-        <div class="label">From</div>
-        <div class="value">
+      <div class="left space-between">
+        <div class="from-wrapper align-items-center">
+          <div class="label">From</div>
           <el-tooltip
             class="item"
             effect="light"
@@ -27,7 +27,9 @@
               @click="$router.push(`/account/${transferData.from}`)"
             >{{transferData.from}}</div>
           </el-tooltip>
-          <div class="separator">&nbsp;To&nbsp;&nbsp;</div>
+        </div>
+        <div class="to-wrapper align-items-center">
+          <div class="label">To</div>
           <el-tooltip class="item" effect="light" :content="transferData.to" placement="top-start">
             <div class="to" @click="$router.push(`/account/${transferData.to}`)">{{transferData.to}}</div>
           </el-tooltip>
@@ -101,9 +103,7 @@ export default {
         color: var(--main-color);
         cursor: pointer;
         width: 308px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        @include text-truncate;
       }
     }
     .right {
@@ -120,21 +120,20 @@ export default {
         font-weight: 600;
         color: rgba(152, 149, 159, 1);
       }
-      .value {
-        display: flex;
-        .from,
-        .to {
-          cursor: pointer;
-          font-weight: 400;
-          color: var(--main-color);
-          width: 86px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .separator {
-          font-weight: 600;
-          color: rgba(152, 149, 159, 1);
+      .from,
+      .to {
+        cursor: pointer;
+        font-weight: 400;
+        color: var(--main-color);
+        width: 86px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .to-wrapper {
+        .label {
+          width: 26px;
+          margin-left: 6px;
         }
       }
     }
@@ -143,6 +142,32 @@ export default {
       font-weight: bold;
       color: var(--main-color);
       line-height: 20px;
+    }
+  }
+  @media screen and (max-width:$screen-xs) {
+    height: 104px;
+    .transfer-item-top {
+      .left {
+        .value {
+          width: 100px;
+        }
+      }
+    }
+    .transfer-item-bottom {
+      display: block;
+      .left {
+        flex-direction: column;
+        .from,
+        .to {
+          width: 200px;
+        }
+        .to-wrapper {
+          .label {
+            width: 59px;
+            margin-left: 0;
+          }
+        }
+      }
     }
   }
 }

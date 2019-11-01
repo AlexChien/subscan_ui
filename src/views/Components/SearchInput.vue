@@ -1,20 +1,20 @@
 <template>
   <div class="search-input-wrapper">
     <el-input
-      class="serach-input"
+      class="search-input"
       :placeholder="placeholder"
       v-model="inputValue"
       @keyup.enter.native="search"
     >
       <el-select
-        class="serach-select"
-        popper-class="serach-select-out"
+        class="search-select"
+        popper-class="search-select-out"
         v-model="selectValue"
         slot="prepend"
         v-if="!isMini"
       >
         <el-option
-          class="serach-select-option"
+          class="search-select-option"
           v-for="item in selectList"
           :key="item.value"
           :label="item.label"
@@ -22,7 +22,7 @@
         ></el-option>
       </el-select>
       <el-button
-        class="serach-button"
+        class="search-button"
         slot="append"
         @click="search"
         :loading="isBtnLoading"
@@ -107,14 +107,14 @@ export default {
 
  <style lang="scss" scoped>
 .search-input-wrapper {
-  .serach-input {
+  .search-input {
     height: 100%;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
-    .serach-select {
+    .search-select {
       width: 110px;
       height: 100%;
     }
-    .serach-button {
+    .search-button {
       height: 100%;
       width: 110px;
       background: var(--main-button-color);
@@ -136,6 +136,7 @@ export default {
     background-color: #fff;
   }
   .el-input-group__append {
+    background-color: var(--main-button-color);
     border-color: var(--main-button-color);
     overflow: hidden;
 
@@ -156,7 +157,7 @@ export default {
       color: rgba(179, 179, 179, 1);
     }
   }
-  .serach-select {
+  .search-select {
     .el-input {
       .el-input__inner {
         text-align: center;
@@ -171,8 +172,13 @@ export default {
       }
     }
   }
+  @media screen and (max-width:$screen-xs) {
+    .el-input-group__prepend {
+      display: none;
+    }
+  }
 }
-.serach-select-out {
+.search-select-out {
   margin-top: 0 !important;
   font-size: 14px;
   font-weight: 600;
@@ -180,7 +186,7 @@ export default {
   .popper__arrow {
     display: none;
   }
-  .el-select-dropdown__item.serach-select-option.selected {
+  .el-select-dropdown__item.search-select-option.selected {
     color: var(--main-color);
     display: none;
   }

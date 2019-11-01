@@ -4,7 +4,7 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Search by Block / Extrinsic / Account"
+        placeholder="Block / Extrinsic / Account"
       />
       <div class="metadata-chart-wrapper space-between">
         <metadata class="metadata-component" />
@@ -123,6 +123,33 @@ export default {
       .latest-blocks-component,
       .transfers-component {
         width: 580px;
+      }
+    }
+  }
+  @media screen and (max-width:$screen-xs) {
+    .container {
+      .metadata-chart-wrapper {
+        height: inherit;
+        flex-direction: column;
+        .metadata-component {
+          width: 100%;
+        }
+        .chart-component {
+          margin-top: 20px;
+          width: 100%;
+          height: 156px;
+        }
+      }
+      .blocks-transfers-wrapper {
+        flex-direction: column;
+        width: 100%;
+        .latest-blocks-component,
+        .transfers-component {
+          width: 100%;
+        }
+        .transfers-component {
+          margin-top: 20px;
+        }
       }
     }
   }

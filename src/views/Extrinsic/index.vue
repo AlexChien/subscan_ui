@@ -4,7 +4,7 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Search by Block / Extrinsic / Account"
+        placeholder="Block / Extrinsic / Account"
       />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
@@ -290,6 +290,16 @@ export default {
       .download {
         width: 196px;
         height: 30px;
+      }
+    }
+  }
+  @media screen and (max-width:$screen-xs) {
+    .container {
+      .table-bottom {
+        flex-direction: column;
+        .pagination-component {
+          margin-top: 20px;
+        }
       }
     }
   }

@@ -145,6 +145,30 @@ export default {
       }
     }
   }
+  @media screen and (max-width:$screen-xs) {
+    .container {
+      padding: 0 6px;
+      .logo {
+        flex: 0 0 28px;
+      }
+      .right-menu {
+        flex: 1 1 auto;
+        .nav-item-list {
+          flex: 1 1 auto;
+          justify-content: space-around;
+          .nav-item {
+            margin-right: 0;
+          }
+        }
+        .dropdown {
+          margin-left: 0;
+        }
+        .network-button{
+          width: 96px;
+        }
+      }
+    }
+  }
 }
 </style>
 <style lang="scss">

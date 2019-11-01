@@ -128,5 +128,11 @@
     }
 
     --black-color: #302b3c;
+    @media screen and (max-width:$screen-xs) {
+      .main {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
   }
 </style>

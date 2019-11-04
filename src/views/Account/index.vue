@@ -317,14 +317,15 @@ export default {
           this.accountInfo = res;
           this.notFound = false;
           this.isIntroLoading = false;
-          await Promise.all([this.getTransferInfo(), this.getExtrinsicInfo()]);
-          this.isLoading = false;
+          await Promise.all([this.getTransferInfo(), this.getExtrinsicInfo()])
+            .catch(() => {})
+            .finally(() => {
+              this.isLoading = false;
+          });
         })
         .catch(() => {
           this.notFound = true;
           this.accountInfo = {};
-          this.transfersInfo = { count: 0, transfers: [] };
-          this.extrinsicsInfo = { count: 0, extrinsics: [] };
           this.isLoading = false;
           this.isIntroLoading = false;
         });
@@ -334,6 +335,8 @@ export default {
         row: 10,
         page: 0,
         address: this.address
+      }).catch(()=> {
+        this.transfersInfo = { count: 0, transfers: [] };
       });
       data.transfers === null && (data.transfers = []);
       this.transfersInfo = data;
@@ -344,6 +347,8 @@ export default {
         page: 0,
         address: this.address,
         signed: "all"
+      }).catch(()=> {
+        this.extrinsicsInfo = { count: 0, extrinsics: [] };
       });
       data.extrinsics === null && (data.extrinsics = []);
       data.extrinsics.forEach(item => {

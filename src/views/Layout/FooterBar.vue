@@ -54,5 +54,10 @@ export default {
       }
     }
   }
+  @media screen and (max-width:$screen-xs) {
+    .container {
+      padding: 0 10px;
+    }
+  }
 }
 </style>

@@ -1,4 +1,5 @@
 @import "./reset";
+@import "var";
 blockquote,
 body,
 button,
@@ -118,6 +119,10 @@ input:-webkit-autofill {
 .container {
   margin: 0 auto;
   width: 1180px;
+  @media screen and (max-width:$screen-xs) {
+    width: inherit;
+    max-width: 100%;
+  }
 }
 
 .svg-icon {

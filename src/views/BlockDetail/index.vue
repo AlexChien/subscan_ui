@@ -5,7 +5,7 @@
         <search-input
           class="search-input"
           :selectList="selectList"
-          placeholder="Search by Block / Extrinsic / Account"
+          placeholder="Block / Extrinsic / Account"
         />
         <div class="not-found">
           <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
@@ -25,7 +25,7 @@
           </div>
           <search-input
             class="header-right"
-            placeholder="Search by Block / Extrinsic / Account"
+            placeholder="Block / Extrinsic / Account"
             :isMini="true"
           />
         </div>
@@ -469,6 +469,38 @@ export default {
       font-size: 14px;
       font-weight: 600;
       color: rgba(152, 149, 159, 1);
+    }
+  }
+  @media screen and (max-width:$screen-xs) {
+    .block-detail-header {
+      height: inherit;
+      flex-direction: column;
+      .search-input-wrapper {
+        height: 40px;
+        margin: 20px 20px 0;
+        max-width: 100%;
+      }
+    }
+    .block-info-list {
+      .info-item {
+        .label {
+          flex: 0 0 140px;
+        }
+        .value {
+          padding-left: 0;
+          max-width: 150px;
+          flex: none;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
+      }
+    }
+    .block-extrinsic-event-log {
+      padding-top: 30px;
+      .view-all-extrinsic {
+        top: 4px;
+        right: 4px;
+      }
     }
   }
 }

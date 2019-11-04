@@ -4,7 +4,7 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Search by Block / Extrinsic / Account"
+        placeholder="Block / Extrinsic / Account"
       />
       <div class="block-table subscan-card" v-loading="isLoading">
         <el-table :data="blockData" style="width: 100%">
@@ -201,6 +201,16 @@ export default {
       .download {
         width: 196px;
         height: 30px;
+      }
+    }
+  }
+  @media screen and (max-width:$screen-xs) {
+    .container {
+      .table-bottom {
+        flex-direction: column;
+        .pagination-component {
+          margin-top: 20px;
+        }
       }
     }
   }

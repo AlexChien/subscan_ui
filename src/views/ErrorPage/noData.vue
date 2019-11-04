@@ -4,7 +4,7 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Search by Block / Extrinsic / Account"
+        placeholder="Block / Extrinsic / Account"
       />
       <div class="not-found">
         <img class="not-found-img" src="./../../assets/images/no-data@2x.png" alt="404" />

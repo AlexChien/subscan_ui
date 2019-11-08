@@ -46,6 +46,7 @@ export default {
       margin-right: 10px;
       color: rgba(255,255,255,.5);
       .donate-title {
+        padding-right: 10px;
         color: #fff;
       }
     }

@@ -2,7 +2,10 @@
   <div class="footer-bar">
     <div class="container space-between align-items-center">
       <div class="copyright">Subscan © 2019 - Developed By Subscan Team</div>
-
+      <div class="donate">
+        <span class="donate-title">DONATE:</span>
+        5DobnXBB9EU8gJR8ygCM5GvHHuvSRCfWypuC2vDqW35Udbku
+      </div>
       <div class="contact">
         <a target="_blank" rel="noopener" href="mailto:hello@subscan.io">
           <div class="contact-item mail">
@@ -35,6 +38,17 @@ export default {
       font-size: 14px;
       font-weight: bold;
     }
+    .donate {
+      font-size: 12px;
+      font-weight: 600;
+      flex: 1 1 auto;
+      text-align: right;
+      margin-right: 10px;
+      color: rgba(255,255,255,.5);
+      .donate-title {
+        color: #fff;
+      }
+    }
     .poweredby{
       color: #7b70ae;
       font-size: 14px;
@@ -56,7 +70,16 @@ export default {
   }
   @media screen and (max-width:$screen-xs) {
     .container {
-      padding: 0 10px;
+      height: inherit;
+      padding: 10px 10px;
+      flex-wrap: wrap;
+      .donate {
+        order: 3;
+        text-align: left;
+      }
+      .contact {
+        order: 2;
+      }
     }
   }
 }

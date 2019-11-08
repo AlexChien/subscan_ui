@@ -5,7 +5,7 @@ COPY package.json /app
 COPY yarn.lock /app
 RUN yarn install
 ADD . /app
-RUN yarn run build
+RUN yarn run staticbuild
 
 FROM nginx:latest
 COPY --from=builder /app/web /usr/share/nginx/html

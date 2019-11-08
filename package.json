@@ -8,7 +8,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "analyz": "npm_config_report=true vue-cli-service build",
-    "testbuild": "vue-cli-service build --mode test"
+    "testbuild": "vue-cli-service build --mode test",
+    "staticbuild": "vue-cli-service build --mode static"
   },
   "dependencies": {
     "@polkadot/util": "^1.1.1",

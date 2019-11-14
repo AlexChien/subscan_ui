@@ -4,7 +4,7 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Block / Extrinsic / Account"
+        :placeholder="$t('placeholder.search_by')"
       />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
@@ -18,13 +18,13 @@
               @click="$router.push(`/account/${$route.query.address}`)"
             >{{` ${$route.query.address} `}}</div>
           </template>
-          <div v-else class="all">All</div>
+          <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
         </div>
       </div>
       <div class="transfer-table subscan-card" v-loading="isLoading">
         <el-table :data="transfersData" style="width: 100%">
-          <el-table-column prop="extrinsic_index" label="Extrinsic ID" width="120">
+          <el-table-column prop="extrinsic_index" :label="$t('extrinsic_id')" width="120">
             <template slot-scope="scope">
               <div class="link">
                 <span
@@ -33,17 +33,17 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_num" label="Block" width="120">
+          <el-table-column prop="block_num" :label="$t('block')" width="120">
             <template slot-scope="scope">
               <div class="link">
                 <span @click="$router.push(`/block/${scope.row.block_num}`)">{{scope.row.block_num}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_timestamp" label="Age" width="150">
+          <el-table-column prop="block_timestamp" :label="$t('age')" width="150">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column prop="from" label="From" width="150">
+          <el-table-column prop="from" :label="$t('from')" width="150">
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -64,7 +64,7 @@
               <icon-svg class="icon" icon-class="from-to-arrow" />
             </template>
           </el-table-column>
-          <el-table-column prop="to" label="To" width="150">
+          <el-table-column prop="to" :label="$t('to')" width="150">
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -80,17 +80,17 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="amount" label="Value" fit>
+          <el-table-column prop="amount" :label="$t('value')" fit>
             <template
               slot-scope="scope"
             >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
           </el-table-column>
-          <el-table-column prop="success" label="Result" width="70">
+          <el-table-column prop="success" :label="$t('result')" width="70">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>
           </el-table-column>
-          <el-table-column prop="hash" label="Hash" width="150">
+          <el-table-column prop="hash" :label="$t('hash')" width="150">
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -141,19 +141,19 @@ export default {
       total: 0,
       selectList: [
         {
-          label: "All",
+          label: this.$t('all'),
           value: "all"
         },
         {
-          label: "Block",
+          label: this.$t('block'),
           value: "block"
         },
         {
-          label: "Extrinsic",
+          label: this.$t('extrinsic'),
           value: "extrinsic"
         },
         {
-          label: "Account",
+          label: this.$t('account'),
           value: "account"
         }
       ]

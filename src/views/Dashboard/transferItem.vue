@@ -2,7 +2,7 @@
   <div class="transfer-item-wrapper">
     <div class="transfer-item-top space-between align-items-center">
       <div class="left align-items-center">
-        <div class="label">Hash</div>
+        <div class="label">{{$t('hash')}}</div>
         <el-tooltip class="item" effect="light" :content="transferData.hash" placement="top-start">
           <div
             class="value hash-v"
@@ -15,7 +15,7 @@
     <div class="transfer-item-bottom space-between align-items-center">
       <div class="left space-between">
         <div class="from-wrapper align-items-center">
-          <div class="label">From</div>
+          <div class="label">{{$t('from')}}</div>
           <el-tooltip
             class="item"
             effect="light"
@@ -29,7 +29,7 @@
           </el-tooltip>
         </div>
         <div class="to-wrapper align-items-center">
-          <div class="label">To</div>
+          <div class="label">{{$t('to')}}</div>
           <el-tooltip class="item" effect="light" :content="transferData.to" placement="top-start">
             <div class="to" @click="$router.push(`/account/${transferData.to}`)">{{transferData.to}}</div>
           </el-tooltip>

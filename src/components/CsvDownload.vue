@@ -1,7 +1,7 @@
 <template>
   <div class="csv-download-component" @click="$emit('downloadClick')">
     <icon-svg class="icon" icon-class="download"/>
-    <div class="label align-items-center">Download CSV File</div>
+    <div class="label align-items-center">{{$t('download_csv_file')}}</div>
   </div>
 </template>
 

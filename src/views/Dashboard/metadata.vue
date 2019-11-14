@@ -4,7 +4,7 @@
       <router-link class="nav-item" to="/block" tag="div" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="latest-blocks"></icon-svg>
-          <div class="label">Latest Blocks</div>
+          <div class="label">{{$t('latest_blocks')}}</div>
           <count-to class="value" :end="Number(metadata.blockNum||0)" :duration="0.8" :decimal="0" />
         </div>
       </router-link>
@@ -20,7 +20,7 @@
       <router-link class="nav-item" to="/extrinsic" tag="div" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="signed-extrinsics"></icon-svg>
-          <div class="label">Signed Extrinsics</div>
+          <div class="label">{{$t('signed_extrinsics')}}</div>
           <count-to class="value" :end="Number(metadata.count_signed_extrinsic||0)" :duration="0.8" :decimal="0" />
         </div>
       </router-link>
@@ -28,7 +28,7 @@
     <div>
       <div class="metadata-item">
         <icon-svg class="icon" icon-class="module-events"></icon-svg>
-        <div class="label">Module Events</div>
+        <div class="label">{{$t('module_events')}}</div>
         <count-to class="value" :end="Number(metadata.count_event||0)" :duration="0.8" :decimal="0" />
       </div>
     </div>

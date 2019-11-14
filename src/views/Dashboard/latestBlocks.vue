@@ -3,10 +3,10 @@
     <div class="header-content space-between">
       <div class="header-left align-items-center">
         <icon-svg class="icon" icon-class="latest-blocks" />
-        <span class="title">Latest blocks</span>
+        <span class="title">{{$t('latest_blocks')}}</span>
       </div>
       <div class="header-right">
-        <router-link class="all-link" tag="div" to="/block">All</router-link>
+        <router-link class="all-link" tag="div" to="/block">{{$t('all')}}</router-link>
       </div>
     </div>
     <el-scrollbar

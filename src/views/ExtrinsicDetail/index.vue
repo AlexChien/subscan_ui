@@ -5,38 +5,38 @@
         <search-input
           class="search-input"
           :selectList="selectList"
-          placeholder="Block / Extrinsic / Account"
+          :placeholder="$t('placeholder.search_by')"
         />
         <div class="not-found">
           <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
-          <div class="no-data">No Data</div>
+          <div class="no-data">{{$t('no_data')}}</div>
         </div>
       </template>
       <template v-else>
         <div class="extrinsic-detail-header space-between align-items-center">
           <div class="header-left">
-            <div class="extrinsic-num">{{`Extrinsic#${extrinsicNum}`}}</div>
+            <div class="extrinsic-num">{{`${$t('extrinsic_hash_tag')}${extrinsicNum}`}}</div>
           </div>
           <search-input
             class="header-right"
-            placeholder="Block / Extrinsic / Account"
+            :placeholder="$t('placeholder.search_by')"
             :isMini="true"
           />
         </div>
         <div class="extrinsic-info-list subscan-card" v-loading="isLoading">
           <div class="info-item">
-            <div class="label">Time</div>
+            <div class="label">{{$t('time')}}</div>
             <div class="value">{{extrinsicInfo.block_timestamp|parseTimeToUtc}}</div>
           </div>
           <div class="info-item">
-            <div class="label">Block</div>
+            <div class="label">{{$t('block')}}</div>
             <div
               class="value link"
               @click="$router.push(`/block/${extrinsicInfo.block_num}`)"
             >{{extrinsicInfo.block_num}}</div>
           </div>
           <div class="info-item" v-if="extrinsicInfo.signature">
-            <div class="label">Extrinsic Hash</div>
+            <div class="label">{{$t('extrinsic_hash')}}</div>
             <div class="value copy align-items-center">
               <div>{{extrinsicInfo.extrinsic_hash}}</div>
               <div
@@ -44,19 +44,19 @@
                 v-if="extrinsicInfo.extrinsic_hash"
                 v-clipboard:copy="extrinsicInfo.extrinsic_hash"
                 v-clipboard:success="clipboardSuccess"
-              >COPY</div>
+              >{{$t('copy')}}</div>
             </div>
           </div>
           <div class="info-item">
-            <div class="label">Module</div>
+            <div class="label">{{$t('module')}}</div>
             <div class="value">{{extrinsicInfo.call_module}}</div>
           </div>
           <div class="info-item">
-            <div class="label">Call</div>
+            <div class="label">{{$t('call')}}</div>
             <div class="value">{{extrinsicInfo.call_module_function}}</div>
           </div>
           <div class="info-item" v-if="extrinsicInfo.signature">
-            <div class="label">Sender</div>
+            <div class="label">{{$t('sender')}}</div>
             <div class="value link copy align-items-center">
               <div class="icon identicon">
                 <identicon :size="24" theme="polkadot" :value="extrinsicInfo.account_id" />
@@ -69,12 +69,12 @@
                 v-if="extrinsicInfo.account_id"
                 v-clipboard:copy="extrinsicInfo.account_id"
                 v-clipboard:success="clipboardSuccess"
-              >COPY</div>
+              >{{$t('copy')}}</div>
             </div>
           </div>
           <template v-if="extrinsicInfo.call_module_function==='transfer'">
             <div class="info-item">
-              <div class="label">Destination</div>
+              <div class="label">{{$t('destination')}}</div>
               <div class="value link copy align-items-center">
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="extrinsicInfo.transfer.to" />
@@ -87,29 +87,29 @@
                   v-if="extrinsicInfo.transfer.to"
                   v-clipboard:copy="extrinsicInfo.transfer.to"
                   v-clipboard:success="clipboardSuccess"
-                >COPY</div>
+                >{{$t('copy')}}</div>
               </div>
             </div>
             <div class="info-item">
-              <div class="label">Value</div>
+              <div class="label">{{$t('value')}}</div>
               <div class="value align-items-center">
                 <balances :amount="extrinsicInfo.transfer.amount" :module="extrinsicInfo.transfer.module"></balances>
               </div>
             </div>
           </template>
           <div class="info-item" v-if="extrinsicInfo.signature">
-            <div class="label">Nonce</div>
+            <div class="label">{{$t('nonce')}}</div>
             <div class="value">{{extrinsicInfo.nonce}}</div>
           </div>
           <div class="info-item">
-            <div class="label">Result</div>
+            <div class="label">{{$t('result')}}</div>
             <div class="value">
               <icon-svg class="icon" :icon-class="extrinsicInfo.success?'success':'failed'" />
               {{extrinsicInfo.success?'Success':'Failure'}}
             </div>
           </div>
           <div class="info-item">
-            <div class="label">Parameters</div>
+            <div class="label">{{$t('parameters')}}</div>
             <div class="value">
               <div
                 v-for="item in extrinsicInfo.params"
@@ -118,7 +118,7 @@
             </div>
           </div>
           <div class="info-item" v-if="extrinsicInfo.signature">
-            <div class="label">Signature</div>
+            <div class="label">{{$t('signature')}}</div>
             <div class="value">{{extrinsicInfo.signature}}</div>
           </div>
         </div>
@@ -129,14 +129,14 @@
         >
           <el-tabs v-model="activeTab">
             <el-tab-pane
-              :label="`Events${extrinsicInfo.event.length>0?` (${extrinsicInfo.event.length})`:''}`"
+              :label="`${$t('events')}${extrinsicInfo.event.length>0?` (${extrinsicInfo.event.length})`:''}`"
               name="event"
             >
               <el-table :data="extrinsicInfo.event" style="width: 100%">
-                <el-table-column label="Event ID" fit>
+                <el-table-column :label="$t('event_id')" fit>
                   <template slot-scope="props">{{props.row.event_index}}</template>
                 </el-table-column>
-                <el-table-column label="Hash" fit>
+                <el-table-column :label="$t('hash')" fit>
                   <template>
                     <div
                       class="link"
@@ -153,7 +153,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column label="Action" fit>
+                <el-table-column :label="$t('action')" fit>
                   <template slot-scope="props">{{`${props.row.module_id}(${props.row.event_id})`}}</template>
                 </el-table-column>
                 <el-table-column width="120" type="expand">
@@ -213,19 +213,19 @@ export default {
       isLoading: false,
       selectList: [
         {
-          label: "All",
+          label: this.$t('all'),
           value: "all"
         },
         {
-          label: "Block",
+          label: this.$t('block'),
           value: "block"
         },
         {
-          label: "Extrinsic",
+          label: this.$t('extrinsic'),
           value: "extrinsic"
         },
         {
-          label: "Account",
+          label: this.$t('account'),
           value: "account"
         }
       ]
@@ -297,7 +297,7 @@ export default {
     clipboardSuccess() {
       this.$message({
         type: "success",
-        message: "Copy Success"
+        message: this.$t('copy_success')
       });
     }
   }

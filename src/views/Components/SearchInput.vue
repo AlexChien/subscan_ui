@@ -26,7 +26,7 @@
         slot="append"
         @click="search"
         :loading="isBtnLoading"
-      >Search</el-button>
+      >{{$t('search')}}</el-button>
     </el-input>
   </div>
 </template>

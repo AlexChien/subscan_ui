@@ -2,23 +2,23 @@
   <div class="block-item-wrapper space-between">
     <div class="block-left">
       <div class="block-num align-items-center">
-        <div class="label">Block#</div>
+        <div class="label">{{$t('block_hash_tag')}}</div>
         <div
           class="value"
           @click="$router.push(`/block/${blockData.block_num}`)"
         >{{+blockData.block_num|toThousandslsFilter}}</div>
       </div>
       <div class="block-includes align-items-center">
-        <div class="label">Includes</div>
+        <div class="label">{{$t('includes')}}</div>
         <div class="value">
           <div
             class="extrinsics"
             :class="{empty: blockData.extrinsics_count==0}"
-          >{{blockData.extrinsics_count}} Extrinsics</div>
+          >{{blockData.extrinsics_count}} {{$t('extrinsic')}}</div>
           <div
             class="event"
             :class="{empty: blockData.event_count==0}"
-          >{{blockData.event_count}} Event</div>
+          >{{blockData.event_count}} {{$t('event')}}</div>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Block / Extrinsic / Account"
+        :placeholder="$t('placeholder.search_by')"
       />
       <div class="metadata-chart-wrapper space-between">
         <metadata class="metadata-component" />
@@ -39,19 +39,19 @@ export default {
       currentTime: Date.now(),
       selectList: [
         {
-          label: "All",
+          label: this.$t('all'),
           value: "all"
         },
         {
-          label: "Block",
+          label: this.$t('block'),
           value: "block"
         },
         {
-          label: "Extrinsic",
+          label: this.$t('extrinsic'),
           value: "extrinsic"
         },
         {
-          label: "Account",
+          label: this.$t('account'),
           value: "account"
         }
       ]

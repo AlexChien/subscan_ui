@@ -58,6 +58,7 @@
   "timestamp": "时间戳",
   "to": "至",
   "transfer_count": "转账计数",
+  "transfer_history": "历史转账记录",
   "transfers": "转账",
   "type": "类型",
   "validator": "验证人",

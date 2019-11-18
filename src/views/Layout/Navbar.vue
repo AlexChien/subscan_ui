@@ -29,8 +29,9 @@
             </li>
           </el-dropdown-menu>
         </el-dropdown>
-
-
+        <div class="mobile-menu">
+          <icon-svg icon-class="menu" class="icon" @click="drawer = true"/>
+        </div>
       </div>
     </div>
   </div>
@@ -41,6 +42,8 @@ export default {
   name: "NavBar",
   data() {
     return {
+      drawer: false,
+      direction: 'rtl',
       sourceList: [
         {
           label: "Crayfish",
@@ -147,24 +150,26 @@ export default {
   }
   @media screen and (max-width:$screen-xs) {
     .container {
-      padding: 0 6px;
+      padding: 0 15px;
       .logo {
-        flex: 0 0 28px;
+        flex: 0 0 45vw;
+        margin-left: 10px;
       }
       .right-menu {
         flex: 1 1 auto;
         .nav-item-list {
-          flex: 1 1 auto;
-          justify-content: space-around;
-          .nav-item {
-            margin-right: 0;
-          }
+          display: none;
         }
         .dropdown {
           margin-left: 0;
         }
         .network-button{
           width: 96px;
+        }
+        .mobile-menu {
+          font-size: 34px;
+          flex: 1 1 auto;
+          text-align: right;
         }
       }
     }

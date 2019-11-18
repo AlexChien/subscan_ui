@@ -26,10 +26,12 @@
       </router-link>
     </div>
     <div>
-      <div class="metadata-item">
-        <icon-svg class="icon" icon-class="module-events"></icon-svg>
-        <div class="label">{{$t('module_events')}}</div>
-        <count-to class="value" :end="Number(metadata.count_event||0)" :duration="0.8" :decimal="0" />
+      <div class="nav-item event">
+        <div class="metadata-item">
+          <icon-svg class="icon" icon-class="module-events"></icon-svg>
+          <div class="label">{{$t('module_events')}}</div>
+          <count-to class="value" :end="Number(metadata.count_event||0)" :duration="0.8" :decimal="0" />
+        </div>
       </div>
     </div>
 
@@ -66,6 +68,9 @@ export default {
   }
   .nav-item{
     cursor: pointer;
+    &.event {
+      cursor: default;
+    }
   }
   .metadata-item {
     /*width: 260px;*/
@@ -88,6 +93,29 @@ export default {
       font-weight: 600;
       color: #302b3c;
       line-height: 30px;
+    }
+  }
+  @media screen and (max-width:$screen-xs) {
+    flex-direction: column;
+    .nav-item {
+      width: 100%;
+    }
+    .metadata-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      .icon {
+        height: 30px;
+        font-size: 30px;
+      }
+      .label {
+        padding: 0;
+        margin-left: 10px;
+      }
+      .value {
+        text-align: right;
+        flex: 1 1 auto;
+      }
     }
   }
 }

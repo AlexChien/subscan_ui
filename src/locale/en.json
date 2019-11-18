@@ -58,6 +58,7 @@
   "timestamp": "Timestamp",
   "to": "To",
   "transfer_count": "Transfer Count",
+  "transfer_history": "Transfer History",
   "transfers": "Transfers",
   "type": "type",
   "validator": "Validator",

@@ -464,9 +464,13 @@ export default {
     .extrinsic-detail-header {
       height: inherit;
       flex-direction: column;
+      .header-left {
+        order: 2;
+      }
       .search-input-wrapper {
+        order: 1;
         height: 40px;
-        margin: 20px 20px 0;
+        margin: 0 20px 20px;
         max-width: 100%;
       }
     }

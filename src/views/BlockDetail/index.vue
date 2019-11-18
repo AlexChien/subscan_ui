@@ -207,7 +207,7 @@
           <div
             class="view-all-extrinsic"
             v-if="activeTab==='extrinsic'"
-            @click="$router.push('/extrinsic')"
+            @click="$router.push(`/extrinsic/?block=${blockNum}`)"
           >{{$t('view_all')}}</div>
         </div>
       </template>
@@ -475,9 +475,13 @@ export default {
     .block-detail-header {
       height: inherit;
       flex-direction: column;
+      .header-left {
+        order: 2;
+      }
       .search-input-wrapper {
+        order: 1;
         height: 40px;
-        margin: 20px 20px 0;
+        margin: 0 20px 20px;
         max-width: 100%;
       }
     }

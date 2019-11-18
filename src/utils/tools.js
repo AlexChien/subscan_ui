@@ -202,3 +202,10 @@ export function toUTC(date) {
   // 加入"+08"来标示对应的时区
   return date.toISOString();
 }
+
+export function isMobile() {
+  const u = navigator.userAgent;
+  return (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) &&
+    !!u.match(/AppleWebKit.*Mobile.*/)) ||
+    window.innerWidth <= 768;
+}

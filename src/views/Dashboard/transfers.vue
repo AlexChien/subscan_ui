@@ -95,4 +95,14 @@ export default {
     }
   }
 }
+.transfers-wrapper {
+  @media screen and (max-width:$screen-xs) {
+    .el-scrollbar {
+      .data-list {
+        max-height: 520px;
+        overflow: hidden;
+      }
+    }
+  }
+}
 </style>

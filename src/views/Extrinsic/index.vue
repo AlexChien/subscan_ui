@@ -18,6 +18,12 @@
               @click="$router.push(`/account/${$route.query.address}`)"
             >{{` ${$route.query.address} `}}</div>
           </template>
+          <template v-else-if="$route.query.block">
+            <div
+              class="link"
+              @click="$router.push(`/block/${$route.query.block}`)"
+            >{{` Block#${$route.query.block} `}}</div>
+          </template>
           <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
         </div>
@@ -160,18 +166,31 @@ export default {
     },
     async getExtrinsicData(page = 0) {
       this.isLoading = true;
-      const data = await this.$api["polkaGetExtrinsics"]({
-        row: 25,
-        page,
-        signed: this.signedChecked ? "signed" : "all",
-        address: this.$route.query.address
-      });
-      data.extrinsics.forEach(item => {
-        item.params = JSON.parse(item.params);
-      });
-      this.extrinsicsData = data.extrinsics;
-      this.total = +data.count;
-      this.isLoading = false;
+      let data;
+      if (this.$route.query.block) {
+          data = await this.$api["polkaGetBlockByKey"]({
+              block_num: +this.$route.query.block
+          });
+          data.extrinsics.forEach(item => {
+              item.params = JSON.parse(item.params);
+          });
+          this.extrinsicsData = data.extrinsics;
+          this.total = data.extrinsics_count;
+          this.isLoading = false;
+      } else {
+          data = await this.$api["polkaGetExtrinsics"]({
+              row: 25,
+              page,
+              signed: this.signedChecked ? "signed" : "all",
+              address: this.$route.query.address
+          });
+          data.extrinsics.forEach(item => {
+              item.params = JSON.parse(item.params);
+          });
+          this.extrinsicsData = data.extrinsics;
+          this.total = +data.count;
+          this.isLoading = false;
+      }
     },
     downloadClick() {
       const tableData = [

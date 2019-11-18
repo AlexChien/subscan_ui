@@ -24,6 +24,10 @@ export default [{
       value: "KSM",
       icon: ksm_icon
     },
+    kton: {
+      value: "KTON",
+      icon: kton_icon
+    },
     domain: {
       value: 'https://kusama.subscan.io'
     }

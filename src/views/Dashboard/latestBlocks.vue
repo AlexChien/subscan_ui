@@ -95,4 +95,14 @@ export default {
     }
   }
 }
+.latest-blocks-wrapper {
+  @media screen and (max-width:$screen-xs) {
+    .el-scrollbar {
+      .data-list {
+        max-height: 400px;
+        overflow: hidden;
+      }
+    }
+  }
+}
 </style>

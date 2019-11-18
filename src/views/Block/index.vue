@@ -41,7 +41,7 @@
                   :content="scope.row.validator"
                   placement="top-start"
                 >
-                  <span>{{scope.row.validator|hashFormat}}</span>
+                  <span @click="$router.push(`/account/${scope.row.validator}`)">{{scope.row.validator|hashFormat}}</span>
                 </el-tooltip>
               </div>
             </template>

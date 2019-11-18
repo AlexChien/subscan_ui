@@ -89,7 +89,7 @@
                 </el-table-column>
                 <el-table-column prop="from" :label="$t('from')" width="150">
                   <template slot-scope="scope">
-                    <div class="link">
+                    <div :class="scope.row.from === address ? '' : 'link'">
                       <el-tooltip
                         class="item"
                         effect="light"
@@ -110,7 +110,7 @@
                 </el-table-column>
                 <el-table-column prop="to" :label="$t('to')" width="150">
                   <template slot-scope="scope">
-                    <div class="link">
+                    <div :class="scope.row.to === address ? '' : 'link'">
                       <el-tooltip
                         class="item"
                         effect="light"

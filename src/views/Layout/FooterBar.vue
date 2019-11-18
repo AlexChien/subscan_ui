@@ -1,9 +1,9 @@
 <template>
   <div class="footer-bar">
     <div class="container space-between align-items-center">
-      <div class="copyright">Subscan © 2019 - Developed By Subscan Team</div>
+      <div class="copyright">{{$t('copy_right', { year: new Date().getFullYear()})}}</div>
       <div class="donate">
-        <span class="donate-title">DONATE:</span>
+        <span class="donate-title">{{$t('donate')}}:</span>
         5DobnXBB9EU8gJR8ygCM5GvHHuvSRCfWypuC2vDqW35Udbku
       </div>
       <div class="contact">

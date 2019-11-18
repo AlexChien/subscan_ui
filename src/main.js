@@ -1,6 +1,7 @@
 import "babel-polyfill"; // 引入垫片
 import Vue from "vue";
 import VueI18n from "vue-i18n";
+import VueAnalytics from 'vue-analytics';
 
 // import 'Directives'; // 全局注入指令（请使用局部注入）
 
@@ -41,6 +42,17 @@ const i18n = new VueI18n({
   }
 });
 ElementLocale.i18n((key, value) => i18n.t(key, value));
+
+//引入谷歌分析
+const isProd = process.env.NODE_ENV === 'production';
+Vue.use(VueAnalytics, {
+  id: 'UA-152561314-2',
+  router,
+  debug: {
+    enabled: !isProd,
+    sendHitTask: isProd
+  }
+})
 
 // 设置为 false 以阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false;

@@ -4,11 +4,11 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Block / Extrinsic / Account"
+        :placeholder="$t('placeholder.search_by')"
       />
       <div class="not-found">
         <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
-        <div class="no-data">No Data</div>
+        <div class="no-data">{{$t('no_data')}}</div>
       </div>
     </div>
   </div>
@@ -24,19 +24,19 @@ export default {
     return {
       selectList: [
         {
-          label: "All",
+          label: this.$t('all'),
           value: "all"
         },
         {
-          label: "Block",
+          label: this.$t('block'),
           value: "block"
         },
         {
-          label: "Extrinsic",
+          label: this.$t('extrinsic'),
           value: "extrinsic"
         },
         {
-          label: "Account",
+          label: this.$t('account'),
           value: "account"
         }
       ]

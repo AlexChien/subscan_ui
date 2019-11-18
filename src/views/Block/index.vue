@@ -4,35 +4,35 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Block / Extrinsic / Account"
+        :placeholder="$t('placeholder.search_by')"
       />
       <div class="block-table subscan-card" v-loading="isLoading">
         <el-table :data="blockData" style="width: 100%">
-          <el-table-column prop="block_num" label="Block" width="180">
+          <el-table-column prop="block_num" :label="$t('block')" width="180">
             <template slot-scope="scope">
               <div class="link" @click="$router.push(`/block/${scope.row.block_num}`)">
                 <span>{{scope.row.block_num}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_timestamp" label="Age" width="200">
+          <el-table-column prop="block_timestamp" :label="$t('age')" width="200">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column prop="extrinsics_count" label="Extrinsics" width="120">
+          <el-table-column prop="extrinsics_count" :label="$t('extrinsics')" width="120">
             <template slot-scope="scope">
               <div :class="{link:scope.row.extrinsics_count>0}">
                 <span>{{scope.row.extrinsics_count}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="event_count" label="Events" width="120">
+          <el-table-column prop="event_count" :label="$t('events')" width="120">
             <!-- <template slot-scope="scope">
               <div :class="{link:scope.row.event_count>0}">
                 <span>{{scope.row.event_count}}</span>
               </div>
             </template> -->
           </el-table-column>
-          <el-table-column prop="validator" label="Validator" fit>
+          <el-table-column prop="validator" :label="$t('validator')" fit>
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -46,7 +46,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="hash" label="Block hash" fit>
+          <el-table-column prop="hash" :label="$t('block_hash')" fit>
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -93,19 +93,19 @@ export default {
       total: 0,
       selectList: [
         {
-          label: "All",
+          label: this.$t('all'),
           value: "all"
         },
         {
-          label: "Block",
+          label: this.$t('block'),
           value: "block"
         },
         {
-          label: "Extrinsic",
+          label: this.$t('extrinsic'),
           value: "extrinsic"
         },
         {
-          label: "Account",
+          label: this.$t('account'),
           value: "account"
         }
       ]
@@ -145,12 +145,12 @@ export default {
     downloadClick() {
       const tableData = [
         [
-          "Block",
-          "Block Timestamp",
-          "Extrinsics",
-          "Events",
-          "Validator",
-          "Block hash"
+            this.$t('block'),
+            this.$t('block_timestamp'),
+            this.$t('extrinsics'),
+            this.$t('events'),
+            this.$t('validator'),
+            this.$t('block_hash')
         ]
       ];
       this.blockData.forEach(item => {

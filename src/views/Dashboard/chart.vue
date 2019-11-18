@@ -108,7 +108,7 @@ export default {
         },
         tooltip: {
           trigger: "axis",
-          formatter: "{b}<br />Transfer Count：{c}"
+          formatter: `{b}<br />${this.$t('transfer_count')}：{c}`
         },
         xAxis: [
           {

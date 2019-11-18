@@ -5,11 +5,11 @@
         <search-input
           class="search-input"
           :selectList="selectList"
-          placeholder="Block / Extrinsic / Account"
+          :placeholder="$t('placeholder.search_by')"
         />
         <div class="not-found">
           <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
-          <div class="no-data">No Data</div>
+          <div class="no-data">{{$t('no_data')}}</div>
         </div>
       </template>
       <template v-else>
@@ -18,47 +18,47 @@
             <div class="arrow-icon" @click="goBlockNum(-1)">
               <icon-svg class="icon" icon-class="arrow-left" />
             </div>
-            <div class="block-num">{{`Block#${blockNum}`}}</div>
+            <div class="block-num">{{`${$t('block_hash_tag')}${blockNum}`}}</div>
             <div class="arrow-icon" @click="goBlockNum(1)">
               <icon-svg class="icon" icon-class="arrow-right" />
             </div>
           </div>
           <search-input
             class="header-right"
-            placeholder="Block / Extrinsic / Account"
+            :placeholder="$t('placeholder.search_by')"
             :isMini="true"
           />
         </div>
         <div class="block-info-list subscan-card" v-loading="isLoading">
           <div class="info-item">
-            <div class="label">Timestamp</div>
+            <div class="label">{{$t('timestamp')}}</div>
             <div class="value">{{blockInfo.block_timestamp|parseTimeToUtc}}</div>
           </div>
           <div class="info-item">
-            <div class="label">Hash</div>
+            <div class="label">{{$t('hash')}}</div>
             <div class="value copy align-items-center">
               <div>{{blockInfo.hash}}</div>
               <div
                 class="copy-btn"
                 v-clipboard:copy="blockInfo.hash"
                 v-clipboard:success="clipboardSuccess"
-              >COPY</div>
+              >{{$t('copy')}}</div>
             </div>
           </div>
           <div class="info-item">
-            <div class="label">Parent Hash</div>
+            <div class="label">{{$t('parent_hash')}}</div>
             <div class="value link" @click="goBlockNum(-1)">{{blockInfo.parent_hash}}</div>
           </div>
           <div class="info-item">
-            <div class="label">State Root</div>
+            <div class="label">{{$t('state_root')}}</div>
             <div class="value">{{blockInfo.state_root}}</div>
           </div>
           <div class="info-item">
-            <div class="label">Extrinsics Root</div>
+            <div class="label">{{$t('extrinsics_root')}}</div>
             <div class="value">{{blockInfo.extrinsics_root}}</div>
           </div>
           <div class="info-item">
-            <div class="label">Validators</div>
+            <div class="label">{{$t('validators')}}</div>
             <div class="value link copy align-items-center">
               <div
                 @click="$router.push(`/account/${blockInfo.validator}`)"
@@ -68,22 +68,22 @@
                 v-if="blockInfo.validator"
                 v-clipboard:copy="blockInfo.validator"
                 v-clipboard:success="clipboardSuccess"
-              >COPY</div>
+              >{{$t('copy')}}</div>
             </div>
           </div>
           <div class="info-item">
-            <div class="label">Block Time</div>
+            <div class="label">{{$t('block_time')}}</div>
             <div class="value">{{blockInfo.block_timestamp|timeAgo}}</div>
           </div>
         </div>
         <div class="block-extrinsic-event-log subscan-card" v-loading="isLoading">
           <el-tabs v-model="activeTab">
             <el-tab-pane
-              :label="`Extrinsics${blockInfo.extrinsics_count>0?` (${blockInfo.extrinsics_count})`:''}`"
+              :label="`${$t('extrinsics')}${blockInfo.extrinsics_count>0?` (${blockInfo.extrinsics_count})`:''}`"
               name="extrinsic"
             >
               <el-table :data="blockInfo.extrinsics" style="width: 100%">
-                <el-table-column prop="extrinsic_index" label="Extrinsic ID" fit>
+                <el-table-column prop="extrinsic_index" :label="$t('extrinsic_id')" fit>
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -93,7 +93,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="extrinsic_hash" label="Hash" fit>
+                <el-table-column prop="extrinsic_hash" :label="$t('hash')" fit>
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -110,15 +110,15 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="block_timestamp" label="Age" fit>
+                <el-table-column prop="block_timestamp" :label="$t('age')" fit>
                   <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
                 </el-table-column>
-                <el-table-column prop="success" label="Result" fit>
+                <el-table-column prop="success" :label="$t('result')" fit>
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
                 </el-table-column>
-                <el-table-column prop="call_module" label="Action" fit>
+                <el-table-column prop="call_module" :label="$t('action')" fit>
                   <template
                     slot-scope="scope"
                   >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
@@ -142,12 +142,12 @@
             </el-tab-pane>
             <el-tab-pane
               v-if="blockInfo.event_count>0"
-              :label="`Events (${blockInfo.event_count})`"
+              :label="`${$t('events')} (${blockInfo.event_count})`"
               name="event"
             >
               <el-table :data="blockInfo.events" style="width: 100%">
-                <el-table-column prop="event_index" label="Event ID" fit></el-table-column>
-                <el-table-column prop="extrinsic_hash" label="Hash" fit>
+                <el-table-column prop="event_index" :label="$t('event_id')" fit></el-table-column>
+                <el-table-column prop="extrinsic_hash" :label="$t('hash')" fit>
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -164,7 +164,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column label="Action" fit>
+                <el-table-column :label="$t('action')" fit>
                   <template slot-scope="props">{{`${props.row.module_id}(${props.row.event_id})`}}</template>
                 </el-table-column>
                 <el-table-column width="120" type="expand">
@@ -185,17 +185,17 @@
             </el-tab-pane>
             <el-tab-pane
               v-if="blockInfo.logs&&blockInfo.logs.length"
-              :label="`Log${blockInfo.logs&&blockInfo.logs.length > 0 ? ` (${blockInfo.logs.length})` : ''}`"
+              :label="`${$t('log')}${blockInfo.logs&&blockInfo.logs.length > 0 ? ` (${blockInfo.logs.length})` : ''}`"
               name="log">
               <el-table :data="blockInfo.logs" style="width: 100%">
-                <el-table-column prop="log_index" label="Log Index" fit></el-table-column>
-                <el-table-column prop="block_num" label="Block" fit></el-table-column>
-                <el-table-column prop="log_type" label="Type" fit></el-table-column>
+                <el-table-column prop="log_index" :label="$t('log_index')" fit></el-table-column>
+                <el-table-column prop="block_num" :label="$t('block')" fit></el-table-column>
+                <el-table-column prop="log_type" :label="$t('type')" fit></el-table-column>
                 <el-table-column width="120" type="expand">
                   <template slot-scope="props">
                     <div class="expand-form">
                       <div class="form-item align-items-center">
-                        <div class="label">Data :</div>
+                        <div class="label">{{$t('data')}}</div>
                         <div class="value">{{`"${props.row.data.data}"`}}</div>
                       </div>
                     </div>
@@ -208,7 +208,7 @@
             class="view-all-extrinsic"
             v-if="activeTab==='extrinsic'"
             @click="$router.push('/extrinsic')"
-          >View All</div>
+          >{{$t('view_all')}}</div>
         </div>
       </template>
     </div>
@@ -241,19 +241,19 @@ export default {
       isLoading: false,
       selectList: [
         {
-          label: "All",
+          label: this.$t('all'),
           value: "all"
         },
         {
-          label: "Block",
+          label: this.$t('block'),
           value: "block"
         },
         {
-          label: "Extrinsic",
+          label: this.$t('extrinsic'),
           value: "extrinsic"
         },
         {
-          label: "Account",
+          label: this.$t('account'),
           value: "account"
         }
       ]
@@ -322,7 +322,7 @@ export default {
     clipboardSuccess() {
       this.$message({
         type: "success",
-        message: "Copy Success"
+        message: this.$t('copy_success')
       });
     }
   }

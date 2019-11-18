@@ -3,10 +3,10 @@
     <div class="header-content space-between">
       <div class="header-left align-items-center">
         <icon-svg class="icon" icon-class="transfers" />
-        <span class="title">Transfers</span>
+        <span class="title">{{$t('transfers')}}</span>
       </div>
       <div class="header-right">
-        <router-link class="all-link" tag="div" to="/transfer">All</router-link>
+        <router-link class="all-link" tag="div" to="/transfer">{{$t('all')}}</router-link>
       </div>
     </div>
     <el-scrollbar

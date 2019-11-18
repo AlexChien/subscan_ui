@@ -4,7 +4,7 @@
       <search-input
         class="search-input"
         :selectList="selectList"
-        placeholder="Block / Extrinsic / Account"
+        :placeholder="$t('placeholder.search_by')"
       />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
@@ -18,16 +18,16 @@
               @click="$router.push(`/account/${$route.query.address}`)"
             >{{` ${$route.query.address} `}}</div>
           </template>
-          <div v-else class="all">All</div>
+          <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
         </div>
         <div class="signed-checkbox">
-          <el-checkbox v-model="signedChecked" @change="signedChange">Signed only</el-checkbox>
+          <el-checkbox v-model="signedChecked" @change="signedChange">{{$t('signed_only')}}</el-checkbox>
         </div>
       </div>
       <div class="extrinsic-table subscan-card" v-loading="isLoading">
         <el-table :data="extrinsicsData" style="width: 100%">
-          <el-table-column prop="extrinsic_index" label="Extrinsic ID" width="160">
+          <el-table-column prop="extrinsic_index" :label="$t('extrinsic_id')" width="160">
             <template slot-scope="scope">
               <div class="link">
                 <span
@@ -36,7 +36,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_num" label="Block" width="160">
+          <el-table-column prop="block_num" :label="$t('block')" width="160">
             <template slot-scope="scope">
               <div class="link">
                 <div class="link">
@@ -47,7 +47,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="extrinsic_hash" label="Extrinsic Hash" fit>
+          <el-table-column prop="extrinsic_hash" :label="$t('extrinsic_hash')" fit>
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -63,15 +63,15 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_timestamp" label="Age" width="180">
+          <el-table-column prop="block_timestamp" :label="$t('age')" width="180">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column prop="success" label="Result" width="120">
+          <el-table-column prop="success" :label="$t('result')" width="120">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>
           </el-table-column>
-          <el-table-column prop="call_module" label="Action" width="180">
+          <el-table-column prop="call_module" :label="$t('action')" width="180">
             <template
               slot-scope="scope"
             >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
@@ -127,19 +127,19 @@ export default {
       signedChecked: true,
       selectList: [
         {
-          label: "All",
+          label: this.$t('all'),
           value: "all"
         },
         {
-          label: "Block",
+          label: this.$t('block'),
           value: "block"
         },
         {
-          label: "Extrinsic",
+          label: this.$t('extrinsic'),
           value: "extrinsic"
         },
         {
-          label: "Account",
+          label: this.$t('account'),
           value: "account"
         }
       ]
@@ -176,12 +176,12 @@ export default {
     downloadClick() {
       const tableData = [
         [
-          "Extrinsic ID",
-          "Block",
-          "Extrinsic Hash",
-          "Block Timestamp",
-          "Result",
-          "Action"
+          this.$t('extrinsic_id'),
+          this.$t('block'),
+          this.$t('extrinsic_hash'),
+          this.$t('block_timestamp'),
+          this.$t('result'),
+          this.$t('action')
         ]
       ];
       this.extrinsicsData.forEach(item => {

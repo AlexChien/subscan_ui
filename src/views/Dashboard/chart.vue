@@ -1,5 +1,13 @@
 <template>
-  <div class="chart-wrapper subscan-card" ref="chart"></div>
+  <div class="chart-wrapper">
+    <div class="header-content space-between">
+      <div class="header-left align-items-center">
+        <icon-svg class="icon" icon-class="latest-blocks" />
+        <span class="title">{{$t('transfer_history')}}</span>
+      </div>
+    </div>
+    <div class="chart-content subscan-card" ref="chart"></div>
+  </div>
 </template>
 
 <script>
@@ -192,5 +200,34 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.chart-wrapper {
+  .header-content {
+    display: none;
+  }
+  .chart-content {
+    height: 100%;
+  }
+  @media screen and (max-width:$screen-xs) {
+    .header-content {
+      display: block;
+      margin-bottom: 10px;
+      .header-left {
+        height: 30px;
+        .icon {
+          font-size: 30px;
+        }
+        .title {
+          padding-left: 8px;
+          font-size: 14px;
+          font-weight: 600;
+          color: rgba(48, 43, 60, 1);
+        }
+      }
+    }
+    .chart-content {
+      height: 156px;
+    }
+  }
+}
 </style>

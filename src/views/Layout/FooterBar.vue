@@ -13,10 +13,10 @@
           </div>
         </a>
       </div>
-      <el-dropdown trigger="click" @command="changeLanguage">
-        <span class="language">
+      <el-dropdown class="language-dropdown" trigger="click" @command="changeLanguage">
+        <div class="language">
           <icon-svg icon-class="earth" class="icon" />
-        </span>
+        </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item class="menu-item" command="zh-CN">简体中文</el-dropdown-item>
           <el-dropdown-item class="menu-item" command="en">English</el-dropdown-item>
@@ -86,7 +86,7 @@ export default {
   @media screen and (max-width:$screen-xs) {
     .container {
       height: inherit;
-      padding: 10px 10px;
+      padding: 1vh 1vw;
       flex-wrap: wrap;
       .donate {
         order: 3;
@@ -94,6 +94,10 @@ export default {
       }
       .contact {
         order: 2;
+        margin-right: 20px;
+      }
+      .language-dropdown {
+        display: none;
       }
     }
   }

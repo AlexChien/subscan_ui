@@ -137,7 +137,7 @@ export default {
         .chart-component {
           margin-top: 20px;
           width: 100%;
-          height: 156px;
+          height: 196px;
         }
       }
       .blocks-transfers-wrapper {

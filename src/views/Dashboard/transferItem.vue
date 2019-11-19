@@ -10,7 +10,7 @@
           >{{transferData.hash}}</div>
         </el-tooltip>
       </div>
-      <div class="right">{{transferData.block_timestamp|timeAgo(currentTime)}}</div>
+      <div class="right">{{transferData.block_timestamp|timeAgo(currentTime, this.isMobile())}}</div>
     </div>
     <div class="transfer-item-bottom space-between align-items-center">
       <div class="left space-between">
@@ -45,6 +45,7 @@
 <script>
 import { timeAgo } from "Utils/filters";
 import { mapState } from "vuex";
+import {isMobile} from "../../utils/tools";
 
 export default {
   props: {
@@ -71,6 +72,9 @@ export default {
       }
 
       return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
+    },
+    isMobile() {
+        return isMobile();
     }
   }
 };

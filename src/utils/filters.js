@@ -1,5 +1,5 @@
 import moment from "moment";
-export function timeAgo(time, now = Date.now()) {
+export function timeAgo(time, now = Date.now(), shouldTruncate) {
   time = +time * 1000;
   const d = new Date(time);
 
@@ -15,22 +15,34 @@ export function timeAgo(time, now = Date.now()) {
     // less 1 day
     const hr = Math.floor(diff / 3600);
     const min = Math.floor((diff / 60) % 60);
-    return `${hr} ${hr === 1 ? "hr" : "hrs"}${
-      min === 0 ? "" : min == 1 ? " 1 min" : ` ${min} mins`
-    } ago`;
+    if (shouldTruncate) {
+      return `${hr} ${hr === 1 ? "hr" : "hrs"} ago`;
+    } else {
+      return `${hr} ${hr === 1 ? "hr" : "hrs"}${
+        min === 0 ? "" : min == 1 ? " 1 min" : ` ${min} mins`
+      } ago`;
+    }
   } else if (diff < 90000) {
     // less 1 day 60 min
     const day = Math.floor(diff / 86400);
     const min = Math.floor((diff / 60) % 60);
-    return `${day} ${day === 1 ? "day" : "days"}${
-      min === 0 ? "" : min == 1 ? " 1 min" : ` ${min} mins`
-    } ago`;
+    if (shouldTruncate) {
+      return `${day} ${day === 1 ? "day" : "days"} ago`;
+    } else {
+      return `${day} ${day === 1 ? "day" : "days"}${
+        min === 0 ? "" : min == 1 ? " 1 min" : ` ${min} mins`
+      } ago`;
+    }
   } else {
     const day = Math.floor(diff / 86400);
     const hr = Math.floor((diff / 60 / 60) % 24);
-    return `${day} ${day === 1 ? "day" : "days"}${
-      hr === 0 ? "" : hr == 1 ? " 1 hr" : ` ${hr} hrs`
-    } ago`;
+    if (shouldTruncate) {
+      return `${day} ${day === 1 ? "day" : "days"} ago`;
+    } else {
+      return `${day} ${day === 1 ? "day" : "days"}${
+        hr === 0 ? "" : hr == 1 ? " 1 hr" : ` ${hr} hrs`
+      } ago`;
+    }
   }
 }
 

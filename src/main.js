@@ -45,8 +45,10 @@ ElementLocale.i18n((key, value) => i18n.t(key, value));
 
 //引入谷歌分析
 const isProd = process.env.NODE_ENV === 'production';
+//区分darwinia和kusama
+const ua =  (window.location && window.location.href.indexOf('kusama') > -1) ? 'UA-152561314-2' : 'UA-152561314-1';
 Vue.use(VueAnalytics, {
-  id: 'UA-152561314-2',
+  id: ua,
   router,
   debug: {
     enabled: !isProd,

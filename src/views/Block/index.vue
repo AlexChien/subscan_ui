@@ -8,31 +8,31 @@
       />
       <div class="block-table subscan-card" v-loading="isLoading">
         <el-table :data="blockData" style="width: 100%">
-          <el-table-column prop="block_num" :label="$t('block')" width="180">
+          <el-table-column min-width="120" prop="block_num" :label="$t('block')">
             <template slot-scope="scope">
               <div class="link" @click="$router.push(`/block/${scope.row.block_num}`)">
                 <span>{{scope.row.block_num}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_timestamp" :label="$t('age')" width="200">
+          <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column prop="extrinsics_count" :label="$t('extrinsics')" width="120">
+          <el-table-column min-width="50" prop="extrinsics_count" :label="$t('extrinsics')">
             <template slot-scope="scope">
               <div :class="{link:scope.row.extrinsics_count>0}">
                 <span>{{scope.row.extrinsics_count}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="event_count" :label="$t('events')" width="120">
+          <el-table-column min-width="50" prop="event_count" :label="$t('events')">
             <!-- <template slot-scope="scope">
               <div :class="{link:scope.row.event_count>0}">
                 <span>{{scope.row.event_count}}</span>
               </div>
             </template> -->
           </el-table-column>
-          <el-table-column prop="validator" :label="$t('validator')" fit>
+          <el-table-column min-width="150" prop="validator" :label="$t('validator')" fit>
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -46,7 +46,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="hash" :label="$t('block_hash')" fit>
+          <el-table-column min-width="150" prop="hash" :label="$t('block_hash')" fit>
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip

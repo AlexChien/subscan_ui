@@ -157,6 +157,9 @@ export default {
           }
         }
       }
+      .mobile-menu {
+        display: none;
+      }
 
       .network-button{
         width: 116px;
@@ -195,6 +198,7 @@ export default {
           width: 96px;
         }
         .mobile-menu {
+          display: block;
           font-size: 34px;
           flex: 1 1 auto;
           text-align: right;

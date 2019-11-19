@@ -33,7 +33,7 @@
       </div>
       <div class="extrinsic-table subscan-card" v-loading="isLoading">
         <el-table :data="extrinsicsData" style="width: 100%">
-          <el-table-column prop="extrinsic_index" :label="$t('extrinsic_id')" width="160">
+          <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
             <template slot-scope="scope">
               <div class="link">
                 <span
@@ -42,7 +42,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_num" :label="$t('block')" width="160">
+          <el-table-column min-width="100" prop="block_num" :label="$t('block')">
             <template slot-scope="scope">
               <div class="link">
                 <div class="link">
@@ -53,7 +53,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="extrinsic_hash" :label="$t('extrinsic_hash')" fit>
+          <el-table-column min-width="140" prop="extrinsic_hash" :label="$t('extrinsic_hash')" fit>
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -69,20 +69,20 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_timestamp" :label="$t('age')" width="180">
+          <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column prop="success" :label="$t('result')" width="120">
+          <el-table-column min-width="60" prop="success" :label="$t('result')">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>
           </el-table-column>
-          <el-table-column prop="call_module" :label="$t('action')" width="180">
+          <el-table-column min-width="160" prop="call_module" :label="$t('action')">
             <template
               slot-scope="scope"
             >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
           </el-table-column>
-          <el-table-column width="120" type="expand">
+          <el-table-column width="100" type="expand">
             <template slot-scope="props">
               <div class="expand-form">
                 <div

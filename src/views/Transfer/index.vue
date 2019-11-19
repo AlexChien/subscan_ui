@@ -24,7 +24,7 @@
       </div>
       <div class="transfer-table subscan-card" v-loading="isLoading">
         <el-table :data="transfersData" style="width: 100%">
-          <el-table-column prop="extrinsic_index" :label="$t('extrinsic_id')" width="120">
+          <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
             <template slot-scope="scope">
               <div class="link">
                 <span
@@ -33,17 +33,17 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_num" :label="$t('block')" width="120">
+          <el-table-column min-width="100" prop="block_num" :label="$t('block')">
             <template slot-scope="scope">
               <div class="link">
                 <span @click="$router.push(`/block/${scope.row.block_num}`)">{{scope.row.block_num}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="block_timestamp" :label="$t('age')" width="150">
+          <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column prop="from" :label="$t('from')" width="150">
+          <el-table-column min-width="150" prop="from" :label="$t('from')">
             <template slot-scope="scope">
               <div :class="scope.row.from === $route.query.address ? '' : 'link'">
                 <el-tooltip
@@ -59,12 +59,12 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column width="40">
+          <el-table-column width="50">
             <template>
               <icon-svg class="icon" icon-class="from-to-arrow" />
             </template>
           </el-table-column>
-          <el-table-column prop="to" :label="$t('to')" width="150">
+          <el-table-column min-width="150" prop="to" :label="$t('to')">
             <template slot-scope="scope">
               <div :class="scope.row.to === $route.query.address ? '' : 'link'">
                 <el-tooltip
@@ -80,17 +80,17 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="amount" :label="$t('value')" fit>
+          <el-table-column min-width="120" prop="amount" :label="$t('value')" fit>
             <template
               slot-scope="scope"
             >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
           </el-table-column>
-          <el-table-column prop="success" :label="$t('result')" width="70">
+          <el-table-column min-width="60" prop="success" :label="$t('result')">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>
           </el-table-column>
-          <el-table-column prop="hash" :label="$t('hash')" width="150">
+          <el-table-column width="150" prop="hash" :label="$t('hash')">
             <template slot-scope="scope">
               <div class="link">
                 <el-tooltip
@@ -297,6 +297,14 @@ export default {
   }
   @media screen and (max-width:$screen-xs) {
     .container {
+      .table-top {
+        .for-block {
+          .link {
+            max-width: 250px;
+            word-break: break-all;
+          }
+        }
+      }
       .table-bottom {
         flex-direction: column;
         .pagination-component {

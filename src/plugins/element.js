@@ -6,7 +6,7 @@ import {
   Message,
   Button,
   Dropdown,
-  // DropdownItem,
+  DropdownItem,
   DropdownMenu,
   Scrollbar,
   Checkbox,
@@ -51,7 +51,7 @@ Vue.prototype.$message = Message;
 Vue.use(Button);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
-// Vue.use(DropdownItem)
+Vue.use(DropdownItem);
 // Vue.use(Carousel)
 // Vue.use(CarouselItem)
 // Vue.use(Breadcrumb)

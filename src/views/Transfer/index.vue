@@ -8,7 +8,7 @@
       />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
-          <div>For</div>
+          <div>{{$t('for')}}</div>
           <template v-if="$route.query.address">
             <div class="icon">
               <identicon :size="30" theme="polkadot" :value="$route.query.address" />

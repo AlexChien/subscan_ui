@@ -227,6 +227,7 @@
           </el-tabs>
           <div class="view-all-extrinsic" @click="goTransferOrExtrinsicByAddress">{{$t('view_all')}}</div>
         </div>
+        <div class="view-all-extrinsic mobile" @click="goTransferOrExtrinsicByAddress">{{$t('view_all')}}</div>
       </template>
     </div>
   </div>
@@ -498,6 +499,11 @@ export default {
       }
     }
   }
+  .view-all-extrinsic {
+    &.mobile {
+      display: none;
+    }
+  }
   .not-found {
     padding: 10%;
     text-align: center;
@@ -530,10 +536,23 @@ export default {
       }
     }
     .transfer-extrinsic-wrapper {
-      padding-top: 30px;
       .view-all-extrinsic {
-        top: 4px;
-        right: 4px;
+        display: none;
+      }
+    }
+    .view-all-extrinsic {
+      &.mobile {
+        display: block;
+        height: 35px;
+        line-height: 35px;
+        margin-top: 12px;
+        border-radius: 2px;
+        color: #302b3c;
+        background-color: #FFF;
+        border: 1px solid #302b3c;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
       }
     }
     .intro {

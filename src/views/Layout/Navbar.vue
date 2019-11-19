@@ -30,8 +30,32 @@
           </el-dropdown-menu>
         </el-dropdown>
         <div class="mobile-menu">
-          <icon-svg icon-class="menu" class="icon" @click="drawer = true"/>
+          <div class="menu-area" @click="drawer = true">
+            <icon-svg icon-class="menu" class="icon"/>
+          </div>
         </div>
+        <el-drawer
+          :title="$t('menu')"
+          class="mobile-drawer"
+          size="40%"
+          :visible.sync="drawer"
+          :direction="direction">
+          <div class="drawer-content">
+            <div class="menu-section">
+              <div class="row">
+                <router-link class="item" to="/block" tag="div" @click.native="drawer = false">{{$t('blocks')}}</router-link>
+                <router-link class="item" to="/extrinsic" tag="div" @click.native="drawer = false">{{$t('extrinsics')}}</router-link>
+                <router-link class="item" to="/transfer" tag="div" @click.native="drawer = false">{{$t('transfers')}}</router-link>
+              </div>
+            </div>
+            <div class="language-section">
+              <div class="row">
+                <div class="item" @click="changeLanguage('zh-CN')">简体中文</div>
+                <div class="item" @click="changeLanguage('en')">English</div>
+              </div>
+            </div>
+          </div>
+        </el-drawer>
       </div>
     </div>
   </div>
@@ -70,6 +94,10 @@ export default {
     changeLanguage(language) {
       GLOBAL.vbus.$emit("CHANGE_LANGUAGE", language);
       this.$store.dispatch("SetLanguage", language);
+      this.closeDrawer();
+    },
+    closeDrawer() {
+      this.drawer = false;
     },
     changeSource(source) {
       // this.$store.dispatch("SetSourceSelected", source);
@@ -170,8 +198,45 @@ export default {
           font-size: 34px;
           flex: 1 1 auto;
           text-align: right;
+          .menu-area {
+            display: inline-block;
+            padding-left: 10px;
+          }
+          .icon {
+            cursor: pointer;
+          }
         }
       }
+    }
+  }
+}
+.drawer-content {
+  height: 100%;
+  color: #FFF;
+  display: flex;
+  flex-direction: column;
+  .menu-section {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    .item {
+      font-size: 20px;
+      padding: 20px 10px; 
+      margin: 10px 0;
+      color: #FFF;
+    }
+  }
+  .language-section {
+    height: 125px;
+    background-color: #3A3545;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    .item {
+      padding: 10px;
     }
   }
 }
@@ -212,6 +277,23 @@ export default {
   }
   .popper__arrow {
     opacity: 0;
+  }
+}
+.mobile-drawer {
+  .el-drawer {
+    color: #FFF;
+    background-color: #302B3C;
+  }
+  .el-drawer__header {
+    padding: 10px 0;
+    color: #FFF;
+    background-color: #3A3545;
+    > span {
+      margin-left: 20px;
+    }
+    button {
+      padding: 0 10px;
+    }
   }
 }
 </style>

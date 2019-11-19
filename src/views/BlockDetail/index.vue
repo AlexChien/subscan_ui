@@ -83,7 +83,7 @@
               name="extrinsic"
             >
               <el-table :data="blockInfo.extrinsics" style="width: 100%">
-                <el-table-column prop="extrinsic_index" :label="$t('extrinsic_id')" fit>
+                <el-table-column width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -93,7 +93,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="extrinsic_hash" :label="$t('hash')" fit>
+                <el-table-column min-width="140" prop="extrinsic_hash" :label="$t('hash')">
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -110,20 +110,20 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="block_timestamp" :label="$t('age')" fit>
+                <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
                   <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
                 </el-table-column>
-                <el-table-column prop="success" :label="$t('result')" fit>
+                <el-table-column min-width="60" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
                 </el-table-column>
-                <el-table-column prop="call_module" :label="$t('action')" fit>
+                <el-table-column min-width="160" prop="call_module" :label="$t('action')">
                   <template
                     slot-scope="scope"
                   >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
                 </el-table-column>
-                <el-table-column width="120" type="expand">
+                <el-table-column width="100" type="expand">
                   <template slot-scope="props">
                     <div class="expand-form">
                       <div
@@ -210,6 +210,11 @@
             @click="$router.push(`/extrinsic/?block=${blockNum}`)"
           >{{$t('view_all')}}</div>
         </div>
+        <div
+            class="view-all-extrinsic mobile"
+            v-if="activeTab==='extrinsic'"
+            @click="$router.push(`/extrinsic/?block=${blockNum}`)"
+          >{{$t('view_all')}}</div>
       </template>
     </div>
   </div>
@@ -460,6 +465,11 @@ export default {
       }
     }
   }
+  .view-all-extrinsic {
+    &.mobile {
+      display: none;
+    }
+  }
   .not-found {
     padding: 10%;
     text-align: center;
@@ -500,10 +510,23 @@ export default {
       }
     }
     .block-extrinsic-event-log {
-      padding-top: 30px;
       .view-all-extrinsic {
-        top: 4px;
-        right: 4px;
+        display: none;
+      }
+    }
+    .view-all-extrinsic {
+      &.mobile {
+        display: block;
+        height: 35px;
+        line-height: 35px;
+        margin-top: 12px;
+        border-radius: 2px;
+        color: #302b3c;
+        background-color: #FFF;
+        border: 1px solid #302b3c;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
       }
     }
   }

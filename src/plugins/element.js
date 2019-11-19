@@ -5,8 +5,9 @@ import {
   // Notification,
   Message,
   Button,
+  Drawer,
   Dropdown,
-  // DropdownItem,
+  DropdownItem,
   DropdownMenu,
   Scrollbar,
   Checkbox,
@@ -15,7 +16,7 @@ import {
   // Breadcrumb,
   // BreadcrumbItem,
   // InputNumber,
-  // Dialog,
+  Dialog,
   // Collapse,
   // CollapseItem,
   Input,
@@ -49,15 +50,16 @@ Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$message = Message;
 
 Vue.use(Button);
+Vue.use(Drawer);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
-// Vue.use(DropdownItem)
+Vue.use(DropdownItem);
 // Vue.use(Carousel)
 // Vue.use(CarouselItem)
 // Vue.use(Breadcrumb)
 // Vue.use(BreadcrumbItem)
 // Vue.use(InputNumber)
-// Vue.use(Dialog)
+Vue.use(Dialog)
 // Vue.use(Collapse)
 // Vue.use(CollapseItem)
 Vue.use(Input);

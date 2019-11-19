@@ -83,7 +83,7 @@
               name="extrinsic"
             >
               <el-table :data="blockInfo.extrinsics" style="width: 100%">
-                <el-table-column prop="extrinsic_index" :label="$t('extrinsic_id')" fit>
+                <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -93,7 +93,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="extrinsic_hash" :label="$t('hash')" fit>
+                <el-table-column min-width="140" prop="extrinsic_hash" :label="$t('hash')">
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -110,20 +110,20 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column prop="block_timestamp" :label="$t('age')" fit>
+                <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
                   <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
                 </el-table-column>
-                <el-table-column prop="success" :label="$t('result')" fit>
+                <el-table-column min-width="60" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
                 </el-table-column>
-                <el-table-column prop="call_module" :label="$t('action')" fit>
+                <el-table-column min-width="160" prop="call_module" :label="$t('action')">
                   <template
                     slot-scope="scope"
                   >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
                 </el-table-column>
-                <el-table-column width="120" type="expand">
+                <el-table-column width="100" type="expand">
                   <template slot-scope="props">
                     <div class="expand-form">
                       <div
@@ -146,8 +146,8 @@
               name="event"
             >
               <el-table :data="blockInfo.events" style="width: 100%">
-                <el-table-column prop="event_index" :label="$t('event_id')" fit></el-table-column>
-                <el-table-column prop="extrinsic_hash" :label="$t('hash')" fit>
+                <el-table-column min-width="100" prop="event_index" :label="$t('event_id')" fit></el-table-column>
+                <el-table-column min-width="140" prop="extrinsic_hash" :label="$t('hash')" fit>
                   <template slot-scope="scope">
                     <div
                       class="link"
@@ -164,10 +164,10 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column :label="$t('action')" fit>
+                <el-table-column min-width="160" :label="$t('action')" fit>
                   <template slot-scope="props">{{`${props.row.module_id}(${props.row.event_id})`}}</template>
                 </el-table-column>
-                <el-table-column width="120" type="expand">
+                <el-table-column width="100" type="expand">
                   <template slot-scope="props">
                     <div class="expand-form">
                       <div
@@ -188,10 +188,10 @@
               :label="`${$t('log')}${blockInfo.logs&&blockInfo.logs.length > 0 ? ` (${blockInfo.logs.length})` : ''}`"
               name="log">
               <el-table :data="blockInfo.logs" style="width: 100%">
-                <el-table-column prop="log_index" :label="$t('log_index')" fit></el-table-column>
-                <el-table-column prop="block_num" :label="$t('block')" fit></el-table-column>
-                <el-table-column prop="log_type" :label="$t('type')" fit></el-table-column>
-                <el-table-column width="120" type="expand">
+                <el-table-column min-width="100" prop="log_index" :label="$t('log_index')" fit></el-table-column>
+                <el-table-column min-width="100" prop="block_num" :label="$t('block')" fit></el-table-column>
+                <el-table-column min-width="110" prop="log_type" :label="$t('type')" fit></el-table-column>
+                <el-table-column width="100" type="expand">
                   <template slot-scope="props">
                     <div class="expand-form">
                       <div class="form-item align-items-center">
@@ -207,9 +207,14 @@
           <div
             class="view-all-extrinsic"
             v-if="activeTab==='extrinsic'"
-            @click="$router.push('/extrinsic')"
+            @click="$router.push(`/extrinsic/?block=${blockNum}`)"
           >{{$t('view_all')}}</div>
         </div>
+        <div
+            class="view-all-extrinsic mobile"
+            v-if="activeTab==='extrinsic'"
+            @click="$router.push(`/extrinsic/?block=${blockNum}`)"
+          >{{$t('view_all')}}</div>
       </template>
     </div>
   </div>
@@ -443,7 +448,7 @@ export default {
         font-weight: 600;
         color: rgba(48, 43, 60, 1);
         .label {
-          width: 124px;
+          min-width: 140px;
         }
         .value {
           width: 900px;
@@ -458,6 +463,11 @@ export default {
         .value {
         }
       }
+    }
+  }
+  .view-all-extrinsic {
+    &.mobile {
+      display: none;
     }
   }
   .not-found {
@@ -475,31 +485,65 @@ export default {
     .block-detail-header {
       height: inherit;
       flex-direction: column;
+      .header-left {
+        order: 2;
+      }
       .search-input-wrapper {
+        order: 1;
         height: 40px;
-        margin: 20px 20px 0;
+        margin: 0 20px 20px;
         max-width: 100%;
       }
     }
     .block-info-list {
       .info-item {
+        height: initial;
         .label {
           flex: 0 0 140px;
         }
         .value {
-          padding-left: 0;
           max-width: 150px;
           flex: none;
-          overflow-x: auto;
-          white-space: nowrap;
+          line-height: 20px;
+          display: block;
+          padding: 5px 0;
+          word-break: break-all;
+          > div {
+            word-break: break-all;
+            & + div {
+              margin-top: 5px;
+            }
+          }
+          &.copy {
+            .copy-btn {
+              display: inline-block;
+              height: 30px;
+              line-height: 30px;
+              margin-left: 0;
+              padding: 0 18px;
+            }
+          }
         }
       }
     }
     .block-extrinsic-event-log {
-      padding-top: 30px;
       .view-all-extrinsic {
-        top: 4px;
-        right: 4px;
+        display: none;
+      }
+    }
+    .view-all-extrinsic {
+      &.mobile {
+        display: block;
+        height: 35px;
+        line-height: 35px;
+        margin-top: 12px;
+        border-radius: 2px;
+        color: #302b3c;
+        background-color: #FFF;
+        border: 1px solid #302b3c;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
       }
     }
   }

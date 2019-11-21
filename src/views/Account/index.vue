@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="account-table subscan-card" v-loading="isLoading">
-        <el-table @sort-change="handleSortChange" :data="accountsData" style="width: 100%">
+        <el-table @sort-change="handleSortChange" :data="accountsData" :default-sort = "{prop: 'balance', order: 'descending'}" style="width: 100%">
           <el-table-column min-width="470" prop="address" :label="$t('account')">
             <template slot-scope="scope">
               <div class="link">
@@ -43,7 +43,7 @@
               slot-scope="scope"
             >{{scope.row.ring_lock}}</template>
           </el-table-column>
-          <el-table-column sortable="custom" min-width="150" prop="kton_lock" :label="$t('bonded_kton')">
+          <el-table-column v-if="this.shouldShowKton" sortable="custom" min-width="150" prop="kton_lock" :label="$t('bonded_kton')">
             <template slot="header">
               {{`${$t('bonded_currency', {currency: this.getCurrencyLowerCase('kton')})}`}}
               <img
@@ -69,7 +69,7 @@
               {{scope.row.balance}}
             </template>
           </el-table-column>
-          <el-table-column sortable="custom" min-width="150" prop="kton_balance" :label="$t('balance_kton')">
+          <el-table-column v-if="this.shouldShowKton" sortable="custom" min-width="150" prop="kton_balance" :label="$t('balance_kton')">
             <template slot="header">
               {{`${$t('balance_currency', {currency: this.getCurrencyLowerCase('kton')})}`}}
               <img
@@ -114,8 +114,8 @@ export default {
       accountsData: [],
       total: 0,
       currentPage: 0,
-      currentOrder: '',
-      currentOrderField: '',
+      currentOrder: 'desc',
+      currentOrderField: 'balance',
       selectList: [
         {
           label: this.$t('all'),
@@ -140,7 +140,10 @@ export default {
     ...mapState({
       accounts: state => state.polka.accounts,
       sourceSelected: state => state.global.sourceSelected
-    })
+    }),
+    shouldShowKton() {
+      return this.sourceSelected === 'darwinia'
+    }
   },
   created() {
     this.init();

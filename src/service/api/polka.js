@@ -40,6 +40,14 @@ export default [
     options: {}
   },
   {
+    name: "getAccounts",
+    method: "POST",
+    desc: "accounts数据",
+    baseURL: "",
+    path: "/scan/accounts",
+    options: {}
+  },
+  {
     name: "getDaily",
     method: "POST",
     desc: "图表数据",

@@ -35,8 +35,13 @@ export default [
   },
   {
     name: "account",
-    path: "/account/:key",
+    path: "/account",
     component: () => import(/* webpackChunkName: "account" */ "Views/Account")
+  },
+  {
+    name: "accountDetail",
+    path: "/account/:key",
+    component: () => import(/* webpackChunkName: "account" */ "Views/AccountDetail")
   },
   {
     name: "404",

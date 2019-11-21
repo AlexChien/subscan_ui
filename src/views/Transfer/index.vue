@@ -197,14 +197,14 @@ export default {
     downloadClick() {
       const tableData = [
         [
-          "Extrinsic ID",
-          "Block",
-          "Block Timestamp",
-          "From",
-          "To",
-          "Value",
-          "Result",
-          "Hash"
+          this.$t('extrinsic_id'),
+          this.$t('block'),
+          this.$t('block_timestamp'),
+          this.$t('from'),
+          this.$t('to'),
+          this.$t('value'),
+          this.$t('result'),
+          this.$t('hash')
         ]
       ];
       this.transfersData.forEach(item => {

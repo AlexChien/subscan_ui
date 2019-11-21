@@ -25,6 +25,9 @@ export default {
     SET_TRANSFERS: (state, data) => {
       state.transfers = data;
     },
+    SET_ACCOUNTS: (state, data) => {
+      state.accounts = data;
+    },
     SET_DAILY_CHART: (state, data) => {
       state.dailyChart = data;
     }

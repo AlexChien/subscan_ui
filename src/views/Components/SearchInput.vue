@@ -129,7 +129,7 @@ export default {
 .search-input-wrapper {
   .el-input__inner {
     height: 50px;
-    line-height: 48px;
+    line-height: 1.5;
   }
   .el-input-group__append,
   .el-input-group__prepend {

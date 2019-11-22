@@ -108,7 +108,6 @@ export default {
  <style lang="scss" scoped>
 .search-input-wrapper {
   .search-input {
-    height: 100%;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
     .search-select {
       width: 110px;
@@ -129,7 +128,8 @@ export default {
 <style lang="scss">
 .search-input-wrapper {
   .el-input__inner {
-    height: 100%;
+    height: 50px;
+    line-height: 48px;
   }
   .el-input-group__append,
   .el-input-group__prepend {
@@ -150,7 +150,6 @@ export default {
     border-color: #dcdfe6;
   }
   .el-input {
-    height: 100%;
     .el-input__inner::placeholder {
       font-size: 14px;
       font-weight: 600;

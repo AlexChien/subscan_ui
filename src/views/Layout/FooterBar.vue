@@ -4,7 +4,7 @@
       <div class="copyright">{{$t('copy_right', { year: new Date().getFullYear()})}}</div>
       <div class="donate">
         <span class="donate-title">{{$t('donate')}}:</span>
-        5DobnXBB9EU8gJR8ygCM5GvHHuvSRCfWypuC2vDqW35Udbku
+        <span class="donate-address">5DobnXBB9EU8gJR8ygCM5GvHHuvSRCfWypuC2vDqW35Udbku</span>
       </div>
       <div class="contact">
         <a target="_blank" rel="noopener" href="mailto:hello@subscan.io">
@@ -86,15 +86,35 @@ export default {
   @media screen and (max-width:$screen-xs) {
     .container {
       height: inherit;
-      padding: 1vh 1vw;
-      flex-wrap: wrap;
+      flex-direction: column;
+      background-color: #302B3C;
+      align-items: initial;
+      position: relative;
+      .copyright {
+        line-height: 40px;
+        padding-left: 10px;
+      }
       .donate {
-        order: 3;
+        order: -1;
         text-align: left;
+        padding: 20px 10px;
+        margin: 0;
+        display: flex;
+        background-color: #000;
+        .copyright {
+          line-height: 40px;
+        }
+        .donate-title {
+          flex: 0 0 40px;
+        }
+        .donate-address {
+          word-break: break-all;
+        }
       }
       .contact {
-        order: 2;
-        margin-right: 20px;
+        position: absolute;
+        right: 10px;
+        bottom: 7px;
       }
       .language-dropdown {
         display: none;

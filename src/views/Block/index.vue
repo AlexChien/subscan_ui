@@ -246,7 +246,6 @@ export default {
           color: #302b3c;
         }
         td {
-          font-weight: 600;
           padding: 0;
         }
       }

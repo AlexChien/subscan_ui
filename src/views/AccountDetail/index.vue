@@ -432,11 +432,11 @@ export default {
           .value {
             padding-left: 10px;
             font-size: 14px;
-            font-weight: 600;
             color: #2a2727;
           }
           .label {
             width: 120px;
+            font-weight: 600;
           }
         }
       }
@@ -479,7 +479,6 @@ export default {
         min-height: 40px;
         line-height: 40px;
         font-size: 14px;
-        font-weight: 600;
         color: rgba(48, 43, 60, 1);
         .label {
           min-width: 140px;
@@ -524,7 +523,6 @@ export default {
       }
       .search-input-wrapper {
         order: 1;
-        height: 40px;
         max-width: 100%;
         margin: 0 20px 20px;
       }
@@ -634,7 +632,6 @@ export default {
             color: #302b3c;
           }
           td {
-            font-weight: 600;
             padding: 0;
             &.el-table__expand-column {
               .el-table__expand-icon {

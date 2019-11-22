@@ -291,7 +291,6 @@ export default {
           min-height: 40px;
           line-height: 40px;
           font-size: 14px;
-          font-weight: 600;
           color: rgba(48, 43, 60, 1);
           .label {
             min-width: 114px;
@@ -379,7 +378,6 @@ export default {
           color: #302b3c;
         }
         td {
-          font-weight: 600;
           padding: 0;
           &.el-table__expand-column {
             .el-table__expand-icon {

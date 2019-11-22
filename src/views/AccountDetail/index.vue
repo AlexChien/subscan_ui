@@ -477,7 +477,6 @@ export default {
       padding: 10px 28px;
       .form-item {
         min-height: 40px;
-        line-height: 40px;
         font-size: 14px;
         color: rgba(48, 43, 60, 1);
         .label {
@@ -485,7 +484,7 @@ export default {
         }
         .value {
           width: 900px;
-          overflow-wrap: break-word;
+          word-break: break-all;
         }
       }
     }

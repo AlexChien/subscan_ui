@@ -431,11 +431,14 @@ export default {
       padding: 10px 28px;
       .form-item {
         height: 40px;
-        line-height: 40px;
         font-size: 14px;
         color: rgba(48, 43, 60, 1);
         .label {
           min-width: 140px;
+        }
+        .value {
+          width: 900px;
+          word-break: break-all;
         }
       }
     }

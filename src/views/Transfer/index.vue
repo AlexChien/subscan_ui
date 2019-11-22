@@ -85,7 +85,7 @@
               slot-scope="scope"
             >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
           </el-table-column>
-          <el-table-column min-width="60" prop="success" :label="$t('result')">
+          <el-table-column min-width="70" prop="success" :label="$t('result')">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>

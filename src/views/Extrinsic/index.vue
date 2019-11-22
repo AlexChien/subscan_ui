@@ -72,7 +72,7 @@
           <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column min-width="60" prop="success" :label="$t('result')">
+          <el-table-column min-width="70" prop="success" :label="$t('result')">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>

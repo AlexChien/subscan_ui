@@ -32,7 +32,7 @@
 </template>
 
 <script>
-const { ss58Decode } = require("oo7-substrate");
+const bs58 = require('bs58');
 export default {
   data() {
     return {
@@ -69,6 +69,26 @@ export default {
     }
   },
   methods: {
+    ss58Check(ss58) {
+      //增加类型2
+      const KNOWN_TYPES = [0, 1, 2, 42, 43, 68, 69];
+      let a
+      try {
+        a = bs58.decode(ss58)
+      }
+      catch (e) {
+        return false
+      }
+      let type = a[0];
+      if (KNOWN_TYPES.indexOf(type) === -1) {
+        return false
+      }
+      if (a.length < 3) {
+        return false
+        //throw new Error('Invalid length of payload for address', a.length)
+      }
+      return true;
+    },
     search() {
       let blockNumReg = /^[0-9]+$/;
       let extrinsicNumReg = /^[0-9]+-[0-9]+$/;
@@ -94,7 +114,7 @@ export default {
             this.$router.push(`/noData`);
           });
       } else {
-        if (ss58Decode(this.inputValue)) {
+        if (this.ss58Check(this.inputValue)) {
           this.$router.push(`/account/${this.inputValue}`);
         } else {
           this.$router.push(`/noData`);

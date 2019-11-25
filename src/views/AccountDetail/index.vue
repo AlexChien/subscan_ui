@@ -130,7 +130,7 @@
                   >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
 
                 </el-table-column>
-                <el-table-column min-width="60" prop="success" :label="$t('result')">
+                <el-table-column min-width="70" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
@@ -197,7 +197,7 @@
                 <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
                   <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
                 </el-table-column>
-                <el-table-column min-width="60" prop="success" :label="$t('result')">
+                <el-table-column min-width="70" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
@@ -477,7 +477,6 @@ export default {
       padding: 10px 28px;
       .form-item {
         min-height: 40px;
-        line-height: 40px;
         font-size: 14px;
         color: rgba(48, 43, 60, 1);
         .label {
@@ -485,7 +484,7 @@ export default {
         }
         .value {
           width: 900px;
-          overflow-wrap: break-word;
+          word-break: break-all;
         }
       }
     }

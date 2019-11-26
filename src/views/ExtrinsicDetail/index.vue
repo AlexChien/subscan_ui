@@ -57,7 +57,7 @@
           </div>
           <div class="info-item" v-if="extrinsicInfo.signature">
             <div class="label">{{$t('sender')}}</div>
-            <div class="value link copy align-items-center">
+            <div class="value account link copy align-items-center">
               <div class="icon identicon">
                 <identicon :size="24" theme="polkadot" :value="extrinsicInfo.account_id" />
               </div>
@@ -75,7 +75,7 @@
           <template v-if="extrinsicInfo.call_module_function==='transfer'">
             <div class="info-item">
               <div class="label">{{$t('destination')}}</div>
-              <div class="value link copy align-items-center">
+              <div class="value account link copy align-items-center">
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="extrinsicInfo.transfer.to" />
                 </div>
@@ -343,7 +343,6 @@ export default {
       min-height: 50px;
       line-height: 50px;
       font-size: 14px;
-      font-weight: 600;
       color: #302b3c;
       display: flex;
       align-items: center;
@@ -354,6 +353,7 @@ export default {
       .label {
         padding-left: 10px;
         width: 180px;
+        font-weight: 600;
       }
       .value {
         padding-left: 10px;
@@ -431,12 +431,14 @@ export default {
       padding: 10px 28px;
       .form-item {
         height: 40px;
-        line-height: 40px;
         font-size: 14px;
-        font-weight: 600;
         color: rgba(48, 43, 60, 1);
         .label {
           min-width: 140px;
+        }
+        .value {
+          width: 900px;
+          word-break: break-all;
         }
       }
     }
@@ -469,7 +471,6 @@ export default {
       }
       .search-input-wrapper {
         order: 1;
-        height: 40px;
         margin: 0 20px 20px;
         max-width: 100%;
       }
@@ -478,16 +479,24 @@ export default {
     .extrinsic-info-list {
       .info-item {
         height: initial;
+        flex-direction: column;
+        align-items: initial;
+        line-height: initial;
+        padding: 10px 0;
+        position: relative;
         .label {
-          flex: 0 0 140px;
+          padding: 0 0 10px 0;
         }
         .value {
-          max-width: 150px;
           flex: none;
           line-height: 20px;
-          display: block;
-          padding: 5px 0;
+          max-width: 100%;
+          padding: 0;
           word-break: break-all;
+          &.account {  
+            display: flex;
+            align-items: center;
+          }
           > div {
             word-break: break-all;
             & + div {
@@ -497,10 +506,13 @@ export default {
           &.copy {
             .copy-btn {
               display: inline-block;
-              height: 30px;
-              line-height: 30px;
-              margin-left: 0;
-              padding: 0 18px;
+              position: absolute;
+              top: 10px;
+              right: 0;
+              height: 24px;
+              line-height: 24px;
+              padding: 0 14px;
+              margin: 0;
             }
           }
         }
@@ -572,7 +584,6 @@ export default {
             color: #302b3c;
           }
           td {
-            font-weight: 600;
             padding: 0;
             &.el-table__expand-column {
               .el-table__expand-icon {

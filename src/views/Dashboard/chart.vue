@@ -2,7 +2,7 @@
   <div class="chart-wrapper">
     <div class="header-content space-between">
       <div class="header-left align-items-center">
-        <icon-svg class="icon" icon-class="latest-blocks" />
+        <icon-svg class="icon" icon-class="chart" />
         <span class="title">{{$t('transfer_history')}}</span>
       </div>
     </div>

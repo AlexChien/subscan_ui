@@ -49,7 +49,7 @@
   "parameters": "Parameters",
   "parent_hash": "Parent Hash",
   "placeholder": {
-    "search_by": "Search by Block / Extrinsic / Account"
+    "search_by": "Block / Extrinsic / Account"
   },
   "result": "Result",
   "search": "Search",

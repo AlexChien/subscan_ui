@@ -72,7 +72,7 @@
           <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column min-width="60" prop="success" :label="$t('result')">
+          <el-table-column min-width="70" prop="success" :label="$t('result')">
             <template slot-scope="scope">
               <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
             </template>
@@ -289,17 +289,14 @@ export default {
         padding: 10px 28px;
         .form-item {
           min-height: 40px;
-          line-height: 40px;
           font-size: 14px;
-          font-weight: 600;
           color: rgba(48, 43, 60, 1);
           .label {
             min-width: 114px;
           }
           .value {
-            padding-left: 10px;
             width: 900px;
-            overflow-wrap: break-word;
+            word-break: break-all;
           }
         }
       }
@@ -379,7 +376,6 @@ export default {
           color: #302b3c;
         }
         td {
-          font-weight: 600;
           padding: 0;
           &.el-table__expand-column {
             .el-table__expand-icon {

@@ -130,7 +130,7 @@
                   >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
 
                 </el-table-column>
-                <el-table-column min-width="60" prop="success" :label="$t('result')">
+                <el-table-column min-width="70" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
@@ -197,7 +197,7 @@
                 <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
                   <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
                 </el-table-column>
-                <el-table-column min-width="60" prop="success" :label="$t('result')">
+                <el-table-column min-width="70" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
@@ -432,11 +432,11 @@ export default {
           .value {
             padding-left: 10px;
             font-size: 14px;
-            font-weight: 600;
             color: #2a2727;
           }
           .label {
             width: 120px;
+            font-weight: 600;
           }
         }
       }
@@ -477,16 +477,14 @@ export default {
       padding: 10px 28px;
       .form-item {
         min-height: 40px;
-        line-height: 40px;
         font-size: 14px;
-        font-weight: 600;
         color: rgba(48, 43, 60, 1);
         .label {
           min-width: 140px;
         }
         .value {
           width: 900px;
-          overflow-wrap: break-word;
+          word-break: break-all;
         }
       }
     }
@@ -524,7 +522,6 @@ export default {
       }
       .search-input-wrapper {
         order: 1;
-        height: 40px;
         max-width: 100%;
         margin: 0 20px 20px;
       }
@@ -634,7 +631,6 @@ export default {
             color: #302b3c;
           }
           td {
-            font-weight: 600;
             padding: 0;
             &.el-table__expand-column {
               .el-table__expand-icon {

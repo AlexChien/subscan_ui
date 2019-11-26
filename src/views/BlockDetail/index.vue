@@ -113,7 +113,7 @@
                 <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
                   <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
                 </el-table-column>
-                <el-table-column min-width="60" prop="success" :label="$t('result')">
+                <el-table-column min-width="70" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
                     <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
                   </template>
@@ -373,7 +373,6 @@ export default {
       height: 50px;
       line-height: 50px;
       font-size: 14px;
-      font-weight: 600;
       color: #302b3c;
       display: flex;
       align-items: center;
@@ -384,6 +383,7 @@ export default {
       .label {
         padding-left: 10px;
         width: 180px;
+        font-weight: 600;
       }
       .value {
         padding-left: 10px;
@@ -443,16 +443,14 @@ export default {
       padding: 10px 28px;
       .form-item {
         min-height: 40px;
-        line-height: 40px;
         font-size: 14px;
-        font-weight: 600;
         color: rgba(48, 43, 60, 1);
         .label {
           min-width: 140px;
         }
         .value {
           width: 900px;
-          overflow-wrap: break-word;
+          word-break: break-all;
         }
       }
     }
@@ -490,7 +488,6 @@ export default {
       }
       .search-input-wrapper {
         order: 1;
-        height: 40px;
         margin: 0 20px 20px;
         max-width: 100%;
       }
@@ -498,15 +495,18 @@ export default {
     .block-info-list {
       .info-item {
         height: initial;
+        flex-direction: column;
+        align-items: initial;
+        line-height: initial;
+        padding: 10px 0;
+        position: relative;
         .label {
-          flex: 0 0 140px;
+          padding: 0 0 10px 0;
         }
         .value {
-          max-width: 150px;
           flex: none;
           line-height: 20px;
-          display: block;
-          padding: 5px 0;
+          padding: 0;
           word-break: break-all;
           > div {
             word-break: break-all;
@@ -517,10 +517,13 @@ export default {
           &.copy {
             .copy-btn {
               display: inline-block;
-              height: 30px;
-              line-height: 30px;
-              margin-left: 0;
-              padding: 0 18px;
+              position: absolute;
+              top: 10px;
+              right: 0;
+              height: 24px;
+              line-height: 24px;
+              padding: 0 14px;
+              margin: 0;
             }
           }
         }
@@ -606,7 +609,6 @@ export default {
             color: #302b3c;
           }
           td {
-            font-weight: 600;
             padding: 0;
             &.el-table__expand-column {
               .el-table__expand-icon {

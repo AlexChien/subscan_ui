@@ -32,7 +32,7 @@
 </template>
 
 <script>
-const { ss58Decode } = require("oo7-substrate");
+const bs58 = require('bs58');
 export default {
   data() {
     return {
@@ -69,6 +69,26 @@ export default {
     }
   },
   methods: {
+    ss58Check(ss58) {
+      //增加类型2
+      const KNOWN_TYPES = [0, 1, 2, 42, 43, 68, 69];
+      let a
+      try {
+        a = bs58.decode(ss58)
+      }
+      catch (e) {
+        return false
+      }
+      let type = a[0];
+      if (KNOWN_TYPES.indexOf(type) === -1) {
+        return false
+      }
+      if (a.length < 3) {
+        return false
+        //throw new Error('Invalid length of payload for address', a.length)
+      }
+      return true;
+    },
     search() {
       let blockNumReg = /^[0-9]+$/;
       let extrinsicNumReg = /^[0-9]+-[0-9]+$/;
@@ -94,7 +114,7 @@ export default {
             this.$router.push(`/noData`);
           });
       } else {
-        if (ss58Decode(this.inputValue)) {
+        if (this.ss58Check(this.inputValue)) {
           this.$router.push(`/account/${this.inputValue}`);
         } else {
           this.$router.push(`/noData`);
@@ -108,7 +128,6 @@ export default {
  <style lang="scss" scoped>
 .search-input-wrapper {
   .search-input {
-    height: 100%;
     box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
     .search-select {
       width: 110px;
@@ -129,7 +148,8 @@ export default {
 <style lang="scss">
 .search-input-wrapper {
   .el-input__inner {
-    height: 100%;
+    height: 50px;
+    line-height: 1.5;
   }
   .el-input-group__append,
   .el-input-group__prepend {
@@ -150,7 +170,6 @@ export default {
     border-color: #dcdfe6;
   }
   .el-input {
-    height: 100%;
     .el-input__inner::placeholder {
       font-size: 14px;
       font-weight: 600;

@@ -39,7 +39,7 @@
                 <div class="label">{{$t('balance')}}</div>
                 <div class="value"><balances :amount="accountInfo.account.balance" module="balances"></balances></div>
               </div>
-              <div class="desc-item align-items-center">
+              <div class="desc-item align-items-center" v-if="this.shouldShowKton">
                 <div class="label"></div>
                 <div class="value"><balances :amount="accountInfo.account.kton_balance" module="kton"></balances></div>
               </div>
@@ -236,6 +236,7 @@
 <script>
 import Identicon from "@polkadot/vue-identicon";
 import SearchInput from "@/views/Components/SearchInput";
+import { mapState } from "vuex";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 import Balances from '../ExtrinsicDetail/Balances'
@@ -290,6 +291,14 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected
+    }),
+    shouldShowKton() {
+      return this.sourceSelected === 'darwinia'
+    }
   },
   created() {
     this.address = this.$route.params.key;
@@ -409,7 +418,6 @@ export default {
     .asset,
     .basic {
       width: 580px;
-      height: 171px;
       padding: 10px 0;
       .title {
         padding: 0 20px;

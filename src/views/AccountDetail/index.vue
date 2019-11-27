@@ -25,6 +25,16 @@
               v-clipboard:success="clipboardSuccess"
             >{{$t('copy')}}</div>
           </div>
+          <div 
+            class="header-left align-items-center mobile"
+            v-clipboard:copy="address"
+            v-clipboard:success="clipboardSuccess"
+          >
+            <div class="icon">
+              <identicon :size="40" theme="polkadot" :value="address" />
+            </div>
+            <div class="address">{{address}}</div>
+          </div>
           <search-input
             class="header-right"
             :placeholder="$t('placeholder.search_by')"
@@ -387,6 +397,9 @@ export default {
   .account-header {
     height: 50px;
     .header-left {
+      &.mobile {
+        display: none;
+      }
       .icon {
       }
       .address {
@@ -526,18 +539,24 @@ export default {
       height: inherit;
       flex-direction: column;
       .header-left {
+        width: 100%;
         order: 2;
+        display: none;
+        &.mobile {
+          display: flex;
+        }
+        .copy-btn {
+          display: none;
+        }
+        .address {
+          word-break: break-all;
+          padding: 0 0 0 10px;
+        }
       }
       .search-input-wrapper {
         order: 1;
         max-width: 100%;
         margin: 0 20px 20px;
-      }
-      .header-left {
-        .address {
-          max-width: 200px;
-          @include text-truncate;
-        }
       }
     }
     .transfer-extrinsic-wrapper {

@@ -25,6 +25,16 @@
               v-clipboard:success="clipboardSuccess"
             >{{$t('copy')}}</div>
           </div>
+          <div 
+            class="header-left align-items-center mobile"
+            v-clipboard:copy="address"
+            v-clipboard:success="clipboardSuccess"
+          >
+            <div class="icon">
+              <identicon :size="40" theme="polkadot" :value="address" />
+            </div>
+            <div class="address">{{address}}</div>
+          </div>
           <search-input
             class="header-right"
             :placeholder="$t('placeholder.search_by')"
@@ -39,7 +49,7 @@
                 <div class="label">{{$t('balance')}}</div>
                 <div class="value"><balances :amount="accountInfo.account.balance" module="balances"></balances></div>
               </div>
-              <div class="desc-item align-items-center">
+              <div class="desc-item align-items-center" v-if="this.shouldShowKton">
                 <div class="label"></div>
                 <div class="value"><balances :amount="accountInfo.account.kton_balance" module="kton"></balances></div>
               </div>
@@ -236,6 +246,7 @@
 <script>
 import Identicon from "@polkadot/vue-identicon";
 import SearchInput from "@/views/Components/SearchInput";
+import { mapState } from "vuex";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 import Balances from '../ExtrinsicDetail/Balances'
@@ -290,6 +301,14 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected
+    }),
+    shouldShowKton() {
+      return this.sourceSelected === 'darwinia'
+    }
   },
   created() {
     this.address = this.$route.params.key;
@@ -378,6 +397,9 @@ export default {
   .account-header {
     height: 50px;
     .header-left {
+      &.mobile {
+        display: none;
+      }
       .icon {
       }
       .address {
@@ -409,7 +431,6 @@ export default {
     .asset,
     .basic {
       width: 580px;
-      height: 171px;
       padding: 10px 0;
       .title {
         padding: 0 20px;
@@ -518,18 +539,24 @@ export default {
       height: inherit;
       flex-direction: column;
       .header-left {
+        width: 100%;
         order: 2;
+        display: none;
+        &.mobile {
+          display: flex;
+        }
+        .copy-btn {
+          display: none;
+        }
+        .address {
+          word-break: break-all;
+          padding: 0 0 0 10px;
+        }
       }
       .search-input-wrapper {
         order: 1;
         max-width: 100%;
         margin: 0 20px 20px;
-      }
-      .header-left {
-        .address {
-          max-width: 200px;
-          @include text-truncate;
-        }
       }
     }
     .transfer-extrinsic-wrapper {

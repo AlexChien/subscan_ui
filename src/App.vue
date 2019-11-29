@@ -25,12 +25,15 @@
       return {
         network: [
           {
-            value: "kusama_cc3"
-          },
-          {
+            key: "kusama",
             value: "kusama"
           },
           {
+            key: "kusama-cc3",
+            value: "kusama_cc3"
+          },
+          {
+            key: "crayfish",
             value: "darwinia"
           }
         ]
@@ -67,9 +70,9 @@
         const parsedObj = queryString.parse(location.search);
         let networkParam = parsedObj["network"] || '';
         const materialText = location.host + networkParam;
-        let network = this.network[0].value
+        let network = this.network[1].value
         this.network.forEach((item) => {
-          if (materialText.indexOf(item.value) > -1) {
+          if (materialText.indexOf(item.key) > -1) {
             network = item.value;
           }
         })

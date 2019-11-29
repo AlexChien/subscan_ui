@@ -105,7 +105,7 @@
             <div class="label">{{$t('result')}}</div>
             <div class="value">
               <icon-svg class="icon" :icon-class="extrinsicInfo.success?'success':'failed'" />
-              {{extrinsicInfo.success?'Success':'Failure'}}
+              {{extrinsicInfo.success?'Success':'Fail'}}
             </div>
           </div>
           <div class="info-item">

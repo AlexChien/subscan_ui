@@ -37,6 +37,9 @@
   "from": "From",
   "hash": "Hash",
   "includes": "Includes",
+  "kusama": {
+    "transfer": "Kusama-cc3 transfer is coming soon"
+  },
   "latest_blocks": "Latest Blocks",
   "log": "Log",
   "log_index": "Log Index",

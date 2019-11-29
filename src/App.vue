@@ -25,10 +25,13 @@
       return {
         network: [
           {
-            value: "darwinia"
+            value: "kusama_cc3"
           },
           {
             value: "kusama"
+          },
+          {
+            value: "darwinia"
           }
         ]
       };
@@ -121,6 +124,13 @@
       );
     }
     &.kusama {
+      --main-color: #e6017a;
+      --main-color-light: rgba(230, 1, 122, 0.5);
+      --main-button-color: #e6017a;
+      --navbar-bg: #e6017a;
+    }
+
+    &.kusama_cc3 {
       --main-color: #e6017a;
       --main-color-light: rgba(230, 1, 122, 0.5);
       --main-button-color: #e6017a;

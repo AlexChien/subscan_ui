@@ -37,6 +37,9 @@
   "from": "来自",
   "hash": "哈希",
   "includes": "包含",
+  "kusama": {
+    "transfer": "Kusama-cc3 即将开放转账"
+  },
   "latest_blocks": "最后块高",
   "log": "日志",
   "log_index": "日志ID",

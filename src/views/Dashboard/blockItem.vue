@@ -14,10 +14,12 @@
           <div
             class="extrinsics"
             :class="{empty: blockData.extrinsics_count==0}"
+            @click="blockData.extrinsics_count != 0 && $router.push(`/block/${blockData.block_num}?detail_type=extrinsic`)"
           >{{blockData.extrinsics_count}} {{$t('extrinsic')}}</div>
           <div
             class="event"
             :class="{empty: blockData.event_count==0}"
+            @click="blockData.event_count != 0 && $router.push(`/block/${blockData.block_num}?detail_type=event`)"
           >{{blockData.event_count}} {{$t('event')}}</div>
         </div>
       </div>

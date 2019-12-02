@@ -76,7 +76,7 @@
             <div class="value">{{blockInfo.block_timestamp|timeAgo}}</div>
           </div>
         </div>
-        <div class="block-extrinsic-event-log subscan-card" v-loading="isLoading">
+        <div id="extrinsic-event-log" class="block-extrinsic-event-log subscan-card" v-loading="isLoading">
           <el-tabs v-model="activeTab">
             <el-tab-pane
               :label="`${$t('extrinsics')}${blockInfo.extrinsics_count>0?` (${blockInfo.extrinsics_count})`:''}`"
@@ -281,6 +281,9 @@ export default {
     init() {
       this.getBlockInfo();
       this.activeTab = "extrinsic";
+      let detail_type = this.$route.query.detail_type;
+      detail_type && (this.activeTab = detail_type)
+
     },
     async getBlockInfo() {
       const key = this.$route.params.key;

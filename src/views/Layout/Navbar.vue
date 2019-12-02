@@ -7,7 +7,7 @@
           <router-link class="nav-item" to="/block" tag="li" active-class="choosed">{{$t('blocks')}}</router-link>
           <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">{{$t('extrinsics')}}</router-link>
           <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">{{$t('transfers')}}</router-link>
-          <router-link class="nav-item" to="/account" tag="li" active-class="choosed">{{$t('account')}}</router-link>
+          <router-link class="nav-item" to="/account" tag="li" active-class="choosed">{{$t('accounts')}}</router-link>
         </ul>
         <el-dropdown class="dropdown" trigger="click">
           <span class="el-dropdown-link align-items-center">
@@ -47,7 +47,7 @@
                 <router-link class="item" to="/block" tag="div" @click.native="drawer = false">{{$t('blocks')}}</router-link>
                 <router-link class="item" to="/extrinsic" tag="div" @click.native="drawer = false">{{$t('extrinsics')}}</router-link>
                 <router-link class="item" to="/transfer" tag="div" @click.native="drawer = false">{{$t('transfers')}}</router-link>
-                <router-link class="item" to="/account" tag="div" @click.native="drawer = false">{{$t('account')}}</router-link>
+                <router-link class="item" to="/account" tag="div" @click.native="drawer = false">{{$t('accounts')}}</router-link>
               </div>
             </div>
             <div class="language-section">

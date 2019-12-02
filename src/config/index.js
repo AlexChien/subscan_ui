@@ -3,7 +3,14 @@ export const ROUTER_DEFAULT_CONFIG = {
   waitForData: true,
   transitionOnLoad: true,
   mode: 'history',
-  base: '/'
+  base: '/',
+  scrollBehavior (to) {
+    if (to.hash) {
+      return {
+        selector: to.hash
+      }
+    }
+  }
 }
 
 // axios 默认配置

@@ -18,7 +18,7 @@
           <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column min-width="50" prop="extrinsics_count" :label="$t('extrinsics')">
+          <el-table-column min-width="55" prop="extrinsics_count" :label="$t('extrinsics')">
             <template slot-scope="scope">
               <div :class="{link:scope.row.extrinsics_count>0}">
                 <span>{{scope.row.extrinsics_count}}</span>

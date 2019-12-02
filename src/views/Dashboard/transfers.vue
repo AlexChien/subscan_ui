@@ -13,9 +13,21 @@
       wrap-class="data-list subscan-card"
       view-class="view-box"
       :native="false"
-      v-loading="typeof transfers === 'undefined'"
+      v-loading="typeof transfers === 'undefined' && sourceSelected === 'darwinia'"
     >
+      <div v-if="sourceSelected === 'kusama_cc3'" class="transfer-placeholder-kusama-cc3">
+        <div class="coming-soon">
+          <img class="not-found-img" src="./../../assets/images/kusama-empty.png" alt="coming soon" />
+          <div class="info">{{$t('kusama.transfer')}}</div>
+        </div>
+      </div>
+      <div v-else-if="sourceSelected === 'kusama'" class="transfer-placeholder-kusama">
+        <div class="not-found">
+          <img class="not-found-img" src="./../../assets/images/no-data.png" alt="no data" />
+        </div>
+      </div>
       <transfer-item
+        v-else
         class="transfer-item"
         v-for="transfer in transfers"
         :key="transfer.extrinsic_index"
@@ -35,7 +47,8 @@ export default {
   },
   computed: {
     ...mapState({
-      transfers: state => state.polka.transfers || undefined
+      transfers: state => state.polka.transfers,
+      sourceSelected: state => state.global.sourceSelected
     })
   },
   props: {
@@ -77,6 +90,31 @@ export default {
       }
     }
   }
+  .not-found {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+  }
+  .coming-soon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .info {
+      color: #98959F;
+      font-size:14px;
+      font-weight: bold;
+    }
+  }
 }
 </style>
 <style lang="scss">
@@ -87,6 +125,7 @@ export default {
     background: #fff;
     box-sizing: border-box;
     padding: 0 20px;
+    position: relative;
     .transfer-item {
       box-sizing: border-box;
     }

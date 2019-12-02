@@ -32,4 +32,19 @@ export default [{
       value: 'https://kusama.subscan.io'
     }
   }
+}, {
+  name: 'kusama_cc3',
+  value: {
+    balances: {
+      value: "KSM",
+      icon: ksm_icon
+    },
+    kton: {
+      value: "KTON",
+      icon: kton_icon
+    },
+    domain: {
+      value: 'https://kusama-cc3.subscan.io/'
+    }
+  }
 }]

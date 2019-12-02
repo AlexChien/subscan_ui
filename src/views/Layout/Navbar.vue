@@ -72,12 +72,16 @@ export default {
       direction: 'rtl',
       sourceList: [
         {
-          label: "Crayfish",
-          value: "darwinia"
+          label: "Kusama CC3",
+          value: "kusama_cc3"
         },
         {
-          label: "Kusama",
+          label: "Kusama CC2",
           value: "kusama"
+        },
+        {
+          label: "Darwinia Crayfish",
+          value: "darwinia"
         }
       ]
     };
@@ -176,6 +180,11 @@ export default {
       }
 
       .kusama-button {
+        background: url("../../assets/images/kusama-button.png") no-repeat left center;
+        background-size: contain;
+      }
+
+      .kusama_cc3-button {
         background: url("../../assets/images/kusama-button.png") no-repeat left center;
         background-size: contain;
       }

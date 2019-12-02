@@ -45,8 +45,16 @@ ElementLocale.i18n((key, value) => i18n.t(key, value));
 
 //引入谷歌分析
 const isProd = process.env.NODE_ENV === 'production';
-//区分darwinia和kusama
-const ua =  (window.location && window.location.href.indexOf('kusama') > -1) ? 'UA-152561314-2' : 'UA-152561314-1';
+//区分darwinia, kusama, kusama-cc3
+let ua = 'UA-152561314-1';
+let href = window.location && window.location.href;
+if (href.indexOf('kusama') > -1) {
+  if (href.indexOf('kusama-cc3') > -1) {
+    ua = 'UA-152561314-3';
+  } else {
+    ua = 'UA-152561314-2';
+  }
+}
 Vue.use(VueAnalytics, {
   id: ua,
   router,

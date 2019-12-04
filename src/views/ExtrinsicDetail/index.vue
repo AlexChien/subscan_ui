@@ -430,7 +430,7 @@ export default {
       background: #f3f5f9;
       padding: 10px 28px;
       .form-item {
-        height: 40px;
+        min-height: 40px;
         font-size: 14px;
         color: rgba(48, 43, 60, 1);
         .label {

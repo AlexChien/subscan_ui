@@ -72,6 +72,78 @@
         <div class="transfer-extrinsic-wrapper subscan-card" v-loading="isLoading">
           <el-tabs v-model="activeTab">
             <el-tab-pane
+              :label="`${$t('extrinsics')}${extrinsicsInfo.count>0?` (${extrinsicsInfo.count})`:''}`"
+              name="extrinsic"
+            >
+              <el-table :data="extrinsicsInfo.extrinsics" style="width: 100%">
+                <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
+                  <template slot-scope="scope">
+                    <div class="link">
+                      <span
+                        @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
+                      >{{scope.row.extrinsic_index}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="100" prop="block_num" :label="$t('block')">
+                  <template slot-scope="scope">
+                    <div class="link">
+                      <div class="link">
+                        <span
+                          @click="$router.push(`/block/${scope.row.block_num}`)"
+                        >{{scope.row.block_num}}</span>
+                      </div>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="140" prop="extrinsic_hash" :label="$t('extrinsic_hash')" fit>
+                  <template slot-scope="scope">
+                    <div class="link">
+                      <el-tooltip
+                        class="item"
+                        effect="light"
+                        :content="scope.row.extrinsic_hash"
+                        placement="top-start"
+                      >
+                        <span
+                          @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)"
+                        >{{scope.row.extrinsic_hash|hashFormat}}</span>
+                      </el-tooltip>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
+                  <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
+                </el-table-column>
+                <el-table-column min-width="70" prop="success" :label="$t('result')">
+                  <template slot-scope="scope">
+                    <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="160" prop="call_module" :label="$t('action')">
+                  <template
+                    slot-scope="scope"
+                  >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
+                </el-table-column>
+                <el-table-column width="100" type="expand">
+                  <template slot-scope="props">
+                    <div class="expand-form">
+                      <div
+                        class="form-item align-items-center"
+                        v-for="item in props.row.params"
+                        :key="item.name"
+                      >
+                        <div class="label">{{item.name}} :</div>
+                        <div class="value" v-if="item.name==='now'">{{item.value|parseTimeToUtc}}</div>
+                        <div class="value" v-else>{{item.value}}</div>
+                      </div>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
+
+            <el-tab-pane
               :label="`${$t('transfers')}${transfersInfo.count>0?` (${transfersInfo.count})`:''}`"
               name="transfer"
             >
@@ -163,77 +235,6 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
-            <el-tab-pane
-              :label="`${$t('extrinsics')}${extrinsicsInfo.count>0?` (${extrinsicsInfo.count})`:''}`"
-              name="extrinsic"
-            >
-              <el-table :data="extrinsicsInfo.extrinsics" style="width: 100%">
-                <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
-                  <template slot-scope="scope">
-                    <div class="link">
-                      <span
-                        @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
-                      >{{scope.row.extrinsic_index}}</span>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column min-width="100" prop="block_num" :label="$t('block')">
-                  <template slot-scope="scope">
-                    <div class="link">
-                      <div class="link">
-                        <span
-                          @click="$router.push(`/block/${scope.row.block_num}`)"
-                        >{{scope.row.block_num}}</span>
-                      </div>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column min-width="140" prop="extrinsic_hash" :label="$t('extrinsic_hash')" fit>
-                  <template slot-scope="scope">
-                    <div class="link">
-                      <el-tooltip
-                        class="item"
-                        effect="light"
-                        :content="scope.row.extrinsic_hash"
-                        placement="top-start"
-                      >
-                        <span
-                          @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)"
-                        >{{scope.row.extrinsic_hash|hashFormat}}</span>
-                      </el-tooltip>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
-                  <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
-                </el-table-column>
-                <el-table-column min-width="70" prop="success" :label="$t('result')">
-                  <template slot-scope="scope">
-                    <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
-                  </template>
-                </el-table-column>
-                <el-table-column min-width="160" prop="call_module" :label="$t('action')">
-                  <template
-                    slot-scope="scope"
-                  >{{`${scope.row.call_module}(${scope.row.call_module_function})`}}</template>
-                </el-table-column>
-                <el-table-column width="100" type="expand">
-                  <template slot-scope="props">
-                    <div class="expand-form">
-                      <div
-                        class="form-item align-items-center"
-                        v-for="item in props.row.params"
-                        :key="item.name"
-                      >
-                        <div class="label">{{item.name}} :</div>
-                        <div class="value" v-if="item.name==='now'">{{item.value|parseTimeToUtc}}</div>
-                        <div class="value" v-else>{{item.value}}</div>
-                      </div>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-tab-pane>
           </el-tabs>
           <div class="view-all-extrinsic" @click="goTransferOrExtrinsicByAddress">{{$t('view_all')}}</div>
         </div>
@@ -278,7 +279,7 @@ export default {
         count: 0,
         extrinsics: []
       },
-      activeTab: "transfer",
+      activeTab: "extrinsic",
       notFound: false,
       isLoading: false,
       isIntroLoading: false,

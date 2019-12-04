@@ -8,7 +8,7 @@
       />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
-          <div class="all">{{$t('account')}}</div>
+          <div class="all">{{$t('accounts')}}</div>
           <div>{{`(${total})`}}</div>
         </div>
       </div>

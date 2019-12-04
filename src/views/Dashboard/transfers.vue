@@ -15,7 +15,16 @@
       :native="false"
       v-loading="typeof transfers === 'undefined' && sourceSelected === 'darwinia'"
     >
-      <div v-if="sourceSelected === 'kusama_cc3'" class="transfer-placeholder-kusama-cc3">
+      <div v-if="transfers && transfers.length > 0">
+        <transfer-item
+          class="transfer-item"
+          v-for="transfer in transfers"
+          :key="transfer.extrinsic_index"
+          :transferData="transfer"
+          :currentTime="currentTime"
+        />
+      </div>
+      <div v-else-if="sourceSelected === 'kusama_cc3'" class="transfer-placeholder-kusama-cc3">
         <div class="coming-soon">
           <img class="not-found-img" src="./../../assets/images/kusama-empty.png" alt="coming soon" />
           <div class="info">{{$t('kusama.transfer')}}</div>
@@ -26,14 +35,6 @@
           <img class="not-found-img" src="./../../assets/images/no-data.png" alt="no data" />
         </div>
       </div>
-      <transfer-item
-        v-else
-        class="transfer-item"
-        v-for="transfer in transfers"
-        :key="transfer.extrinsic_index"
-        :transferData="transfer"
-        :currentTime="currentTime"
-      />
     </el-scrollbar>
   </div>
 </template>

@@ -83,7 +83,7 @@
           <el-table-column min-width="120" prop="amount" :label="$t('value')" fit>
             <template
               slot-scope="scope"
-            >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
+            >{{`${scope.row.amount} ${formatSymbol(scope.row.module)}`}}</template>
           </el-table-column>
           <el-table-column min-width="70" prop="success" :label="$t('result')">
             <template slot-scope="scope">
@@ -161,7 +161,8 @@ export default {
   },
   computed: {
     ...mapState({
-      transfers: state => state.polka.transfers
+      transfers: state => state.polka.transfers,
+      sourceSelected: state => state.global.sourceSelected
     })
   },
   filters: {
@@ -180,6 +181,13 @@ export default {
         this.isLoading = true;
       }
       this.getTransferData();
+    },
+    formatSymbol(module) {
+      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
+        return ''
+      }
+
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
     },
     async getTransferData(page = 0) {
       const data = await this.$api["polkaGetTransfers"]({

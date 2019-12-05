@@ -18,19 +18,25 @@
           <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column min-width="50" prop="extrinsics_count" :label="$t('extrinsics')">
+          <el-table-column min-width="55" prop="extrinsics_count" :label="$t('extrinsics')">
             <template slot-scope="scope">
-              <div :class="{link:scope.row.extrinsics_count>0}">
+              <div 
+                :class="{link:scope.row.extrinsics_count>0}"
+                @click="scope.row.extrinsics_count > 0 && $router.push(`/block/${scope.row.block_num}?detail_type=extrinsic`)"
+              >
                 <span>{{scope.row.extrinsics_count}}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column min-width="50" prop="event_count" :label="$t('events')">
-            <!-- <template slot-scope="scope">
-              <div :class="{link:scope.row.event_count>0}">
+            <template slot-scope="scope">
+              <div 
+                :class="{link:scope.row.event_count>0}"
+                @click="scope.row.event_count > 0 && $router.push(`/block/${scope.row.block_num}?detail_type=event`)"
+              >
                 <span>{{scope.row.event_count}}</span>
               </div>
-            </template> -->
+            </template>
           </el-table-column>
           <el-table-column min-width="150" prop="validator" :label="$t('validator')" fit>
             <template slot-scope="scope">

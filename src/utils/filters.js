@@ -4,8 +4,9 @@ export function timeAgo(time, now = Date.now(), shouldTruncate) {
   const d = new Date(time);
 
   const diff = parseInt((now - d) / 1000);
-
-  if (diff < 60) {
+  if (diff < 1) {
+    return "0 sec ago";
+  } else if (diff < 60) {
     return `${diff} ${diff === 1 ? "sec" : "secs"} ago`;
   } else if (diff < 3600) {
     // less 1 hour

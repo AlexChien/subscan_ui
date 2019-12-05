@@ -76,10 +76,6 @@ export default {
           value: "kusama_cc3"
         },
         {
-          label: "Kusama CC2",
-          value: "kusama"
-        },
-        {
           label: "Darwinia Crayfish",
           value: "darwinia"
         }
@@ -168,7 +164,7 @@ export default {
       }
 
       .network-button{
-        width: 116px;
+        width: 130px;
         height: 30px;
         background: url("../../assets/images/crayfish-button.png") no-repeat left center;
         background-size: contain;
@@ -206,7 +202,7 @@ export default {
           margin-left: 0;
         }
         .network-button{
-          width: 96px;
+          width: 100px;
         }
         .mobile-menu {
           display: block;

@@ -44,7 +44,7 @@ export default [{
       icon: kton_icon
     },
     domain: {
-      value: 'https://kusama-cc3.subscan.io/'
+      value: 'https://kusama.subscan.io'
     }
   }
 }]

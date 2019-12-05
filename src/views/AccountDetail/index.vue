@@ -137,7 +137,7 @@
                 <el-table-column min-width="120" prop="amount" :label="$t('value')" fit>
                   <template
                     slot-scope="scope"
-                  >{{`${scope.row.amount} ${scope.row.module==="balances"?'RING':scope.row.module==="kton"?"KTON":''}`}}</template>
+                  >{{`${scope.row.amount} ${formatSymbol(scope.row.module)}`}}</template>
 
                 </el-table-column>
                 <el-table-column min-width="70" prop="success" :label="$t('result')">
@@ -323,6 +323,13 @@ export default {
     init() {
       this.getAccountInfo();
       this.activeTab = "transfer";
+    },
+    formatSymbol(module) {
+      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
+        return ''
+      }
+
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
     },
     async getAccountInfo() {
       this.isLoading = true;

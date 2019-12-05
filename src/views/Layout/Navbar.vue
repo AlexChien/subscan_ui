@@ -76,10 +76,6 @@ export default {
           value: "kusama_cc3"
         },
         {
-          label: "Kusama CC2",
-          value: "kusama"
-        },
-        {
           label: "Darwinia Crayfish",
           value: "darwinia"
         }

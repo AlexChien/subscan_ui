@@ -26,10 +26,6 @@
         network: [
           {
             key: "kusama",
-            value: "kusama"
-          },
-          {
-            key: "kusama-cc3",
             value: "kusama_cc3"
           },
           {

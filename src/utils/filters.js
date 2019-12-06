@@ -92,7 +92,7 @@ export function parseTimeToUtc(time, cFormat) {
   if ((time + "").length === 10) {
     time = +time * 1000;
   }
-  const format = cFormat || "YYYY-MM-DD hh:mm:ss";
+  const format = cFormat || "YYYY-MM-DD HH:mm:ss";
   let date = moment.utc(time);
   return `${date.format(format)} (+UTC)`;
 }

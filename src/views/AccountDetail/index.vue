@@ -328,7 +328,7 @@ export default {
   methods: {
     init() {
       this.getAccountInfo();
-      this.activeTab = "transfer";
+      this.activeTab = "extrinsic";
     },
     formatSymbol(module) {
       if(!this.$const[`SYMBOL/${this.sourceSelected}`]){

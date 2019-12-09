@@ -26,13 +26,13 @@
       </router-link>
     </div>
     <div>
-      <div class="nav-item event">
+      <router-link class="nav-item" to="/account" tag="div" active-class="choosed">
         <div class="metadata-item">
-          <icon-svg class="icon" icon-class="module-events"></icon-svg>
-          <div class="label">{{$t('module_events')}}</div>
-          <count-to class="value" :end="Number(metadata.count_event||0)" :duration="0.8" :decimal="0" />
+          <icon-svg class="icon" icon-class="active-accounts"></icon-svg>
+          <div class="label">{{$t('active_accounts')}}</div>
+          <count-to class="value" :end="Number(metadata.count_account||0)" :duration="0.8" :decimal="0" />
         </div>
-      </div>
+      </router-link>
     </div>
 
     <!-- <div class="metadata-item">

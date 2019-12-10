@@ -27,7 +27,6 @@
       <div v-else-if="sourceSelected === 'kusama_cc3'" class="transfer-placeholder-kusama-cc3">
         <div class="coming-soon">
           <img class="not-found-img" src="./../../assets/images/kusama-empty.png" alt="coming soon" />
-          <div class="info">{{$t('kusama.transfer')}}</div>
         </div>
       </div>
       <div v-else-if="sourceSelected === 'kusama'" class="transfer-placeholder-kusama">

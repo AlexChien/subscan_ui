@@ -3,7 +3,7 @@
     <el-input
       class="search-input"
       :placeholder="placeholder"
-      v-model="inputValue"
+      v-model.trim="inputValue"
       @keyup.enter.native="search"
     >
       <el-select

@@ -111,10 +111,15 @@
           <div class="info-item">
             <div class="label">{{$t('parameters')}}</div>
             <div class="value">
-              <div
-                v-for="item in extrinsicInfo.params"
-                :key="item.type"
-              >{{`"${item.name}": ${JSON.stringify(item.value)}`}}</div>
+              <div v-if="extrinsicInfo.params && extrinsicInfo.params.length > 0">
+                <div
+                  v-for="item in extrinsicInfo.params"
+                  :key="item.type"
+                >{{`"${item.name}": ${JSON.stringify(item.value)}`}}</div>
+              </div>
+              <div v-else>
+                -
+              </div>
             </div>
           </div>
           <div class="info-item" v-if="extrinsicInfo.signature">

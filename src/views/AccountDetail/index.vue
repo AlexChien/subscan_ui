@@ -128,14 +128,19 @@
                 <el-table-column width="100" type="expand">
                   <template slot-scope="props">
                     <div class="expand-form">
-                      <div
-                        class="form-item align-items-center"
-                        v-for="item in props.row.params"
-                        :key="item.name"
-                      >
-                        <div class="label">{{item.name}} :</div>
-                        <div class="value" v-if="item.name==='now'">{{item.value|parseTimeToUtc}}</div>
-                        <div class="value" v-else>{{item.value}}</div>
+                      <div v-if="props.row.params && props.row.params.length > 0">
+                        <div
+                          class="form-item align-items-center"
+                          v-for="item in props.row.params"
+                          :key="item.name"
+                        >
+                          <div class="label">{{item.name}} :</div>
+                          <div class="value" v-if="item.name==='now'">{{item.value|parseTimeToUtc}}</div>
+                          <div class="value" v-else>{{item.value}}</div>
+                        </div>
+                      </div>
+                      <div v-else>
+                        <div class="label">{{$t('no_data')}}</div>
                       </div>
                     </div>
                   </template>
@@ -323,7 +328,7 @@ export default {
   methods: {
     init() {
       this.getAccountInfo();
-      this.activeTab = "transfer";
+      this.activeTab = "extrinsic";
     },
     formatSymbol(module) {
       if(!this.$const[`SYMBOL/${this.sourceSelected}`]){

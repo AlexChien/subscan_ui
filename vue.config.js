@@ -10,7 +10,7 @@ module.exports = {
   outputDir: "web", // 当运行 vue-cli-service build 时生成的生产环境构建文件的目录。注意目标目录在构建之前会被清除 (构建时传入 --no-clean 可关闭该行为)
   publicPath:
     process.env.NODE_ENV === "production"
-      ? (process.env.VUE_APP_ASSETS_PATH === "static" ? "./" : "https://subscan.l2me.com/")
+      ? (process.env.VUE_APP_ASSETS_PATH === "static" ? "/" : "https://subscan.l2me.com/")
       : "/", // 部署应用包时的基本 URL。
 
   // productionSourceMap: false,

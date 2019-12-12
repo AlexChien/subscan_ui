@@ -26,6 +26,9 @@
   "destination": "Destination",
   "donate": "DONATE",
   "download_csv_file": "Download CSV File",
+  "error": {
+    "404": "We couldn’t find this page"
+  },
   "event": "Event",
   "event_id": "Event ID",
   "events": "Events",

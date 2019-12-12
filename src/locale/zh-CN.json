@@ -26,6 +26,9 @@
   "destination": "接收账户",
   "donate": "捐赠",
   "download_csv_file": "下载 CSV 文件",
+  "error": {
+    "404": "We couldn’t find this page"
+  },
   "event": "事件",
   "event_id": "事件ID",
   "events": "事件",

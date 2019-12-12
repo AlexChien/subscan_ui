@@ -8,7 +8,7 @@
           :placeholder="$t('placeholder.search_by')"
         />
         <div class="not-found">
-          <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
+          <img class="not-found-img" src="./../../assets/images/404.png" alt="404" />
           <div class="no-data">{{$t('no_data')}}</div>
         </div>
       </template>
@@ -44,7 +44,9 @@
                 v-if="extrinsicInfo.extrinsic_hash"
                 v-clipboard:copy="extrinsicInfo.extrinsic_hash"
                 v-clipboard:success="clipboardSuccess"
-              >{{$t('copy')}}</div>
+              >
+                <icon-svg class="iconfont" icon-class="copy"/>
+              </div>
             </div>
           </div>
           <div class="info-item">
@@ -69,7 +71,9 @@
                 v-if="extrinsicInfo.account_id"
                 v-clipboard:copy="extrinsicInfo.account_id"
                 v-clipboard:success="clipboardSuccess"
-              >{{$t('copy')}}</div>
+              >
+                <icon-svg class="iconfont" icon-class="copy"/>
+              </div>
             </div>
           </div>
           <template v-if="extrinsicInfo.call_module_function==='transfer'">
@@ -87,7 +91,9 @@
                   v-if="extrinsicInfo.transfer.to"
                   v-clipboard:copy="extrinsicInfo.transfer.to"
                   v-clipboard:success="clipboardSuccess"
-                >{{$t('copy')}}</div>
+                >
+                  <icon-svg class="iconfont" icon-class="copy"/>
+                </div>
               </div>
             </div>
             <div class="info-item">
@@ -365,20 +371,14 @@ export default {
         width: 900px;
         overflow-wrap: break-word;
         &.link {
-          color: var(--main-color);
+          color: var(--link-color);
           cursor: pointer;
         }
         &.copy {
           .copy-btn {
-            background: var(--main-color-light);
-            border-radius: 2px;
-            font-size: 10px;
-            font-weight: 600;
-            color: #fff;
-            height: 20px;
-            line-height: 20px;
-            padding: 0 8px;
-            margin-left: 10px;
+            margin-left: 15px;
+            color: var(--main-color-light);
+            font-size: 20px;
             cursor: pointer;
           }
         }
@@ -421,7 +421,7 @@ export default {
       color: #302b3c;
     }
     .link {
-      color: var(--main-color);
+      color: var(--link-color);
       span {
         cursor: pointer;
       }

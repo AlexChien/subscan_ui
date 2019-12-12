@@ -115,6 +115,7 @@
       --main-color: #5930dd;
       --main-color-light: rgba(89, 48, 221, 0.5);
       --main-button-color: #302b3c;
+      --link-color: #4572DE;
       --navbar-bg: linear-gradient(
           315deg,
           rgba(254, 56, 118, 1) 0%,
@@ -126,6 +127,7 @@
       --main-color: #e6017a;
       --main-color-light: rgba(230, 1, 122, 0.5);
       --main-button-color: #e6017a;
+      --link-color: #4572DE;
       --navbar-bg: #e6017a;
     }
 
@@ -133,6 +135,7 @@
       --main-color: #e6017a;
       --main-color-light: rgba(230, 1, 122, 0.5);
       --main-button-color: #e6017a;
+      --link-color: #4572DE;
       --navbar-bg: #e6017a;
     }
 

@@ -262,7 +262,7 @@ export default {
         }
         .link {
           padding: 0 10px;
-          color: var(--main-color);
+          color: var(--link-color);
           cursor: pointer;
         }
         .all {
@@ -275,7 +275,7 @@ export default {
       margin-top: 10px;
       padding: 13px 20px;
       .link {
-        color: var(--main-color);
+        color: var(--link-color);
         span {
           cursor: pointer;
         }
@@ -341,7 +341,7 @@ export default {
           background-color: #fff;
           border-color: #dbdbdb;
           &::after {
-            border-color: #5930dd;
+            border-color: var(--main-color);
             border-width: 2px;
             height: 10px;
             left: 7px;

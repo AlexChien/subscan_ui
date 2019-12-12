@@ -7,8 +7,8 @@
         :placeholder="$t('placeholder.search_by')"
       />
       <div class="not-found">
-        <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
-        <div class="no-data">{{$t('no_data')}}</div>
+        <img class="not-found-img" src="./../../assets/images/404.png" alt="404" />
+        <div class="no-data">{{$t('error.404')}}</div>
       </div>
     </div>
   </div>

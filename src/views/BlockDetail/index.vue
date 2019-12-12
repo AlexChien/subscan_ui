@@ -8,7 +8,7 @@
           :placeholder="$t('placeholder.search_by')"
         />
         <div class="not-found">
-          <img class="not-found-img" src="./../../assets/images/404@2x.png" alt="404" />
+          <img class="not-found-img" src="./../../assets/images/404.png" alt="404" />
           <div class="no-data">{{$t('no_data')}}</div>
         </div>
       </template>
@@ -42,7 +42,9 @@
                 class="copy-btn"
                 v-clipboard:copy="blockInfo.hash"
                 v-clipboard:success="clipboardSuccess"
-              >{{$t('copy')}}</div>
+              >
+                <icon-svg class="iconfont" icon-class="copy"/>
+              </div>
             </div>
           </div>
           <div class="info-item">
@@ -68,7 +70,9 @@
                 v-if="blockInfo.validator"
                 v-clipboard:copy="blockInfo.validator"
                 v-clipboard:success="clipboardSuccess"
-              >{{$t('copy')}}</div>
+              >
+                <icon-svg class="iconfont" icon-class="copy"/>
+              </div>
             </div>
           </div>
           <div class="info-item">
@@ -397,20 +401,14 @@ export default {
         padding-left: 10px;
         flex: auto;
         &.link {
-          color: var(--main-color);
+          color: var(--link-color);
           cursor: pointer;
         }
         &.copy {
           .copy-btn {
-            background: var(--main-color-light);
-            border-radius: 2px;
-            font-size: 10px;
-            font-weight: 600;
-            color: #fff;
-            height: 20px;
-            line-height: 20px;
-            padding: 0 8px;
-            margin-left: 10px;
+            margin-left: 14px;
+            font-size: 20px;
+            color: var(--main-color-light);
             cursor: pointer;
           }
         }
@@ -436,7 +434,7 @@ export default {
       color: #302b3c;
     }
     .link {
-      color: var(--main-color);
+      color: var(--link-color);
       span {
         cursor: pointer;
       }

@@ -27,7 +27,7 @@
   "donate": "捐赠",
   "download_csv_file": "下载 CSV 文件",
   "error": {
-    "404": "We couldn’t find this page"
+    "404": "没有找到相关信息"
   },
   "event": "事件",
   "event_id": "事件ID",

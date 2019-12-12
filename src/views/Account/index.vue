@@ -94,7 +94,6 @@
   </div>
 </template>
 <script>
-import Identicon from "@polkadot/vue-identicon";
 import XLSX from "xlsx";
 import { mapState } from "vuex";
 import SearchInput from "@/views/Components/SearchInput";
@@ -105,8 +104,7 @@ export default {
   components: {
     SearchInput,
     CsvDownload,
-    Pagination,
-    Identicon
+    Pagination
   },
   data() {
     return {
@@ -262,7 +260,7 @@ export default {
         }
         .link {
           padding: 0 10px;
-          color: var(--link-color);
+          color: var(--main-color);
           cursor: pointer;
         }
         .all {
@@ -313,6 +311,7 @@ export default {
   @media screen and (max-width:$screen-xs) {
     .container {
       .table-top {
+        margin-top: 0;
         .for-block {
           .link {
             max-width: 250px;
@@ -341,7 +340,7 @@ export default {
           background-color: #fff;
           border-color: #dbdbdb;
           &::after {
-            border-color: var(--main-color);
+            border-color: #000;
             border-width: 2px;
             height: 10px;
             left: 7px;

@@ -428,10 +428,10 @@ export default {
       padding: 0 23px;
       cursor: pointer;
       border-radius: 2px;
-      border: 1px solid #302b3c;
+      border: 1px solid var(--main-color);
       font-size: 14px;
       font-weight: 600;
-      color: #302b3c;
+      color: var(--main-color);
     }
     .link {
       color: var(--link-color);
@@ -547,9 +547,9 @@ export default {
         line-height: 35px;
         margin-top: 12px;
         border-radius: 2px;
-        color: #302b3c;
+        color: var(--main-color);
         background-color: #FFF;
-        border: 1px solid #302b3c;
+        border: 1px solid var(--main-color);
         text-align: center;
         font-size: 14px;
         font-weight: 600;

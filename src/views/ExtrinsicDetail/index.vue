@@ -114,23 +114,28 @@
               {{extrinsicInfo.success?'Success':'Fail'}}
             </div>
           </div>
-          <div class="info-item">
-            <div class="label">{{$t('parameters')}}</div>
-            <div class="value">
-              <div v-if="extrinsicInfo.params && extrinsicInfo.params.length > 0">
+          <div class="mobile-detail-wrapper"
+            :class="{'is-fold': isFold}"
+          >
+            <div class="info-item">
+              <div class="label">{{$t('parameters')}}</div>
+              <div class="value">
                 <div
                   v-for="item in extrinsicInfo.params"
                   :key="item.type"
                 >{{`"${item.name}": ${JSON.stringify(item.value)}`}}</div>
               </div>
-              <div v-else>
-                -
-              </div>
+            </div>
+            <div class="info-item" v-if="extrinsicInfo.signature">
+              <div class="label">{{$t('signature')}}</div>
+              <div class="value">{{extrinsicInfo.signature}}</div>
             </div>
           </div>
-          <div class="info-item" v-if="extrinsicInfo.signature">
-            <div class="label">{{$t('signature')}}</div>
-            <div class="value">{{extrinsicInfo.signature}}</div>
+          <div class="info-item toggle-btn"
+            :class="{'is-fold': isFold}"
+          >
+            <div v-if="isFold" class="text" @click="toggleMobileDetail(false)">{{$t('view_more')}}</div>
+            <div v-else class="text" @click="toggleMobileDetail(true)">{{$t('fold_up')}}</div>
           </div>
         </div>
         <div
@@ -222,6 +227,7 @@ export default {
       activeTab: "event",
       notFound: false,
       isLoading: false,
+      isFold: true,
       selectList: [
         {
           label: this.$t('all'),
@@ -264,6 +270,9 @@ export default {
     init() {
       this.getExtrinsicInfo();
       this.activeTab = "event";
+    },
+    toggleMobileDetail(isFold) {
+      this.isFold = isFold;
     },
     formatSymbol(module) {
       if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
@@ -357,8 +366,14 @@ export default {
       color: #302b3c;
       display: flex;
       align-items: center;
+      &.toggle-btn {
+        display: none;
+      }
       &:not(:last-child) {
         border-bottom: 1px solid #e7eaf3;
+        &.toggle-btn {
+          border-bottom: none;
+        }
       }
 
       .label {
@@ -415,10 +430,10 @@ export default {
       padding: 0 23px;
       cursor: pointer;
       border-radius: 2px;
-      border: 1px solid #302b3c;
+      border: 1px solid var(--main-color);
       font-size: 14px;
       font-weight: 600;
-      color: #302b3c;
+      color: var(--main-color);
     }
     .link {
       color: var(--link-color);
@@ -456,6 +471,11 @@ export default {
       }
     }
   }
+  .view-all-extrinsic {
+    &.mobile {
+      display: none;
+    }
+  }
   .not-found {
     padding: 10%;
     text-align: center;
@@ -482,6 +502,13 @@ export default {
     }
 
     .extrinsic-info-list {
+      padding-bottom: 0;
+      .mobile-detail-wrapper {
+        &.is-fold {
+          display: none;
+        }
+        border-bottom: 1px solid #e7eaf3;
+      }
       .info-item {
         height: initial;
         flex-direction: column;
@@ -489,6 +516,32 @@ export default {
         line-height: initial;
         padding: 10px 0;
         position: relative;
+        &.toggle-btn {
+          display: flex;
+          position: relative;
+          font-weight: 600;
+          color: var(--main-color);
+          flex-direction: initial;
+          justify-content: center;
+          align-items: center;
+          &:after {
+            content: '';
+            width: 0;
+            height: 0;
+            margin-left: 13px;
+            border-width: 0 5px 7px;
+            border-style: solid;
+            border-color: transparent transparent var(--main-color) transparent ;
+          }
+          &.is-fold {
+            &:after {
+              margin-left: 5px;
+              border-width: 7px 5px 0;
+              border-style: solid;
+              border-color: var(--main-color) transparent transparent transparent;
+            }
+          }
+        }
         .label {
           padding: 0 0 10px 0;
         }
@@ -498,7 +551,7 @@ export default {
           max-width: 100%;
           padding: 0;
           word-break: break-all;
-          &.account {  
+          &.account {
             display: flex;
             align-items: center;
           }
@@ -525,8 +578,22 @@ export default {
     }
     .extrinsic-extrinsic-event-log {
       .view-all-extrinsic {
-        top: 4px;
-        right: 4px;
+        display: none;
+      }
+    }
+    .view-all-extrinsic {
+      &.mobile {
+        display: block;
+        height: 35px;
+        line-height: 35px;
+        margin-top: 12px;
+        border-radius: 2px;
+        color: var(--main-color);
+        background-color: #FFF;
+        border: 1px solid var(--main-color);
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
       }
     }
   }

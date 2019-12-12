@@ -27,7 +27,7 @@
   "donate": "DONATE",
   "download_csv_file": "Download CSV File",
   "error": {
-    "404": "We couldn’t find this page"
+    "404": "Not Found"
   },
   "event": "Event",
   "event_id": "Event ID",

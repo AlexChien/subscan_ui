@@ -46,7 +46,7 @@ export default {
           },
           lineStyle: {
             width: 1,
-            color: this.colorMap(source || 'darwinia')
+            color: this.colorMap[source || 'darwinia']
           }
         }
       });

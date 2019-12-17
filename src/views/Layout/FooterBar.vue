@@ -4,7 +4,7 @@
       <div class="copyright">{{$t('copy_right', { year: new Date().getFullYear()})}}</div>
       <div class="donate">
         <span class="donate-title">{{$t('donate')}}:</span>
-        <span class="donate-address">5DobnXBB9EU8gJR8ygCM5GvHHuvSRCfWypuC2vDqW35Udbku</span>
+        <span class="donate-address">{{donateAddress}}</span>
       </div>
       <div class="contact">
         <a target="_blank" rel="noopener" href="mailto:hello@subscan.io">
@@ -27,8 +27,18 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "FooterBar",
+  computed: {
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected
+    }),
+    donateAddress() {
+      let source = this.$const[`SYMBOL/${this.sourceSelected}`];
+      return source && source['donate']['address'];
+    }
+  },
   methods: {
     changeLanguage(language) {
       GLOBAL.vbus.$emit("CHANGE_LANGUAGE", language);

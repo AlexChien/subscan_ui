@@ -15,6 +15,9 @@ export default [{
     },
     domain: {
       value: 'https://crayfish.subscan.io'
+    },
+    donate: {
+      address: '5DobnXBB9EU8gJR8ygCM5GvHHuvSRCfWypuC2vDqW35Udbku'
     }
   }
 }, {
@@ -30,6 +33,9 @@ export default [{
     },
     domain: {
       value: 'https://kusama.subscan.io'
+    },
+    donate: {
+      address: 'HSCAN7hmLKGY6G866YwrscY9SQPWFLwMGetD8aq2roeqUbo'
     }
   }
 }]

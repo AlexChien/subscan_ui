@@ -36,28 +36,28 @@ export default {
     }),
     donateAddress() {
       let source = this.$const[`SYMBOL/${this.sourceSelected}`];
-      return source && source['donate']['address'];
+      return source && source["donate"]["address"];
     },
     isHomePage() {
       let name = this.$route.name;
       let result = false;
       switch (name) {
-        case 'root':
-        case '404':
-        case 'noData':
+        case "root":
+        case "404":
+        case "noData":
           result = true;
           break;
         default:
-            break;
+          break;
       }
-      return result
-    },
+      return result;
+    }
   },
   methods: {
     changeLanguage(language) {
       GLOBAL.vbus.$emit("CHANGE_LANGUAGE", language);
       this.$store.dispatch("SetLanguage", language);
-    },
+    }
   }
 };
 </script>
@@ -68,7 +68,7 @@ export default {
   .container {
     height: 50px;
     .copyright {
-      color: #FFF;
+      color: #fff;
       font-size: 14px;
     }
     .donate {
@@ -85,7 +85,7 @@ export default {
         visibility: hidden;
       }
     }
-    .poweredby{
+    .poweredby {
       color: #7b70ae;
       font-size: 14px;
       font-weight: bold;
@@ -108,11 +108,11 @@ export default {
       }
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .container {
       height: inherit;
       flex-direction: column;
-      background-color: #302B3C;
+      background-color: #302b3c;
       align-items: initial;
       position: relative;
       .copyright {

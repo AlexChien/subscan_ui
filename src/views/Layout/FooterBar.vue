@@ -2,7 +2,7 @@
   <div class="footer-bar">
     <div class="container space-between align-items-center">
       <div class="copyright">{{$t('copy_right', { year: new Date().getFullYear()})}}</div>
-      <div class="donate">
+      <div class="donate" :class="{'is-home-page': isHomePage}">
         <span class="donate-title">{{$t('donate')}}:</span>
         <span class="donate-address">{{donateAddress}}</span>
       </div>
@@ -37,7 +37,21 @@ export default {
     donateAddress() {
       let source = this.$const[`SYMBOL/${this.sourceSelected}`];
       return source && source['donate']['address'];
-    }
+    },
+    isHomePage() {
+      let name = this.$route.name;
+      let result = false;
+      switch (name) {
+        case 'root':
+        case '404':
+        case 'noData':
+          result = true;
+          break;
+        default:
+            break;
+      }
+      return result
+    },
   },
   methods: {
     changeLanguage(language) {
@@ -66,6 +80,9 @@ export default {
       color: #fff;
       .donate-title {
         padding-right: 10px;
+      }
+      &:not(.is-home-page) {
+        visibility: hidden;
       }
     }
     .poweredby{
@@ -109,6 +126,9 @@ export default {
         margin: 0;
         display: flex;
         background-color: #000;
+        &:not(.is-home-page) {
+          display: none;
+        }
         .copyright {
           line-height: 40px;
         }

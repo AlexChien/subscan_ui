@@ -2,7 +2,7 @@
   <div class="footer-bar">
     <div class="container space-between align-items-center">
       <div class="copyright">{{$t('copy_right', { year: new Date().getFullYear()})}}</div>
-      <div class="donate">
+      <div class="donate" :class="{'is-home-page': isHomePage}">
         <span class="donate-title">{{$t('donate')}}:</span>
         <span class="donate-address">{{donateAddress}}</span>
       </div>
@@ -36,14 +36,28 @@ export default {
     }),
     donateAddress() {
       let source = this.$const[`SYMBOL/${this.sourceSelected}`];
-      return source && source['donate']['address'];
+      return source && source["donate"]["address"];
+    },
+    isHomePage() {
+      let name = this.$route.name;
+      let result = false;
+      switch (name) {
+        case "root":
+        case "404":
+        case "noData":
+          result = true;
+          break;
+        default:
+          break;
+      }
+      return result;
     }
   },
   methods: {
     changeLanguage(language) {
       GLOBAL.vbus.$emit("CHANGE_LANGUAGE", language);
       this.$store.dispatch("SetLanguage", language);
-    },
+    }
   }
 };
 </script>
@@ -54,7 +68,7 @@ export default {
   .container {
     height: 50px;
     .copyright {
-      color: #FFF;
+      color: #fff;
       font-size: 14px;
     }
     .donate {
@@ -67,8 +81,11 @@ export default {
       .donate-title {
         padding-right: 10px;
       }
+      &:not(.is-home-page) {
+        visibility: hidden;
+      }
     }
-    .poweredby{
+    .poweredby {
       color: #7b70ae;
       font-size: 14px;
       font-weight: bold;
@@ -91,11 +108,11 @@ export default {
       }
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .container {
       height: inherit;
       flex-direction: column;
-      background-color: #302B3C;
+      background-color: #302b3c;
       align-items: initial;
       position: relative;
       .copyright {
@@ -109,6 +126,9 @@ export default {
         margin: 0;
         display: flex;
         background-color: #000;
+        &:not(.is-home-page) {
+          display: none;
+        }
         .copyright {
           line-height: 40px;
         }

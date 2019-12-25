@@ -645,6 +645,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.7.4":
+  version "7.7.6"
+  resolved "http://r.cnpmjs.org/@babel/runtime/download/@babel/runtime-7.7.6.tgz#d18c511121aff1b4f2cd1d452f1bac9601dd830f"
+  integrity sha1-0YxRESGv8bTyzR1FLxuslgHdgw8=
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.npm.taobao.org/@babel/template/download/@babel/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -741,12 +748,12 @@
   resolved "https://registry.npm.taobao.org/@nodelib/fs.stat/download/@nodelib/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha1-K1o6s/kYzKSKjHVMCBaOPwPrphs=
 
-"@polkadot/ui-shared@^0.42.1":
-  version "0.42.1"
-  resolved "https://registry.npm.taobao.org/@polkadot/ui-shared/download/@polkadot/ui-shared-0.42.1.tgz#e62024b9db3c17786c2a4cde8264c676fd2db297"
-  integrity sha1-5iAkuds8F3hsKkzegmTGdv0tspc=
+"@polkadot/ui-shared@^0.47.1":
+  version "0.47.1"
+  resolved "http://r.cnpmjs.org/@polkadot/ui-shared/download/@polkadot/ui-shared-0.47.1.tgz#21132058ab1d66a1cf58eb45597fde7c22d6c72e"
+  integrity sha1-IRMgWKsdZqHPWOtFWX/efCLWxy4=
   dependencies:
-    "@babel/runtime" "^7.5.5"
+    "@babel/runtime" "^7.7.4"
     "@types/color" "^3.0.0"
     color "^3.1.2"
 
@@ -800,13 +807,13 @@
     ip-regex "^4.1.0"
     moment "^2.24.0"
 
-"@polkadot/vue-identicon@^0.42.1":
-  version "0.42.1"
-  resolved "https://registry.npm.taobao.org/@polkadot/vue-identicon/download/@polkadot/vue-identicon-0.42.1.tgz#2da6153a8a2ea3779116953edd28b5379cdbc7d6"
-  integrity sha1-LaYVOoouo3eRFpU+3Si1N5zbx9Y=
+"@polkadot/vue-identicon@^0.47.1":
+  version "0.47.1"
+  resolved "http://r.cnpmjs.org/@polkadot/vue-identicon/download/@polkadot/vue-identicon-0.47.1.tgz#d5363e9ee1af8e132d3478435994955446cc15c5"
+  integrity sha1-1TY+nuGvjhMtNHhDWZSVVEbMFcU=
   dependencies:
-    "@babel/runtime" "^7.5.5"
-    "@polkadot/ui-shared" "^0.42.1"
+    "@babel/runtime" "^7.7.4"
+    "@polkadot/ui-shared" "^0.47.1"
     jdenticon "2.2.0"
 
 "@polkadot/wasm-crypto@^0.13.1":
@@ -8988,6 +8995,11 @@ vm-browserify@^1.0.1:
   version "1.1.0"
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.0.tgz#bd76d6a23323e2ca8ffa12028dc04559c75f9019"
   integrity sha1-vXbWojMj4sqP+hICjcBFWcdfkBk=
+
+vue-analytics@^5.17.5:
+  version "5.19.1"
+  resolved "http://r.cnpmjs.org/vue-analytics/download/vue-analytics-5.19.1.tgz#ee1504328d44b2990bbcf3a191608a73758f39f4"
+  integrity sha1-7hUEMo1EspkLvPOhkWCKc3WPOfQ=
 
 vue-cli-plugin-element@^1.0.0:
   version "1.0.1"

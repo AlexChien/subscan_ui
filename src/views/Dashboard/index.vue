@@ -3,7 +3,7 @@
     <div class="container">
       <div class="metadata-chart-wrapper space-between">
         <meta-data class="metadata-component" />
-        <chart class="chart-component" />
+        <chartPie class="chart-component" />
       </div>
       <div class="blocks-transfers-wrapper space-between">
         <latest-blocks class="latest-blocks-component" :currentTime="currentTime" />
@@ -14,6 +14,8 @@
 </template>
 <script>
 import MetaData from "./metadata";
+import ChartPie from "./chartPie";
+import { mapState } from "vuex";
 import Chart from "./chart";
 import LatestBlocks from "./latestBlocks";
 import Transfers from "./transfers";
@@ -24,6 +26,7 @@ export default {
   components: {
     MetaData,
     Chart,
+    ChartPie,
     LatestBlocks,
     Transfers
   },
@@ -50,6 +53,12 @@ export default {
       ]
     };
   },
+  computed: {
+    ...mapState({
+      sourceSelected: state => state.global.sourceSelected,
+      token: state => state.polka.token
+    })
+  },
   created() {
     this.init();
     this.w = new Worker('/' + "timeWorker.js");
@@ -75,11 +84,15 @@ export default {
         true
       );
     },
+    async getToken() {
+      await Promise.all([
+        this.$store.dispatch("SetToken")
+      ]);
+    },
     async getData() {
       const end = moment();
       const start = moment().subtract(15, "days");
       await Promise.all([
-        this.$store.dispatch("SetMetadata"),
         this.$store.dispatch("SetLatestBlocks", { row: 25, page: 0 }),
         // this.$store.dispatch("SetLatestExtrinsics", { row: 25, page: 0 }),
         this.$store.dispatch("SetTransfers", { row: 25, page: 0 }),

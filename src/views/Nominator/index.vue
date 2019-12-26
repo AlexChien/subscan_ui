@@ -1,5 +1,5 @@
 <template>
-  <div class="transfer-wrapper subscan-content">
+  <div class="nominator-wrapper subscan-content">
     <div class="container">
       <search-input
         class="search-input"
@@ -8,11 +8,8 @@
       />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
-          <div>{{$t('for')}}</div>
+          <div>{{$t('validator_hash_tag')}}</div>
           <template v-if="$route.query.address">
-            <div class="icon">
-              <identicon :size="30" theme="polkadot" :value="$route.query.address" />
-            </div>
             <div
               class="link"
               @click="$router.push(`/account/${$route.query.address}`)"
@@ -22,91 +19,33 @@
           <div>{{`(${total})`}}</div>
         </div>
       </div>
-      <div class="transfer-table subscan-card" v-loading="isLoading">
-        <el-table :data="transfersData" style="width: 100%">
-          <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
+      <div class="nominator-table subscan-card" v-loading="isLoading">
+        <el-table :data="nominators" style="width: 100%">
+          <el-table-column min-width="190" prop="nominator_stash" :label="$t('nominator')">
             <template slot-scope="scope">
-              <div class="link">
+              <div class="link align-items-center">
+                <div class="icon identicon">
+                  <identicon
+                    :size="24"
+                    theme="polkadot"
+                    :value="scope.row.nominator_stash"
+                  />
+                </div>
                 <span
-                  @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
-                >{{scope.row.extrinsic_index}}</span>
+                  @click="$router.push(`/account/${scope.row.nominator_stash}`)"
+                >{{scope.row.nominator_stash}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column min-width="100" prop="block_num" :label="$t('block')">
+          <el-table-column min-width="180" prop="bonded" :label="$t('voted')">
             <template slot-scope="scope">
-              <div class="link">
-                <span @click="$router.push(`/block/${scope.row.block_num}`)">{{scope.row.block_num}}</span>
+              <div>
+                <span>{{scope.row.bonded + ' ' + formatSymbol('balances')}}</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
-            <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
-          </el-table-column>
-          <el-table-column min-width="150" prop="from" :label="$t('from')">
-            <template slot-scope="scope">
-              <div :class="scope.row.from === $route.query.address ? '' : 'link'">
-                <el-tooltip
-                  class="item"
-                  effect="light"
-                  :content="scope.row.from"
-                  placement="top-start"
-                >
-                  <span
-                    @click="$router.push(`/account/${scope.row.from}`)"
-                  >{{scope.row.from|hashFormat}}</span>
-                </el-tooltip>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column width="50">
-            <template>
-              <div class="icon-wrapper">
-                <icon-svg class="iconfont" icon-class="from-to" />
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column min-width="150" prop="to" :label="$t('to')">
-            <template slot-scope="scope">
-              <div :class="scope.row.to === $route.query.address ? '' : 'link'">
-                <el-tooltip
-                  class="item"
-                  effect="light"
-                  :content="scope.row.to"
-                  placement="top-start"
-                >
-                  <span
-                    @click="$router.push(`/account/${scope.row.to}`)"
-                  >{{scope.row.to|hashFormat}}</span>
-                </el-tooltip>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column min-width="120" prop="amount" :label="$t('value')" fit>
-            <template
-              slot-scope="scope"
-            >{{`${scope.row.amount} ${formatSymbol(scope.row.module)}`}}</template>
-          </el-table-column>
-          <el-table-column min-width="70" prop="success" :label="$t('result')">
-            <template slot-scope="scope">
-              <icon-svg class="icon" :icon-class="scope.row.success?'success':'failed'" />
-            </template>
-          </el-table-column>
-          <el-table-column width="150" prop="hash" :label="$t('hash')">
-            <template slot-scope="scope">
-              <div class="link">
-                <el-tooltip
-                  class="item"
-                  effect="light"
-                  :content="scope.row.hash"
-                  placement="top-end"
-                >
-                  <span
-                    @click="$router.push(`/extrinsic/${scope.row.hash}`)"
-                  >{{scope.row.hash|hashFormat}}</span>
-                </el-tooltip>
-              </div>
-            </template>
+          <el-table-column min-width="100" prop="share" :label="$t('share')">
+            <template slot-scope="scope">{{scope.row.share}}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -122,14 +61,14 @@
 <script>
 import Identicon from "@polkadot/vue-identicon";
 import XLSX from "xlsx";
-import moment from "moment";
 import { mapState } from "vuex";
 import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat } from "Utils/filters";
+import { fmtPercentage } from '../../utils/format';
 export default {
-  name: "Transfer",
+  name: "Nominator",
   components: {
     SearchInput,
     CsvDownload,
@@ -139,23 +78,23 @@ export default {
   data() {
     return {
       isLoading: false,
-      transfersData: [],
+      nominators: [],
       total: 0,
       selectList: [
         {
-          label: this.$t('all'),
+          label: this.$t("all"),
           value: "all"
         },
         {
-          label: this.$t('block'),
+          label: this.$t("block"),
           value: "block"
         },
         {
-          label: this.$t('extrinsic'),
+          label: this.$t("extrinsic"),
           value: "extrinsic"
         },
         {
-          label: this.$t('account'),
+          label: this.$t("account"),
           value: "account"
         }
       ]
@@ -163,7 +102,6 @@ export default {
   },
   computed: {
     ...mapState({
-      transfers: state => state.polka.transfers,
       sourceSelected: state => state.global.sourceSelected
     })
   },
@@ -177,56 +115,57 @@ export default {
 
   methods: {
     init() {
-      if (this.transfers && this.transfers.length > 0) {
-        this.transfersData = this.transfers;
-      } else {
-        this.isLoading = true;
-      }
-      this.getTransferData();
+      this.isLoading = true;
+      this.getNominatorData();
     },
     formatSymbol(module) {
-      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
-        return ''
+      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
+        return "";
       }
 
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
     },
-    async getTransferData(page = 0) {
-      const data = await this.$api["polkaGetTransfers"]({
+    async getNominatorData(page = 0) {
+      const data = await this.$api["polkaGetNominators"]({
         row: 25,
         page,
         address: this.$route.query.address
       });
-      this.transfersData = data.transfers || [];
+      const validatorInfo = await this.$api["polkaGetValidator"]({
+        Stash: this.$route.query.address
+      });
+      let info = validatorInfo && validatorInfo.info;
+      let total = (info && info.bonded_nominators) || 0;
+      if (data.list) {
+        this.nominators = data.list.map(function(val) {
+          let obj = {};
+          obj.nominator_stash = val.nominator_stash;
+          obj.bonded = val.bonded;
+          obj.hash = val.hash;
+          if (total) {
+            obj.share = fmtPercentage(val.bonded, total, 2) + '%';
+          }
+          return obj;
+        });
+      } else {
+        this.nominators = [];
+      }
       this.total = +data.count;
       this.isLoading = false;
-      if (page == 0) {
-        this.$store.commit("SET_TRANSFERS", data.transfers);
-      }
     },
     downloadClick() {
       const tableData = [
         [
-          this.$t('extrinsic_id'),
-          this.$t('block'),
-          this.$t('block_timestamp'),
-          this.$t('from'),
-          this.$t('to'),
-          this.$t('value'),
-          this.$t('result'),
-          this.$t('hash')
+          this.$t("account"),
+          this.$t("voted"),
+          this.$t("share")
         ]
       ];
-      this.transfersData.forEach(item => {
+      this.nominators.forEach(item => {
         let arr = [
-          item.extrinsic_index,
-          item.block_num,
-          moment(item.block_timestamp * 1000).format(),
-          item.from,
-          item.to,
-          item.amount,
-          item.success,
-          item.hash
+          item.nominator_stash,
+          item.bonded,
+          item.rank_nominator
         ];
         tableData.push(arr);
       });
@@ -235,17 +174,17 @@ export default {
       XLSX.utils.book_append_sheet(new_workbook, worksheet, "SheetJS");
       XLSX.writeFile(
         new_workbook,
-        `transfer-${this.transfersData[this.transfersData.length - 1].extrinsic_index}-${this.transfersData[0].extrinsic_index}.csv`
+        `nominator-${this.nominators[this.nominators.length - 1].nominator_stash}-${this.nominators[0].nominator_stash}.csv`
       );
     },
     currentChange(pageSize) {
-      this.getTransferData(--pageSize);
+      this.getNominatorData(--pageSize);
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.transfer-wrapper {
+.nominator-wrapper {
   .container {
     .search-input {
       height: 50px;
@@ -270,7 +209,7 @@ export default {
         }
       }
     }
-    .transfer-table {
+    .nominator-table {
       min-height: 120px;
       margin-top: 10px;
       padding: 13px 20px;
@@ -282,6 +221,7 @@ export default {
       }
       .icon {
         vertical-align: -0.5em;
+        margin-right: 10px;
         font-size: 26px;
         user-select: none;
       }
@@ -313,7 +253,7 @@ export default {
       }
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .container {
       .table-top {
         margin-top: 0;
@@ -335,7 +275,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.transfer-wrapper {
+.nominator-wrapper {
   .signed-checkbox {
     .el-checkbox {
       .el-checkbox__input {
@@ -361,7 +301,7 @@ export default {
       }
     }
   }
-  .transfer-table {
+  .nominator-table {
     .el-table {
       .el-table__header-wrapper {
         th,

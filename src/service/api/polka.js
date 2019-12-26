@@ -94,5 +94,55 @@ export default [
     options: {
       noShowDefaultError: true
     }
+  },
+  {
+    name: "getToken",
+    method: "POST",
+    desc: "获取token信息",
+    baseURL: "",
+    path: "/scan/token",
+    options: {
+      noShowDefaultError: true
+    }
+  },
+  {
+    name: "getValidators",
+    method: "POST",
+    desc: "获取validators列表",
+    baseURL: "",
+    path: "/scan/staking/validators",
+    options: {}
+  },
+  {
+    name: "getValidator",
+    method: "POST",
+    desc: "获取validator详情",
+    baseURL: "",
+    path: "/scan/staking/validator",
+    options: {}
+  },
+  {
+    name: "getWaitingValidators",
+    method: "POST",
+    desc: "获取waiting validators列表",
+    baseURL: "",
+    path: "/scan/staking/waiting",
+    options: {}
+  },
+  {
+    name: "getNominators",
+    method: "POST",
+    desc: "获取nominators列表",
+    baseURL: "",
+    path: "/scan/staking/nominators",
+    options: {}
+  },
+  {
+    name: "getVotes",
+    method: "POST",
+    desc: "获取votes列表",
+    baseURL: "",
+    path: "/scan/staking/voted",
+    options: {}
   }
 ];

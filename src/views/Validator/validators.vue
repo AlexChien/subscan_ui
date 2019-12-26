@@ -49,7 +49,7 @@
                   placement="top-start"
                 >
                   <span
-                    @click="$router.push(`/validator/${scope.row.validator_stash}`)"
+                    @click="isWaiting ? $router.push(`/waiting/${scope.row.validator_stash}`) :$router.push(`/validator/${scope.row.validator_stash}`)"
                   >{{scope.row.validator_stash | hashFormat}}</span>
                 </el-tooltip>
               </div>

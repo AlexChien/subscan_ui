@@ -12,7 +12,7 @@ export default [
       import(/* webpackChunkName: "dashboard" */ "Views/Validator")
   },
   {
-    name: "validator",
+    name: "validatorDetail",
     path: "/validator/:key",
     component: () =>
       import(/* webpackChunkName: "dashboard" */ "Views/ValidatorDetail")
@@ -36,7 +36,7 @@ export default [
       import(/* webpackChunkName: "dashboard" */ "Views/Validator")
   },
   {
-    name: "waiting",
+    name: "waitingDetail",
     path: "/waiting/:key",
     component: () =>
       import(/* webpackChunkName: "dashboard" */ "Views/ValidatorDetail")

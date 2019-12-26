@@ -386,7 +386,7 @@ export default {
           left: "50%",
           top: "10%",
           align: "left",
-          itemGap: 32,
+          itemGap: 28,
           icon: "circle",
           data: this.getXAxisData(),
           tooltip: {

@@ -80,7 +80,7 @@
                 </div>
                 <div class="balance-switch" v-if="this.shouldShowKton">
                   <el-dropdown class="asset-dropdown" trigger="click" @command="changeAssetType">
-                    <div>
+                    <div class="switch-hotspot">
                       <icon-svg class="icon" icon-class="triangle-down" />
                     </div>
                     <el-dropdown-menu slot="dropdown" class="asset-dropdown-menu">
@@ -681,8 +681,11 @@ export default {
       }
       .balance-switch {
         position: absolute;
-        top: 34px;
-        right: 26px;
+        top: 24px;
+        right: 16px;
+        .switch-hotspot {
+          padding: 10px;
+        }
         .svg-icon {
           font-size: 10px;
         }
@@ -838,7 +841,7 @@ export default {
 
 <style lang="scss">
 .asset-dropdown-menu.el-dropdown-menu {
-  width: 428px;
+  width: 433px;
   .menu-item {
     text-align: left;
     color: #212529;

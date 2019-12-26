@@ -15,8 +15,7 @@
           <router-link class="nav-item" to="/block" tag="li" active-class="choosed">{{$t('blocks')}}</router-link>
           <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">{{$t('extrinsics')}}</router-link>
           <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">{{$t('transfers')}}</router-link>
-          <router-link v-if="this.sourceSelected !== 'kusama'" class="nav-item" to="/account" tag="li" active-class="choosed">{{$t('accounts')}}</router-link>
-          <el-dropdown v-else class="account-dropdown" trigger="click">
+          <el-dropdown class="account-dropdown" trigger="click">
             <li class="nav-item">{{$t('accounts')}}</li>
             <el-dropdown-menu slot="dropdown" class="account-dropdown-menu">
               <el-dropdown-item class="menu-item">
@@ -66,8 +65,7 @@
                 <router-link class="item" to="/block" tag="div" @click.native="drawer = false">{{$t('blocks')}}</router-link>
                 <router-link class="item" to="/extrinsic" tag="div" @click.native="drawer = false">{{$t('extrinsics')}}</router-link>
                 <router-link class="item" to="/transfer" tag="div" @click.native="drawer = false">{{$t('transfers')}}</router-link>
-                <router-link v-if="this.sourceSelected !== 'kusama'" class="item" to="/account" tag="div" @click.native="drawer = false">{{$t('accounts')}}</router-link>
-                <div v-else>
+                <div>
                   <router-link class="item" to="" tag="div">{{$t('accounts')}}</router-link>
                   <router-link class="sub-item" to="/validator" tag="div" @click.native="drawer = false">{{$t('validators')}}</router-link>
                   <router-link class="sub-item" to="/account" tag="div" @click.native="drawer = false">{{$t('holders')}}</router-link>

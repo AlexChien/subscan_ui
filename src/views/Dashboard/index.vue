@@ -3,8 +3,7 @@
     <div class="container">
       <div class="metadata-chart-wrapper space-between">
         <meta-data class="metadata-component" />
-        <chart v-if="this.sourceSelected !== 'kusama'" class="chart-component" />
-        <chartPie v-else class="chart-component" />
+        <chartPie class="chart-component" />
       </div>
       <div class="blocks-transfers-wrapper space-between">
         <latest-blocks class="latest-blocks-component" :currentTime="currentTime" />

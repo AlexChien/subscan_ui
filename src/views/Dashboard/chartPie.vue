@@ -41,7 +41,11 @@ export default {
     }),
     tokenDetail() {
       if (this.token && this.token.detail) {
-        return this.token.detail[this.token.token];
+        if (this.sourceSelected === 'kusama') {
+          return this.token.detail[this.token.token];
+        } else {
+          return this.token.detail[this.currency.toUpperCase()];
+        }
       }
       return {};
     },
@@ -54,7 +58,7 @@ export default {
   },
   data() {
     return {
-      currency: "",
+      currency: "ring",
       colorMap: {
         darwinia: {
           mainColor: "#5930dd",
@@ -122,17 +126,17 @@ export default {
       const data = [
         {
           name: this.$t("total_bonded"),
-          formatVal: fmtNumber(bnShift(newV.locked_balance, -15), 0),
+          formatVal: fmtNumber(bnShift(newV.locked_balance, -(newV.accuracy + 3)), 0),
           value: fmtPercentage(newV.locked_balance, newV.total_issuance, 1)
         },
         {
           name: this.$t("transferrable"),
-          formatVal: fmtNumber(bnShift(newV.available_balance, -15), 0),
+          formatVal: fmtNumber(bnShift(newV.available_balance, -(newV.accuracy + 3)), 0),
           value: fmtPercentage(newV.available_balance, newV.total_issuance, 1)
         },
         {
           name: this.$t("others"),
-          formatVal: fmtNumber(bnShift(others, -15), 0),
+          formatVal: fmtNumber(bnShift(others, -(newV.accuracy + 3)), 0),
           value: fmtPercentage(others, newV.total_issuance, 1)
         }
       ];
@@ -188,7 +192,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: true,
+            ignore: this.sourceSelected === 'kusama',
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -274,7 +278,7 @@ export default {
             type: "image",
             id: "logosddd",
             z: -100,
-            ignore: true,
+            ignore: this.sourceSelected === 'kusama',
             left: "38%",
             bottom: "12",
             bounding: "raw",
@@ -304,19 +308,19 @@ export default {
         data = [
           {
             name: this.$t("total_bonded"),
-            formatVal: fmtNumber(bnShift(newV.locked_balance, -15), 0),
+            formatVal: fmtNumber(bnShift(newV.locked_balance, -(newV.accuracy + 3)), 0),
             value:
               fmtPercentage(newV.locked_balance, newV.total_issuance, 1) || 0
           },
           {
             name: this.$t("transferrable"),
-            formatVal: fmtNumber(bnShift(newV.available_balance, -15), 0),
+            formatVal: fmtNumber(bnShift(newV.available_balance, -(newV.accuracy + 3)), 0),
             value:
               fmtPercentage(newV.available_balance, newV.total_issuance, 1) || 0
           },
           {
             name: this.$t("others"),
-            formatVal: fmtNumber(bnShift(others, -15), 0),
+            formatVal: fmtNumber(bnShift(others, -(newV.accuracy + 3)), 0),
             value: fmtPercentage(others, newV.total_issuance, 1) || 0
           }
         ];
@@ -374,7 +378,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: true,
+            ignore: this.sourceSelected === 'kusama',
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -456,8 +460,8 @@ export default {
       });
     },
     switchKton() {
-      if (this.currency) {
-        this.currency = "";
+      if (this.currency === "kton") {
+        this.currency = "ring";
       } else {
         this.currency = "kton";
       }

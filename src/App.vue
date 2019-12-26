@@ -93,7 +93,7 @@
     }
     .main {
       flex: auto;
-      background: #f3f4f6;
+      background: #f8f9fa;
     }
     .subscan-content {
       padding: 20px 0;
@@ -110,10 +110,21 @@
       width: 290px;
       height: 250px;
     }
+    .el-table {
+      &::before {
+        background-color: transparent;
+      }
+      tr:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+    }
 
     &.darwinia {
       --main-color: #5930dd;
       --main-color-light: #5930dd80;
+      --main-color-white: #5930dd0d;
       --main-button-color: #302b3c;
       --link-color: #4572DE;
       --navbar-bg: linear-gradient(
@@ -127,6 +138,7 @@
     &.kusama {
       --main-color: #e90979;
       --main-color-light: #e9097980;
+      --main-color-white: #e909790d;
       --main-button-color: #302b3c;
       --link-color: #4572DE;
       --navbar-bg: #000;
@@ -135,6 +147,7 @@
     &.polkadot {
       --main-color: #e90979;
       --main-color-light: #e9097980;
+      --main-color-white: #e909790d;
       --main-button-color: #302b3c;
       --link-color: #4572DE;
       --navbar-bg: #e90979;
@@ -143,6 +156,7 @@
     &.edgeware {
       --main-color: #000;
       --main-color-light: #00000080;
+      --main-color-white: #0000000d;
       --main-button-color: #302b3c;
       --link-color: #4572DE;
       --navbar-bg: #000;

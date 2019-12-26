@@ -2,14 +2,31 @@
   <div class="nav-bar-wrapper"
     :class="{'is-home-page': isHomePage}"
   >
-    <div class="container space-between align-items-center">
+    <div class="container align-items-center">
       <router-link class="logo" to="/" tag="div"></router-link>
+      <div class="rate">
+        <div v-if="this.sourceSelected === 'kusama'" class="kms-rate">
+          <span class="label">{{$t('kusama.short')}}</span>
+          <span class="info">{{price}}</span>
+        </div>
+      </div>
       <div class="right-menu align-items-center">
         <ul class="nav-item-list align-items-center">
           <router-link class="nav-item" to="/block" tag="li" active-class="choosed">{{$t('blocks')}}</router-link>
           <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">{{$t('extrinsics')}}</router-link>
           <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">{{$t('transfers')}}</router-link>
-          <router-link class="nav-item" to="/account" tag="li" active-class="choosed">{{$t('accounts')}}</router-link>
+          <router-link v-if="this.sourceSelected !== 'kusama'" class="nav-item" to="/account" tag="li" active-class="choosed">{{$t('accounts')}}</router-link>
+          <el-dropdown v-else class="account-dropdown" trigger="click">
+            <li class="nav-item">{{$t('accounts')}}</li>
+            <el-dropdown-menu slot="dropdown" class="account-dropdown-menu">
+              <el-dropdown-item class="menu-item">
+                <router-link class="account-nav-item" to="/validator" tag="li" active-class="choosed">{{$t('validators')}}</router-link>
+              </el-dropdown-item>
+              <el-dropdown-item class="menu-item">
+                <router-link class="account-nav-item" to="/account" tag="li" active-class="choosed">{{$t('holders')}}</router-link>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </ul>
         <el-dropdown class="dropdown" trigger="click">
           <span class="el-dropdown-link align-items-center">
@@ -49,7 +66,12 @@
                 <router-link class="item" to="/block" tag="div" @click.native="drawer = false">{{$t('blocks')}}</router-link>
                 <router-link class="item" to="/extrinsic" tag="div" @click.native="drawer = false">{{$t('extrinsics')}}</router-link>
                 <router-link class="item" to="/transfer" tag="div" @click.native="drawer = false">{{$t('transfers')}}</router-link>
-                <router-link class="item" to="/account" tag="div" @click.native="drawer = false">{{$t('accounts')}}</router-link>
+                <router-link v-if="this.sourceSelected !== 'kusama'" class="item" to="/account" tag="div" @click.native="drawer = false">{{$t('accounts')}}</router-link>
+                <div v-else>
+                  <router-link class="item" to="" tag="div">{{$t('accounts')}}</router-link>
+                  <router-link class="sub-item" to="/validator" tag="div" @click.native="drawer = false">{{$t('validators')}}</router-link>
+                  <router-link class="sub-item" to="/account" tag="div" @click.native="drawer = false">{{$t('holders')}}</router-link>
+                </div>
               </div>
             </div>
             <div class="language-section">
@@ -74,6 +96,7 @@
 <script>
 import { mapState } from "vuex";
 import SearchInput from '@/views/Components/SearchInput';
+import { fmtNumber} from '../../utils/format';
 export default {
   name: "NavBar",
   components: {
@@ -81,6 +104,7 @@ export default {
   },
   data() {
     return {
+      currentTime: Date.now(),
       drawer: false,
       direction: 'rtl',
       selectList: [
@@ -133,11 +157,64 @@ export default {
       }
       return result
     },
+    price() {
+      if (this.token.detail) {
+        let tokenDetail = this.token.detail[this.token.token];
+        let price = '$' + fmtNumber(tokenDetail.price, 3);
+        let change = '(' + fmtNumber(+tokenDetail.price_change, 2) + '%)';
+        return price + change;
+      } else {
+        return '';
+      }
+    },
     ...mapState({
-      sourceSelected: state => state.global.sourceSelected
+      sourceSelected: state => state.global.sourceSelected,
+      token: state => state.polka.token
     })
   },
+  created() {
+    this.init();
+    this.w = new Worker('/' + "timeWorker.js");
+    this.w.onmessage = () => {
+      this.changeTime();
+    };
+  },
+  beforeDestroy() {
+    // 销毁 worker
+    if (this.w && typeof this.w.terminate === "function") {
+      this.w.terminate();
+    }
+    this.$loop.removeLoop("metadata");
+    this.$loop.removeLoop("token");
+  },
   methods: {
+    async init() {
+      // await this.getData();
+      this.$loop.addLoop(
+        "metadata",
+        () => {
+          return this.getMetaData();
+        },
+        true
+      );
+      this.$loop.addLoop(
+        "token",
+        () => {
+          return this.getToken();
+        },
+        true
+      );
+    },
+    async getToken() {
+      await Promise.all([
+        this.$store.dispatch("SetToken")
+      ]);
+    },
+    async getMetaData() {
+      await Promise.all([
+        this.$store.dispatch("SetMetadata")
+      ]);
+    },
     changeLanguage(language) {
       GLOBAL.vbus.$emit("CHANGE_LANGUAGE", language);
       this.$store.dispatch("SetLanguage", language);
@@ -149,6 +226,9 @@ export default {
     changeSource(source) {
       // this.$store.dispatch("SetSourceSelected", source);
       window.location.href = this.$const[`SYMBOL/${source}`]['domain']['value'];
+    },
+    changeTime() {
+      this.currentTime = Date.now();
     }
   }
 };
@@ -163,14 +243,25 @@ export default {
     height: 100%;
     .logo {
       height: 100%;
-      width: 250px;
+      width: 150px;
       background: url("../../assets/images/logo@2x.png") no-repeat left center;
       background-size: 125px 25px;
       cursor: pointer;
     }
+    .rate {
+      flex: 1 1 auto;
+      margin-top: 2px;
+      font-size: 14px;
+      .label {
+        font-weight: bold;
+      }
+      .info {
+        margin-left: 8px;
+      }
+    }
     .right-menu {
       .nav-item-list {
-        .nav-item {
+        > .nav-item {
           height: 50px;
           line-height: 50px;
           cursor: pointer;
@@ -181,6 +272,17 @@ export default {
           &:last-child {
             margin-right: 0;
           }
+        }
+      }
+      .account-dropdown {
+        color: #fff;
+        .nav-item {
+          height: 50px;
+          line-height: 50px;
+          cursor: pointer;
+          font-size: 14px;
+          user-select: none;
+          font-weight: 600;
         }
       }
       .dropdown {
@@ -250,6 +352,9 @@ export default {
         flex: 0 0 45vw;
         margin-left: 10px;
       }
+      .rate {
+        display: none;
+      }
       .right-menu {
         flex: 1 1 auto;
         .nav-item-list {
@@ -295,6 +400,12 @@ export default {
       margin: 10px 0;
       color: #FFF;
     }
+    .sub-item {
+      font-size: 14px;
+      padding: 0 10px 10px;
+      margin: 4px 0;
+      color: #FFF;
+    }
   }
   .language-section {
     height: 125px;
@@ -328,6 +439,19 @@ export default {
           background-size: cover;
         }
       }
+    }
+  }
+}
+.account-dropdown-menu.el-dropdown-menu {
+  .menu-item {
+    text-align: center;
+    color: #212529;
+    cursor: pointer;
+    outline: none;
+    &:hover {
+      color: #16181b;
+      text-decoration: none;
+      background-color: #f8f9fa;
     }
   }
 }

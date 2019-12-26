@@ -36,6 +36,11 @@ export default {
         end(newValue, oldValue) {
             this.startNum = oldValue;
             this.initCountUp();
+        },
+        options(newValue, oldValue) {
+            if (newValue.suffix !== oldValue.suffix) {
+                this.initCountUp();
+            }
         }
     },
     mounted() {

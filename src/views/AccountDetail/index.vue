@@ -19,12 +19,11 @@
               <identicon :size="40" theme="polkadot" :value="address" />
             </div>
             <div class="address">{{address}}</div>
-            <div
-              class="copy-btn"
-              v-clipboard:copy="address"
-              v-clipboard:success="clipboardSuccess"
-            >
-              <icon-svg class="iconfont" icon-class="copy"/>
+            <div class="copy-btn" v-clipboard:copy="address" v-clipboard:success="clipboardSuccess">
+              <icon-svg class="iconfont" icon-class="copy" />
+            </div>
+            <div v-if="role" class="role" :class="role">
+              <div>{{role === 'nominator' ? 'N' : 'V'}}</div>
             </div>
           </div>
           <div
@@ -44,29 +43,88 @@
           />
         </div>
         <div class="intro space-between">
-          <div class="asset subscan-card" v-loading="isIntroLoading">
-            <div class="title">{{$t('asset')}}</div>
-            <div class="desc">
-              <div class="desc-item align-items-center no-border-bottom">
-                <div class="label">{{$t('balance')}}</div>
-                <div class="value"><balances :amount="accountInfo.account.balance" module="balances"></balances></div>
-              </div>
-              <div class="desc-item align-items-center" v-if="this.shouldShowKton">
-                <div class="label"></div>
-                <div class="value"><balances :amount="accountInfo.account.kton_balance" module="kton"></balances></div>
+          <div class="asset" v-loading="isIntroLoading">
+            <div class="align-items-center">
+              <icon-svg class="icon" icon-class="asset" />
+              <div class="title">{{$t('asset')}}</div>
+            </div>
+            <div class="subscan-card">
+              <div class="desc">
+                <div class="desc-item align-items-center no-border-bottom">
+                  <div class="label">{{$t('balance')}}</div>
+                  <div class="value">
+                    <balances
+                      v-if="!showKton"
+                      :amount="accountInfo.account.balance"
+                      module="balances"
+                    ></balances>
+                    <balances v-else :amount="accountInfo.account.kton_balance" module="kton"></balances>
+                  </div>
+                </div>
+                <div class="desc-item align-items-center no-border-bottom">
+                  <div class="label">{{$t('bonded')}}</div>
+                  <div class="value">
+                    <balances
+                      v-if="!showKton"
+                      :amount="accountInfo.account.ring_lock"
+                      module="balances"
+                      :hasImg="false"
+                    ></balances>
+                    <balances
+                      v-else
+                      :amount="accountInfo.account.kton_lock"
+                      module="kton"
+                      :hasImg="false"
+                    ></balances>
+                  </div>
+                </div>
+                <div class="balance-switch" v-if="this.shouldShowKton">
+                  <el-dropdown class="asset-dropdown" trigger="click" @command="changeAssetType">
+                    <div>
+                      <icon-svg class="icon" icon-class="triangle-down" />
+                    </div>
+                    <el-dropdown-menu slot="dropdown" class="asset-dropdown-menu">
+                      <el-dropdown-item class="menu-item" command="balance">
+                        <balances :amount="accountInfo.account.balance" module="balances"></balances>
+                      </el-dropdown-item>
+                      <el-dropdown-item class="menu-item" command="kton">
+                        <balances :amount="accountInfo.account.kton_balance" module="kton"></balances>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
               </div>
             </div>
           </div>
-          <div class="basic subscan-card" v-loading="isIntroLoading">
-            <div class="title">{{$t('basic')}}</div>
-            <div class="desc">
-              <div class="desc-item align-items-center">
-                <div class="label">{{$t('account_index')}}</div>
-                <div class="value">{{accountInfo.account.account_index}}</div>
-              </div>
-              <div class="desc-item align-items-center">
-                <div class="label">{{$t('nonce')}}</div>
-                <div class="value">{{accountInfo.account.nonce}}</div>
+          <div class="basic" v-loading="isIntroLoading">
+            <div class="align-items-center">
+              <icon-svg class="icon" icon-class="menu-basic" />
+              <div class="title">{{$t('basic')}}</div>
+            </div>
+            <div class="subscan-card">
+              <div class="desc">
+                <div class="desc-item align-items-center">
+                  <div class="label">{{$t('account_index')}}</div>
+                  <div class="value">{{accountInfo.account.account_index}}</div>
+                </div>
+                <div class="desc-item align-items-center">
+                  <div class="label">{{$t('nonce')}}</div>
+                  <div class="value">{{accountInfo.account.nonce}}</div>
+                </div>
+                <div class="desc-item align-items-center">
+                  <div class="label">{{$t('role')}}</div>
+                  <div
+                    v-if="role==='validator'"
+                    class="value link"
+                    @click="$router.push(`/validator/${address}`)"
+                  >{{$t('validator')}}</div>
+                  <div
+                    v-else-if="role==='nominator'"
+                    class="value link"
+                    @click="switch2Vote"
+                  >{{$t('nominator')}}</div>
+                  <div v-else class="value">{{$t('none')}}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -98,7 +156,12 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column min-width="140" prop="extrinsic_hash" :label="$t('extrinsic_hash')" fit>
+                <el-table-column
+                  min-width="140"
+                  prop="extrinsic_hash"
+                  :label="$t('extrinsic_hash')"
+                  fit
+                >
                   <template slot-scope="scope">
                     <div class="link">
                       <el-tooltip
@@ -155,7 +218,7 @@
               name="transfer"
             >
               <el-table :data="transfersInfo.transfers" style="width: 100%">
-                <el-table-column min-width="120" prop="extrinsic_index" :label="$t('extrinsic_id')" >
+                <el-table-column min-width="120" prop="extrinsic_index" :label="$t('extrinsic_id')">
                   <template slot-scope="scope">
                     <div class="link">
                       <span
@@ -164,7 +227,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column min-width="120" prop="block_num" :label="$t('block')" >
+                <el-table-column min-width="120" prop="block_num" :label="$t('block')">
                   <template slot-scope="scope">
                     <div class="link">
                       <span
@@ -176,7 +239,7 @@
                 <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
                   <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
                 </el-table-column>
-                <el-table-column min-width="150" prop="from" :label="$t('from')" >
+                <el-table-column min-width="150" prop="from" :label="$t('from')">
                   <template slot-scope="scope">
                     <div :class="scope.row.from === address ? '' : 'link'">
                       <el-tooltip
@@ -199,7 +262,7 @@
                     </div>
                   </template>
                 </el-table-column>
-                <el-table-column min-width="150" prop="to" :label="$t('to')" >
+                <el-table-column min-width="150" prop="to" :label="$t('to')">
                   <template slot-scope="scope">
                     <div :class="scope.row.to === address ? '' : 'link'">
                       <el-tooltip
@@ -219,7 +282,6 @@
                   <template
                     slot-scope="scope"
                   >{{`${scope.row.amount} ${formatSymbol(scope.row.module)}`}}</template>
-
                 </el-table-column>
                 <el-table-column min-width="70" prop="success" :label="$t('result')">
                   <template slot-scope="scope">
@@ -244,10 +306,78 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
+            <el-tab-pane
+              v-if="voteInfo.count>0"
+              :label="`${$t('vote')}${voteInfo.count>0?` (${voteInfo.count})`:''}`"
+              name="vote"
+            >
+              <el-table :data="voteInfo.list" style="width: 100%">
+                <el-table-column min-width="150" prop="nominator_stash" :label="$t('validator')">
+                  <template slot-scope="scope">
+                    <div class="link">
+                      <span
+                        @click="$router.push(`/validator/${scope.row.validator_stash}`)"
+                      >{{scope.row.validator_stash | hashFormat}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  min-width="150"
+                  prop="bonded_owner"
+                  :label="$t('validator_bonded')"
+                >
+                  <template slot-scope="scope">
+                    <div>
+                      <span>{{scope.row.bonded_owner + ' ' + formatSymbol('balances')}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  min-width="150"
+                  prop="bonded_nominators"
+                  :label="$t('total_bonded')"
+                >
+                  <template slot-scope="scope">
+                    <div>
+                      <span>{{scope.row.bonded_nominators + ' ' + formatSymbol('balances')}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="100" prop="count_nominators" :label="$t('nominator')">
+                  <template slot-scope="scope">
+                    <div
+                      :class="{link:scope.row.count_nominators > 0}"
+                      @click="scope.row.count_nominators > 0 && $router.push(`/nominator?address=${scope.row.validator_stash}`)"
+                    >
+                      <span>{{scope.row.count_nominators}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  min-width="110"
+                  prop="validator_prefs_value"
+                  :label="$t('commission')"
+                >
+                  <template slot-scope="scope">
+                    <div>
+                      <span>{{getCommission(scope.row.validator_prefs_value)}}</span>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="100" prop="my_share" :label="$t('my_share')">
+                  <template
+                    slot-scope="scope"
+                  >{{getMyShare(scope.row.bonded, scope.row.bonded_nominators, 2)}}</template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
           </el-tabs>
           <div class="view-all-extrinsic" @click="goTransferOrExtrinsicByAddress">{{$t('view_all')}}</div>
         </div>
-        <div class="view-all-extrinsic mobile" @click="goTransferOrExtrinsicByAddress">{{$t('view_all')}}</div>
+        <div
+          class="view-all-extrinsic mobile"
+          @click="goTransferOrExtrinsicByAddress"
+        >{{$t('view_all')}}</div>
       </template>
     </div>
   </div>
@@ -259,8 +389,8 @@ import SearchInput from "@/views/Components/SearchInput";
 import { mapState } from "vuex";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
-import Balances from '../ExtrinsicDetail/Balances'
-
+import Balances from "../ExtrinsicDetail/Balances";
+import { fmtPercentage, getCommission } from "../../utils/format";
 export default {
   name: "AccountDetail",
   components: {
@@ -279,6 +409,8 @@ export default {
   data() {
     return {
       address: "",
+      showKton: false,
+      role: "",
       accountInfo: {},
       transfersInfo: {
         count: 0,
@@ -288,25 +420,29 @@ export default {
         count: 0,
         extrinsics: []
       },
+      voteInfo: {
+        count: 0,
+        list: []
+      },
       activeTab: "extrinsic",
       notFound: false,
       isLoading: false,
       isIntroLoading: false,
       selectList: [
         {
-          label: this.$t('all'),
+          label: this.$t("all"),
           value: "all"
         },
         {
-          label: this.$t('block'),
+          label: this.$t("block"),
           value: "block"
         },
         {
-          label: this.$t('extrinsic'),
+          label: this.$t("extrinsic"),
           value: "extrinsic"
         },
         {
-          label: this.$t('account'),
+          label: this.$t("account"),
           value: "account"
         }
       ]
@@ -314,10 +450,11 @@ export default {
   },
   computed: {
     ...mapState({
+      metadata: state => state.polka.metadata,
       sourceSelected: state => state.global.sourceSelected
     }),
     shouldShowKton() {
-      return this.sourceSelected === 'darwinia'
+      return this.sourceSelected === "darwinia";
     }
   },
   created() {
@@ -334,12 +471,23 @@ export default {
       this.getAccountInfo();
       this.activeTab = "extrinsic";
     },
+    changeAssetType(type) {
+      this.showKton = type === "kton";
+    },
+    switch2Vote() {
+      this.activeTab = "vote";
+    },
+    getMyShare(vote, total, digits) {
+      return fmtPercentage(vote, total, digits) + "%";
+    },
+    getCommission(perf) {
+      return getCommission(perf, this.metadata.commissionAccuracy);
+    },
     formatSymbol(module) {
-      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
-        return ''
+      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
+        return "";
       }
-
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
     },
     async getAccountInfo() {
       this.isLoading = true;
@@ -352,13 +500,18 @@ export default {
           }
           this.address = res.account.address;
           this.accountInfo = res;
+          this.role = res.account && res.account.role;
           this.notFound = false;
           this.isIntroLoading = false;
-          await Promise.all([this.getTransferInfo(), this.getExtrinsicInfo()])
+          await Promise.all([
+            this.getTransferInfo(),
+            this.getExtrinsicInfo(),
+            this.getVoteInfo()
+          ])
             .catch(() => {})
             .finally(() => {
               this.isLoading = false;
-          });
+            });
         })
         .catch(() => {
           this.notFound = true;
@@ -372,11 +525,24 @@ export default {
         row: 10,
         page: 0,
         address: this.address
-      }).catch(()=> {
+      }).catch(() => {
         this.transfersInfo = { count: 0, transfers: [] };
       });
       data.transfers === null && (data.transfers = []);
       this.transfersInfo = data;
+    },
+    async getVoteInfo() {
+      const data = await this.$api["polkaGetVotes"]({
+        row: 10,
+        page: 0,
+        address: this.address
+      }).catch(() => {
+        this.voteInfo = { count: 0, list: [] };
+      });
+      data.list === null && (data.list = []);
+      data.count = data.list.length;
+      data.list = data.list.slice(0, 10);
+      this.voteInfo = data;
     },
     async getExtrinsicInfo() {
       const data = await this.$api["polkaGetExtrinsics"]({
@@ -384,7 +550,7 @@ export default {
         page: 0,
         address: this.address,
         signed: "all"
-      }).catch(()=> {
+      }).catch(() => {
         this.extrinsicsInfo = { count: 0, extrinsics: [] };
       });
       data.extrinsics === null && (data.extrinsics = []);
@@ -399,7 +565,7 @@ export default {
     clipboardSuccess() {
       this.$message({
         type: "success",
-        message: this.$t('copy_success')
+        message: this.$t("copy_success")
       });
     }
   }
@@ -430,6 +596,25 @@ export default {
         color: var(--main-color-light);
         cursor: pointer;
       }
+      .role {
+        margin-left: 5px;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 50%;
+        &.nominator {
+          border: 1px solid var(--main-color);
+          color: var(--main-color);
+        }
+        &.validator {
+          background-color: var(--main-color);
+          color: #f8f9fa;
+          border-radius: 50%;
+        }
+      }
     }
     .header-right {
       width: 400px;
@@ -441,21 +626,23 @@ export default {
     .asset,
     .basic {
       width: 580px;
-      padding: 10px 0;
+      .svg-icon {
+        font-size: 26px;
+      }
       .title {
-        padding: 0 20px;
+        padding-left: 10px;
         height: 50px;
         line-height: 50px;
         font-size: 14px;
         font-weight: bold;
         color: #302b3c;
-        border-bottom: 1px solid #e7eaf3;
       }
       .desc {
-        padding: 0 20px;
+        padding: 10px 20px;
+        height: 140px;
         .desc-item {
-          height: 50px;
-          line-height: 50px;
+          height: 40px;
+          line-height: 40px;
           &:not(:last-child):not(.no-border-bottom) {
             border-bottom: 1px solid #e7eaf3;
           }
@@ -464,11 +651,33 @@ export default {
             padding-left: 10px;
             font-size: 14px;
             color: #2a2727;
+            &.link {
+              color: var(--link-color);
+              cursor: pointer;
+            }
           }
           .label {
             width: 120px;
             font-weight: 600;
           }
+        }
+      }
+    }
+    .asset {
+      .desc {
+        position: relative;
+        padding: 20px;
+        .desc-item {
+          height: 50px;
+          line-height: 50px;
+        }
+      }
+      .balance-switch {
+        position: absolute;
+        top: 34px;
+        right: 26px;
+        .svg-icon {
+          font-size: 10px;
         }
       }
     }
@@ -552,7 +761,7 @@ export default {
       color: rgba(152, 149, 159, 1);
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .account-header {
       height: inherit;
       flex-direction: column;
@@ -590,7 +799,7 @@ export default {
         margin-top: 12px;
         border-radius: 2px;
         color: var(--main-color);
-        background-color: #FFF;
+        background-color: #fff;
         border: 1px solid var(--main-color);
         text-align: center;
         font-size: 14px;
@@ -621,6 +830,20 @@ export default {
 </style>
 
 <style lang="scss">
+.asset-dropdown-menu.el-dropdown-menu {
+  width: 428px;
+  .menu-item {
+    text-align: left;
+    color: #212529;
+    cursor: pointer;
+    outline: none;
+    &:hover {
+      color: #16181b;
+      text-decoration: none;
+      background-color: #f8f9fa;
+    }
+  }
+}
 .transfer-extrinsic-wrapper {
   .el-tabs {
     .el-tabs__header {

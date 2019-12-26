@@ -25,12 +25,30 @@
         </div>
       </router-link>
     </div>
-    <div>
+    <div v-if="this.sourceSelected !== 'kusama'">
       <router-link class="nav-item" to="/account" tag="div" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="active-accounts"></icon-svg>
           <div class="label">{{$t('active_accounts')}}</div>
           <count-to class="value" :end="Number(metadata.count_account||0)" :duration="0.8" :decimal="0" />
+        </div>
+      </router-link>
+    </div>
+    <div v-else>
+      <router-link class="nav-item" to="/validator" tag="div" active-class="choosed">
+        <div class="metadata-item">
+          <icon-svg class="icon" icon-class="active-accounts"></icon-svg>
+          <div class="label">{{$t('validators')}}</div>
+          <count-to class="value" :end="Number(metadata.current_validator_count||0)" :duration="0.8" :decimal="0" :options="validatorCountOpts"/>
+        </div>
+      </router-link>
+    </div>
+    <div>
+      <router-link class="nav-item" to="/transfer" tag="div" active-class="choosed">
+        <div class="metadata-item">
+          <icon-svg class="icon" icon-class="transfers"></icon-svg>
+          <div class="label">{{$t('transfers')}}</div>
+          <count-to class="value" :end="Number(metadata.count_transfer||0)" :duration="0.8" :decimal="0"/>
         </div>
       </router-link>
     </div>
@@ -52,8 +70,14 @@ export default {
   components: { countTo },
   computed: {
     ...mapState({
+      sourceSelected: state => state.global.sourceSelected,
       metadata: state => state.polka.metadata
-    })
+    }),
+    validatorCountOpts() {
+      return {
+        suffix: '/' + Number(this.metadata.validator_count||0),
+      }
+    }
   }
 };
 </script>

@@ -30,54 +30,56 @@
           />
         </div>
         <div class="block-info-list subscan-card" v-loading="isLoading">
-          <div class="info-item">
-            <div class="label">{{$t('timestamp')}}</div>
-            <div class="value">{{blockInfo.block_timestamp|parseTimeToUtc}}</div>
-          </div>
-          <div class="info-item">
-            <div class="label">{{$t('hash')}}</div>
-            <div class="value copy align-items-center">
-              <div>{{blockInfo.hash}}</div>
-              <div
-                class="copy-btn"
-                v-clipboard:copy="blockInfo.hash"
-                v-clipboard:success="clipboardSuccess"
-              >
-                <icon-svg class="iconfont" icon-class="copy"/>
+          <div>
+            <div class="info-item">
+              <div class="label">{{$t('timestamp')}}</div>
+              <div class="value">{{blockInfo.block_timestamp|parseTimeToUtc}}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">{{$t('hash')}}</div>
+              <div class="value copy align-items-center">
+                <div>{{blockInfo.hash}}</div>
+                <div
+                  class="copy-btn"
+                  v-clipboard:copy="blockInfo.hash"
+                  v-clipboard:success="clipboardSuccess"
+                >
+                  <icon-svg class="iconfont" icon-class="copy"/>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="info-item">
-            <div class="label">{{$t('parent_hash')}}</div>
-            <div class="value link" @click="goBlockNum(-1)">{{blockInfo.parent_hash}}</div>
-          </div>
-          <div class="info-item">
-            <div class="label">{{$t('state_root')}}</div>
-            <div class="value">{{blockInfo.state_root}}</div>
-          </div>
-          <div class="info-item">
-            <div class="label">{{$t('extrinsics_root')}}</div>
-            <div class="value">{{blockInfo.extrinsics_root}}</div>
-          </div>
-          <div class="info-item">
-            <div class="label">{{$t('validators')}}</div>
-            <div class="value link copy align-items-center">
-              <div
-                @click="$router.push(`/account/${blockInfo.validator}`)"
-              >{{blockInfo.validator}}</div>
-              <div
-                class="copy-btn"
-                v-if="blockInfo.validator"
-                v-clipboard:copy="blockInfo.validator"
-                v-clipboard:success="clipboardSuccess"
-              >
-                <icon-svg class="iconfont" icon-class="copy"/>
+            <div class="info-item">
+              <div class="label">{{$t('parent_hash')}}</div>
+              <div class="value link" @click="goBlockNum(-1)">{{blockInfo.parent_hash}}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">{{$t('state_root')}}</div>
+              <div class="value">{{blockInfo.state_root}}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">{{$t('extrinsics_root')}}</div>
+              <div class="value">{{blockInfo.extrinsics_root}}</div>
+            </div>
+            <div class="info-item">
+              <div class="label">{{$t('validators')}}</div>
+              <div class="value link copy align-items-center">
+                <div
+                  @click="$router.push(`/account/${blockInfo.validator}`)"
+                >{{blockInfo.validator}}</div>
+                <div
+                  class="copy-btn"
+                  v-if="blockInfo.validator"
+                  v-clipboard:copy="blockInfo.validator"
+                  v-clipboard:success="clipboardSuccess"
+                >
+                  <icon-svg class="iconfont" icon-class="copy"/>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="info-item">
-            <div class="label">{{$t('block_time')}}</div>
-            <div class="value">{{blockInfo.block_timestamp|timeAgo}}</div>
+            <div class="info-item">
+              <div class="label">{{$t('block_time')}}</div>
+              <div class="value">{{blockInfo.block_timestamp|timeAgo}}</div>
+            </div>
           </div>
         </div>
         <div id="extrinsic-event-log" class="block-extrinsic-event-log subscan-card" v-loading="isLoading">

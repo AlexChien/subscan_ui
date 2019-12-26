@@ -1,6 +1,6 @@
 <template>
   <div class="align-items-center">
-    <div class="currency-icon">
+    <div class="currency-icon" v-if="hasImg">
       <img
         :src="icon"
         :alt="symbol"
@@ -21,6 +21,10 @@
       amount: {
         type: String,
         default: "0"
+      },
+      hasImg: {
+        type: Boolean,
+        default: true
       },
       module: {
         type: String,

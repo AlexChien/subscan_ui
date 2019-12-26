@@ -6,6 +6,42 @@ export default [
       import(/* webpackChunkName: "dashboard" */ "Views/Dashboard")
   },
   {
+    name: "validator",
+    path: "/validator",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "Views/Validator")
+  },
+  {
+    name: "validator",
+    path: "/validator/:key",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "Views/ValidatorDetail")
+  },
+  {
+    name: "nominator",
+    path: "/nominator",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "Views/Nominator")
+  },
+  {
+    name: "vote",
+    path: "/vote",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "Views/Vote")
+  },
+  {
+    name: "waiting",
+    path: "/waiting",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "Views/Validator")
+  },
+  {
+    name: "waiting",
+    path: "/waiting/:key",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "Views/ValidatorDetail")
+  },
+  {
     name: "block",
     path: "/block",
     component: () => import(/* webpackChunkName: "block" */ "Views/Block")

@@ -13,7 +13,13 @@
 <script>
 let myChart;
 import { mapState } from "vuex";
-import { fmtNumber, fmtPercentage, bnMinus, bnPlus, bnShift} from '../../utils/format';
+import {
+  fmtNumber,
+  fmtPercentage,
+  bnMinus,
+  bnPlus,
+  bnShift
+} from "../../utils/format";
 import ring from "../../assets/images/ring@2x.png";
 import kton from "../../assets/images/kton@2x.png";
 import kusama from "../../assets/images/ksm@2x.png";
@@ -28,7 +34,6 @@ import oIcon from "../../assets/images/o.png";
 export default {
   computed: {
     ...mapState({
-    //   dailyChart: state => state.polka.dailyChart,
       sourceSelected: state => state.global.sourceSelected,
       token: state => state.polka.token
     }),
@@ -39,56 +44,46 @@ export default {
       return {};
     },
     iconImg() {
-      if (this.sourceSelected === 'kusama') {
-        return kusama
+      if (this.sourceSelected === "kusama") {
+        return kusama;
       }
-      return this.currency === 'kton' ? kton : ring;
+      return this.currency === "kton" ? kton : ring;
     }
   },
   data() {
     return {
-      currency: '',
+      currency: "",
       colorMap: {
         darwinia: {
           mainColor: "#5930dd",
-          colors: ['#5930dd', '#a995eb', '#d7d7d7'],
+          colors: ["#5930dd", "#a995eb", "#d7d7d7"],
           nIcon: nIconPurple,
           vIcon: vIconPurple,
           oIcon: oIcon
         },
         kusama: {
           mainColor: "#e90979",
-          colors: ['#e90979', '#ffaccb', '#d7d7d7'],
+          colors: ["#e90979", "#ffaccb", "#d7d7d7"],
           nIcon: nIconPink,
           vIcon: vIconPink,
           oIcon: oIcon
         },
         polkadot: {
           mainColor: "#e90979",
-          colors: ['#e90979', '#ffaccb', '#d7d7d7'],
+          colors: ["#e90979", "#ffaccb", "#d7d7d7"],
           nIcon: nIconPink,
           vIcon: vIconPink,
           oIcon: oIcon
         },
         edgeware: {
           mainColor: "#000000",
-          colors: ['#000000', '#a6a6a6', '#d7d7d7'],
+          colors: ["#000000", "#a6a6a6", "#d7d7d7"],
           nIcon: nIconBlack,
           vIcon: vIconBlack,
           oIcon: oIcon
         }
-      },
-      dailyChart: [{
-          time: "2019-12-04",
-          transfer_count: 4
-      }, {
-          time: "2019-12-03",
-          transfer_count: 4
-      }, {
-          time: "2019-12-05",
-          transfer_count: 0
-      }]
-    }
+      }
+    };
   },
   created() {
     GLOBAL.vbus.$on("CHANGE_SOURCE", source => {
@@ -106,7 +101,7 @@ export default {
           },
           lineStyle: {
             width: 1,
-            color: this.colorMap[source || 'darwinia'].mainColor
+            color: this.colorMap[source || "darwinia"].mainColor
           }
         }
       });
@@ -118,109 +113,108 @@ export default {
   },
   watch: {
     tokenDetail(newV) {
-      const xAxisData = [{
-          name: this.$t('validator_bonded'),
-          icon: 'image://' + this.colorMap[this.sourceSelected].vIcon
-        }, {
-          name: this.$t('nominator_bonded'),
-          icon: 'image://' + this.colorMap[this.sourceSelected].nIcon
-        }, {
-          name: this.$t('others'),
-          icon: 'image://' + this.colorMap[this.sourceSelected].oIcon
+      let others = bnMinus(
+        newV.locked_balance,
+        bnPlus(newV.validator_bonded, newV.nominator_bonded)
+      );
+      const data = [
+        {
+          name: this.$t("validator_bonded"),
+          formatVal: fmtNumber(bnShift(newV.validator_bonded, -15), 0),
+          value: fmtPercentage(newV.validator_bonded, newV.locked_balance, 1)
+        },
+        {
+          name: this.$t("nominator_bonded"),
+          formatVal: fmtNumber(bnShift(newV.available_balance, -15), 0),
+          value: fmtPercentage(newV.nominator_bonded, newV.locked_balance, 1)
+        },
+        {
+          name: this.$t("others"),
+          formatVal: fmtNumber(bnShift(others, -15), 0),
+          value: fmtPercentage(others, newV.locked_balance, 1)
         }
       ];
-      let others = bnMinus(newV.locked_balance, bnPlus(newV.validator_bonded, newV.nominator_bonded));
-      const data = [{
-        name: this.$t('validator_bonded'),
-        formatVal: fmtNumber(bnShift(newV.validator_bonded, -15), 0),
-        value: fmtPercentage(newV.validator_bonded, newV.locked_balance, 1)
-      }, {
-        name: this.$t('nominator_bonded'),
-        formatVal: fmtNumber(bnShift(newV.available_balance, -15), 0),
-        value: fmtPercentage(newV.nominator_bonded, newV.locked_balance, 1)
-      }, {
-        name: this.$t('others'),
-        formatVal: fmtNumber(bnShift(others, -15), 0),
-        value: fmtPercentage(others, newV.locked_balance, 1)
-      }];
       myChart.setOption({
-        graphic: [{
-            type: 'group',
-            left: '18%',
-            top: 'center',
+        graphic: [
+          {
+            type: "group",
+            left: "18%",
+            top: "center",
             children: [
-                {
-                    type: 'circle',
-                    z: 100,
-                    left: 'center',
-                    top: 'middle',
-                    cursor: 'default',
-                    shape: {
-                        r: 25
-                    },
-                    style: {
-                        fill: '#fff',
-                        lineWidth: 2,
-                        shadowBlur: 4,
-                        shadowColor: 'rgba(0,0,0,0.2)'
-                    }
+              {
+                type: "circle",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                shape: {
+                  r: 25
                 },
-                {
-                    type: 'image',
-                    id: 'logos',
-                    z: 100,
-                    left: 'center',
-                    top: 'middle',
-                    cursor: 'default',
-                    bounding: 'raw',
-                    style: {
-                        image: this.iconImg,
-                        width: 35,
-                        height: 35
-                    }
+                style: {
+                  fill: "#fff",
+                  lineWidth: 2,
+                  shadowBlur: 4,
+                  shadowColor: "rgba(0,0,0,0.2)"
                 }
+              },
+              {
+                type: "image",
+                id: "logos",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: this.iconImg,
+                  width: 35,
+                  height: 35
+                }
+              }
             ]
-        }, {
-            type: 'image',
-            id: 'logosddd',
+          },
+          {
+            type: "image",
+            id: "logosddd",
             z: -100,
-            left: '38%',
-            bottom: '12',
+            left: "38%",
+            bottom: "12",
             ignore: true,
-            bounding: 'raw',
+            bounding: "raw",
             style: {
-                image: switchIcon,
-                width: 16,
-                height: 16
+              image: switchIcon,
+              width: 16,
+              height: 16
             },
             onclick: this.switchKton
-        }],
+          }
+        ],
         legend: {
-            orient: 'vertical',
-            left: '50%',
-            top: '10%',
-            align: 'left',
-            itemGap: 28,
-            data: xAxisData,
-            tooltip: {
-              show: true,
-            },
-            itemHeight: 20,
-            itemWidth: 20,
-            textStyle: {
-              color: '#302b3c',
-              fontWeight: 'bold',
-              fontSize: 14
-            },
-            formatter(name) {
-              let result = '';
-              data.forEach(function(val){
-                if (val.name === name) {
-                  result = val.formatVal + 'K（' + val.value + '%）';
-                }
-              });
-              return result;
-            }
+          orient: "vertical",
+          left: "50%",
+          top: "10%",
+          align: "left",
+          itemGap: 28,
+          data: this.getXAxisData(),
+          tooltip: {
+            show: true
+          },
+          itemHeight: 20,
+          itemWidth: 20,
+          textStyle: {
+            color: "#302b3c",
+            fontWeight: "bold",
+            fontSize: 14
+          },
+          formatter(name) {
+            let result = "";
+            data.forEach(function(val) {
+              if (val.name === name) {
+                result = val.formatVal + "K（" + val.value + "%）";
+              }
+            });
+            return result;
+          }
         },
         series: {
           data
@@ -229,117 +223,215 @@ export default {
     },
     currency() {
       myChart.setOption({
-          graphic: [{
-            type: 'group',
-            left: '18%',
-            top: 'center',
+        graphic: [
+          {
+            type: "group",
+            left: "18%",
+            top: "center",
             children: [
-                {
-                    type: 'circle',
-                    z: 100,
-                    left: 'center',
-                    top: 'middle',
-                    cursor: 'default',
-                    shape: {
-                        r: 25
-                    },
-                    style: {
-                        fill: '#fff',
-                        lineWidth: 2,
-                        shadowBlur: 4,
-                        shadowColor: 'rgba(0,0,0,0.2)'
-                    }
+              {
+                type: "circle",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                shape: {
+                  r: 25
                 },
-                {
-                    type: 'image',
-                    id: 'logos',
-                    z: 100,
-                    left: 'center',
-                    top: 'middle',
-                    cursor: 'default',
-                    bounding: 'raw',
-                    style: {
-                        image: this.iconImg,
-                        width: 35,
-                        height: 35
-                    }
+                style: {
+                  fill: "#fff",
+                  lineWidth: 2,
+                  shadowBlur: 4,
+                  shadowColor: "rgba(0,0,0,0.2)"
                 }
+              },
+              {
+                type: "image",
+                id: "logos",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: this.iconImg,
+                  width: 35,
+                  height: 35
+                }
+              }
             ]
-        }, {
-            type: 'image',
-            id: 'logosddd',
+          },
+          {
+            type: "image",
+            id: "logosddd",
             z: -100,
             ignore: true,
-            left: '38%',
-            bottom: '12',
-            bounding: 'raw',
+            left: "38%",
+            bottom: "12",
+            bounding: "raw",
             style: {
-                image: switchIcon,
-                width: 16,
-                height: 16
+              image: switchIcon,
+              width: 16,
+              height: 16
             },
             onclick: this.switchKton
-        }],
-        });
+          }
+        ]
+      });
     }
   },
   mounted() {
-      this.initChart();
+    this.initChart();
   },
   methods: {
     initChart() {
-      const xAxisData = [this.$t('total_bonded'), this.$t('transferrable'), this.$t('others')];
+      let newV = this.tokenDetail;
+      let others = bnMinus(
+        newV.locked_balance,
+        bnPlus(newV.validator_bonded, newV.nominator_bonded)
+      );
+      let data = [];
+      if (newV.validator_bonded) {
+        data = [
+          {
+            name: this.$t("validator_bonded"),
+            formatVal: fmtNumber(bnShift(newV.validator_bonded, -15), 0),
+            value: fmtPercentage(newV.validator_bonded, newV.locked_balance, 1)
+          },
+          {
+            name: this.$t("nominator_bonded"),
+            formatVal: fmtNumber(bnShift(newV.available_balance, -15), 0),
+            value: fmtPercentage(newV.nominator_bonded, newV.locked_balance, 1)
+          },
+          {
+            name: this.$t("others"),
+            formatVal: fmtNumber(bnShift(others, -15), 0),
+            value: fmtPercentage(others, newV.locked_balance, 1)
+          }
+        ];
+      }
       myChart = window.echarts.init(this.$refs.chart);
       myChart.setOption({
+        graphic: [
+          {
+            type: "group",
+            left: "18%",
+            top: "center",
+            children: [
+              {
+                type: "circle",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                shape: {
+                  r: 25
+                },
+                style: {
+                  fill: "#fff",
+                  lineWidth: 2,
+                  shadowBlur: 4,
+                  shadowColor: "rgba(0,0,0,0.2)"
+                }
+              },
+              {
+                type: "image",
+                id: "logos",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: this.iconImg,
+                  width: 35,
+                  height: 35
+                }
+              }
+            ]
+          },
+          {
+            type: "image",
+            id: "logosddd",
+            z: -100,
+            left: "38%",
+            bottom: "12",
+            ignore: true,
+            bounding: "raw",
+            style: {
+              image: switchIcon,
+              width: 16,
+              height: 16
+            },
+            onclick: this.switchKton
+          }
+        ],
         tooltip: {
           trigger: "item",
-          backgroundColor: '#ffffff',
-          borderColor: '#e7eaf3',
+          backgroundColor: "#ffffff",
+          borderColor: "#e7eaf3",
           borderWidth: 1,
           padding: [5, 20],
           textStyle: {
-            color: '#302b3c',
+            color: "#302b3c"
           },
           formatter: `{b}`
         },
         legend: {
-            orient: 'vertical',
-            left: '50%',
-            top: '10%',
-            align: 'left',
-            itemGap: 35,
-            icon: 'circle',
-            data: xAxisData,
-            tooltip: {
-              show: true,
-            }
+          orient: "vertical",
+          left: "50%",
+          top: "10%",
+          align: "left",
+          itemGap: 32,
+          icon: "circle",
+          data: this.getXAxisData(),
+          tooltip: {
+            show: true
+          },
+          itemHeight: 20,
+          itemWidth: 20,
+          textStyle: {
+            color: "#302b3c",
+            fontWeight: "bold",
+            fontSize: 14
+          },
+          formatter(name) {
+            let result = "";
+            data.forEach(function(val) {
+              if (val.name === name) {
+                result = val.formatVal + "K（" + val.value + "%）";
+              }
+            });
+            return result;
+          }
         },
         series: [
           {
             type: "pie",
-            radius: ['70%', '85%'],
-            center: ['25%', '50%'],
+            data: data,
+            radius: ["70%", "85%"],
+            center: ["25%", "50%"],
             avoidLabelOverlap: false,
             legendHoverLink: false,
             hoverAnimation: false,
-            color: this.colorMap[this.sourceSelected || 'darwinia'].colors,
+            color: this.colorMap[this.sourceSelected || "darwinia"].colors,
             label: {
-                normal: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    show: false,
-                    textStyle: {
-                        fontSize: '30',
-                        fontWeight: 'bold'
-                    }
+              normal: {
+                show: false,
+                position: "center"
+              },
+              emphasis: {
+                show: false,
+                textStyle: {
+                  fontSize: "30",
+                  fontWeight: "bold"
                 }
+              }
             },
             labelLine: {
-                normal: {
-                    show: false
-                }
+              normal: {
+                show: false
+              }
             }
           }
         ]
@@ -347,31 +439,47 @@ export default {
     },
     switchKton() {
       if (this.currency) {
-        this.currency = '';
+        this.currency = "";
       } else {
-        this.currency = 'kton';
+        this.currency = "kton";
       }
+    },
+    getXAxisData() {
+      return [
+        {
+          name: this.$t("validator_bonded"),
+          icon: "image://" + this.colorMap[this.sourceSelected].vIcon
+        },
+        {
+          name: this.$t("nominator_bonded"),
+          icon: "image://" + this.colorMap[this.sourceSelected].nIcon
+        },
+        {
+          name: this.$t("others"),
+          icon: "image://" + this.colorMap[this.sourceSelected].oIcon
+        }
+      ];
     },
     getColorStop(source) {
       let sourceColor = this.colorMap[source || "darwinia"].mainColor;
       return [
         {
           offset: 0,
-          color: sourceColor + '99' // 透明度60%
+          color: sourceColor + "99" // 透明度60%
         },
         {
           offset: 0.6,
-          color: sourceColor + '4D' // 透明度30%
+          color: sourceColor + "4D" // 透明度30%
         },
         {
           offset: 0.8,
-          color: sourceColor + '33' // 透明度20%
+          color: sourceColor + "33" // 透明度20%
         },
         {
           offset: 1,
-          color: sourceColor + '1A' // 透明度10%
+          color: sourceColor + "1A" // 透明度10%
         }
-      ]
+      ];
     }
   }
 };
@@ -385,7 +493,7 @@ export default {
   .chart-content {
     height: 100%;
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .header-content {
       display: block;
       margin-bottom: 10px;

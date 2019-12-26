@@ -42,9 +42,16 @@
           <el-table-column min-width="150" prop="validator_stash" :label="$t('validator')">
             <template slot-scope="scope">
               <div class="link">
-                <span
-                  @click="$router.push(`/validator/${scope.row.validator_stash}`)"
-                >{{scope.row.validator_stash|hashFormat}}</span>
+                <el-tooltip
+                  class="item"
+                  effect="light"
+                  :content="scope.row.validator_stash"
+                  placement="top-start"
+                >
+                  <span
+                    @click="$router.push(`/validator/${scope.row.validator_stash}`)"
+                  >{{scope.row.validator_stash | hashFormat}}</span>
+                </el-tooltip>
               </div>
             </template>
           </el-table-column>
@@ -99,7 +106,7 @@ import Identicon from "@polkadot/vue-identicon";
 import { mapState } from "vuex";
 import { hashFormat } from "Utils/filters";
 import Pagination from "Components/Pagination";
-import { getCommission} from '../../utils/format';
+import { getCommission } from "../../utils/format";
 export default {
   name: "Validators",
   components: {

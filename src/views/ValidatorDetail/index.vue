@@ -102,9 +102,16 @@
                       <div class="icon identicon">
                         <identicon :size="24" theme="polkadot" :value="scope.row.nominator_stash" />
                       </div>
-                      <span
-                        @click="$router.push(`/account/${scope.row.nominator_stash}`)"
-                      >{{scope.row.nominator_stash|hashFormat}}</span>
+                      <el-tooltip
+                        class="item"
+                        effect="light"
+                        :content="scope.row.nominator_stash"
+                        placement="top-start"
+                      >
+                        <span
+                          @click="$router.push(`/account/${scope.row.nominator_stash}`)"
+                        >{{scope.row.nominator_stash | hashFormat}}</span>
+                      </el-tooltip>
                     </div>
                   </template>
                 </el-table-column>

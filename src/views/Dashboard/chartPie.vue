@@ -115,20 +115,6 @@ export default {
   },
   watch: {
     tokenDetail(newV) {
-      const xAxisData = [
-        {
-          name: this.$t("total_bonded"),
-          icon: "image://" + this.colorMap[this.sourceSelected].bIcon
-        },
-        {
-          name: this.$t("transferrable"),
-          icon: "image://" + this.colorMap[this.sourceSelected].tIcon
-        },
-        {
-          name: this.$t("others"),
-          icon: "image://" + this.colorMap[this.sourceSelected].oIcon
-        }
-      ];
       let others = bnMinus(
         newV.total_issuance,
         bnPlus(newV.locked_balance, newV.available_balance)
@@ -218,7 +204,7 @@ export default {
           top: "10%",
           align: "left",
           itemGap: 28,
-          data: xAxisData,
+          data: this.getXAxisData(),
           tooltip: {
             show: true
           },
@@ -308,13 +294,96 @@ export default {
   },
   methods: {
     initChart() {
-      const xAxisData = [
-        this.$t("total_bonded"),
-        this.$t("transferrable"),
-        this.$t("others")
-      ];
+      let newV = this.tokenDetail;
+      let others = bnMinus(
+        newV.total_issuance,
+        bnPlus(newV.locked_balance, newV.available_balance)
+      );
+      let data = [];
+      if (newV.total_issuance) {
+        data = [
+          {
+            name: this.$t("total_bonded"),
+            formatVal: fmtNumber(bnShift(newV.locked_balance, -15), 0),
+            value:
+              fmtPercentage(newV.locked_balance, newV.total_issuance, 1) || 0
+          },
+          {
+            name: this.$t("transferrable"),
+            formatVal: fmtNumber(bnShift(newV.available_balance, -15), 0),
+            value:
+              fmtPercentage(newV.available_balance, newV.total_issuance, 1) || 0
+          },
+          {
+            name: this.$t("others"),
+            formatVal: fmtNumber(bnShift(others, -15), 0),
+            value: fmtPercentage(others, newV.total_issuance, 1) || 0
+          }
+        ];
+      }
       myChart = window.echarts.init(this.$refs.chart);
       myChart.setOption({
+        graphic: [
+          {
+            type: "group",
+            left: "18%",
+            top: "center",
+            children: [
+              {
+                type: "circle",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                shape: {
+                  // width: 190,
+                  // height: 90,
+                  // cx: 95,
+                  // cy: 77,
+                  r: 25
+                },
+                style: {
+                  fill: "#fff",
+                  // stroke: '#555',
+                  lineWidth: 2,
+                  shadowBlur: 4,
+                  // shadowOffsetX: 3,
+                  // shadowOffsetY: 3,
+                  shadowColor: "rgba(0,0,0,0.2)"
+                }
+              },
+              {
+                type: "image",
+                id: "logos",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: this.iconImg,
+                  width: 35,
+                  height: 35
+                }
+              }
+            ]
+          },
+          {
+            type: "image",
+            id: "logosddd",
+            z: -100,
+            left: "38%",
+            bottom: "12",
+            ignore: true,
+            bounding: "raw",
+            style: {
+              image: switchIcon,
+              width: 16,
+              height: 16
+            },
+            onclick: this.switchKton
+          }
+        ],
         tooltip: {
           trigger: "item",
           backgroundColor: "#ffffff",
@@ -331,16 +400,33 @@ export default {
           left: "50%",
           top: "10%",
           align: "left",
-          itemGap: 35,
+          itemGap: 32,
           icon: "circle",
-          data: xAxisData,
+          data: this.getXAxisData(),
           tooltip: {
             show: true
+          },
+          itemHeight: 20,
+          itemWidth: 20,
+          textStyle: {
+            color: "#302b3c",
+            fontWeight: "bold",
+            fontSize: 14
+          },
+          formatter(name) {
+            let result = "";
+            data.forEach(function(val) {
+              if (val.name === name) {
+                result = val.formatVal + "K（" + val.value + "%）";
+              }
+            });
+            return result;
           }
         },
         series: [
           {
             type: "pie",
+            data: data,
             radius: ["70%", "85%"],
             center: ["25%", "50%"],
             avoidLabelOverlap: false,
@@ -375,6 +461,22 @@ export default {
       } else {
         this.currency = "kton";
       }
+    },
+    getXAxisData() {
+      return [
+        {
+          name: this.$t("total_bonded"),
+          icon: "image://" + this.colorMap[this.sourceSelected].bIcon
+        },
+        {
+          name: this.$t("transferrable"),
+          icon: "image://" + this.colorMap[this.sourceSelected].tIcon
+        },
+        {
+          name: this.$t("others"),
+          icon: "image://" + this.colorMap[this.sourceSelected].oIcon
+        }
+      ];
     },
     getColorStop(source) {
       let sourceColor = this.colorMap[source || "darwinia"].mainColor;

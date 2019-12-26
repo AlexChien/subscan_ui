@@ -24,9 +24,16 @@
           <el-table-column min-width="150" prop="nominator_stash" :label="$t('validator')">
             <template slot-scope="scope">
               <div class="link">
-                <span @click="$router.push(`/validator/${scope.row.validator_stash}`)">
-                  {{scope.row.validator_stash | hashFormat}}
-                </span>
+                <el-tooltip
+                  class="item"
+                  effect="light"
+                  :content="scope.row.validator_stash"
+                  placement="top-start"
+                >
+                  <span
+                    @click="$router.push(`/validator/${scope.row.validator_stash}`)"
+                  >{{scope.row.validator_stash | hashFormat}}</span>
+                </el-tooltip>
               </div>
             </template>
           </el-table-column>
@@ -48,7 +55,8 @@
             <template slot-scope="scope">
               <div
                 :class="{link:scope.row.count_nominators > 0}"
-                @click="scope.row.count_nominators > 0 && $router.push(`/nominator?address=${scope.row.validator_stash}`)">
+                @click="scope.row.count_nominators > 0 && $router.push(`/nominator?address=${scope.row.validator_stash}`)"
+              >
                 <span>{{scope.row.count_nominators}}</span>
               </div>
             </template>
@@ -61,7 +69,9 @@
             </template>
           </el-table-column>
           <el-table-column min-width="100" prop="my_share" :label="$t('my_share')">
-            <template slot-scope="scope">{{getMyShare(scope.row.bonded, scope.row.bonded_nominators, 2)}}</template>
+            <template
+              slot-scope="scope"
+            >{{getMyShare(scope.row.bonded, scope.row.bonded_nominators, 2)}}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -82,7 +92,7 @@ import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat } from "Utils/filters";
-import { fmtPercentage, getCommission } from '../../utils/format';
+import { fmtPercentage, getCommission } from "../../utils/format";
 export default {
   name: "Vote",
   components: {
@@ -143,7 +153,7 @@ export default {
       return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
     },
     getMyShare(vote, total, digits) {
-      return fmtPercentage(vote, total, digits) + '%';
+      return fmtPercentage(vote, total, digits) + "%";
     },
     getCommission(perf) {
       return getCommission(perf, this.metadata.commissionAccuracy);

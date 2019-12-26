@@ -315,9 +315,16 @@
                 <el-table-column min-width="150" prop="nominator_stash" :label="$t('validator')">
                   <template slot-scope="scope">
                     <div class="link">
-                      <span
-                        @click="$router.push(`/validator/${scope.row.validator_stash}`)"
-                      >{{scope.row.validator_stash | hashFormat}}</span>
+                      <el-tooltip
+                        class="item"
+                        effect="light"
+                        :content="scope.row.validator_stash"
+                        placement="top-start"
+                      >
+                        <span
+                          @click="$router.push(`/validator/${scope.row.validator_stash}`)"
+                        >{{scope.row.validator_stash | hashFormat}}</span>
+                      </el-tooltip>
                     </div>
                   </template>
                 </el-table-column>

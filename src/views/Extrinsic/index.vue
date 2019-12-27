@@ -138,19 +138,19 @@ export default {
       signedChecked: true,
       selectList: [
         {
-          label: this.$t('all'),
+          label: this.$t("all"),
           value: "all"
         },
         {
-          label: this.$t('block'),
+          label: this.$t("block"),
           value: "block"
         },
         {
-          label: this.$t('extrinsic'),
+          label: this.$t("extrinsic"),
           value: "extrinsic"
         },
         {
-          label: this.$t('account'),
+          label: this.$t("account"),
           value: "account"
         }
       ]
@@ -173,39 +173,43 @@ export default {
       this.isLoading = true;
       let data;
       if (this.$route.query.block) {
-          data = await this.$api["polkaGetBlockByKey"]({
-              block_num: +this.$route.query.block
-          });
-          data.extrinsics.forEach(item => {
-              item.params = JSON.parse(item.params);
-          });
-          this.extrinsicsData = data.extrinsics;
-          this.total = data.extrinsics_count;
-          this.isLoading = false;
+        data = await this.$api["polkaGetBlockByKey"]({
+          block_num: +this.$route.query.block
+        });
+        data.extrinsics.forEach(item => {
+          item.params = JSON.parse(item.params);
+        });
+        this.extrinsicsData = data.extrinsics;
+        this.total = data.extrinsics_count;
+        this.isLoading = false;
       } else {
-          data = await this.$api["polkaGetExtrinsics"]({
-              row: 25,
-              page,
-              signed: this.signedChecked ? "signed" : "all",
-              address: this.$route.query.address
-          });
-          data.extrinsics.forEach(item => {
-              item.params = JSON.parse(item.params);
-          });
-          this.extrinsicsData = data.extrinsics;
-          this.total = +data.count;
-          this.isLoading = false;
+        let ops = {
+          row: 25,
+          page,
+          signed: this.signedChecked ? "signed" : "all",
+          address: this.$route.query.address
+        }
+        if (this.$route.query.address) {
+          ops.signed = "all";
+        }
+        data = await this.$api["polkaGetExtrinsics"](ops);
+        data.extrinsics.forEach(item => {
+          item.params = JSON.parse(item.params);
+        });
+        this.extrinsicsData = data.extrinsics;
+        this.total = +data.count;
+        this.isLoading = false;
       }
     },
     downloadClick() {
       const tableData = [
         [
-          this.$t('extrinsic_id'),
-          this.$t('block'),
-          this.$t('extrinsic_hash'),
-          this.$t('block_timestamp'),
-          this.$t('result'),
-          this.$t('action')
+          this.$t("extrinsic_id"),
+          this.$t("block"),
+          this.$t("extrinsic_hash"),
+          this.$t("block_timestamp"),
+          this.$t("result"),
+          this.$t("action")
         ]
       ];
       this.extrinsicsData.forEach(item => {
@@ -314,7 +318,7 @@ export default {
       }
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .container {
       .table-top {
         margin-top: 0;

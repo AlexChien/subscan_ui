@@ -8,8 +8,7 @@
       />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
-          <div class="all">{{$t('accounts')}}</div>
-          <div>{{`(${total})`}}</div>
+          <div>{{$t('top_holders', {number: (total).toLocaleString('en-US'), total: (allAccounts).toLocaleString('en-US')})}}</div>
         </div>
       </div>
       <div class="account-table subscan-card" v-loading="isLoading">
@@ -111,6 +110,7 @@ export default {
       isLoading: false,
       accountsData: [],
       total: 0,
+      allAccounts: 0,
       currentPage: 0,
       currentOrder: 'desc',
       currentOrderField: 'balance',
@@ -164,7 +164,8 @@ export default {
         order_field: this.currentOrderField
       });
       this.accountsData = data.list || [];
-      this.total = +data.count;
+      this.total = Math.min(1000, +data.count);
+      this.allAccounts = +data.count;
       this.isLoading = false;
       if (page == 0) {
         this.$store.commit("SET_ACCOUNTS", data.list);

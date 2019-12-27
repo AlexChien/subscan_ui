@@ -2,12 +2,13 @@ import moment from "moment";
 import _ from 'lodash';
 import api from "Plugins/api";
 
-const {polkaGetMetadata, polkaGetBlocks, polkaGetTransfers, polkaGetDaily} = api;
+const {polkaGetMetadata, polkaGetBlocks, polkaGetTransfers, polkaGetDaily, polkaGetToken} = api;
 
 export default {
   state: {
     metadata: {},
     latestBlocks: [],
+    token: {},
     // latestExtrinsics: [],
     transfers: undefined,
     dailyChart: []
@@ -15,6 +16,9 @@ export default {
   mutations: {
     SET_METADATA: (state, data) => {
       state.metadata = data;
+    },
+    SET_TOKEN: (state, data) => {
+      state.token = data;
     },
     SET_LATEST_BLOCKS: (state, data) => {
       state.latestBlocks = data;
@@ -40,6 +44,10 @@ export default {
     async SetLatestBlocks({commit}, payload) {
       const data = await polkaGetBlocks(payload);
       commit("SET_LATEST_BLOCKS", data.blocks);
+    },
+    async SetToken({commit}) {
+      const data = await polkaGetToken();
+      commit("SET_TOKEN", data);
     },
     // async SetLatestExtrinsics({ commit }, payload) {
     //   const data = await polkaGetExtrinsics(payload);

@@ -335,7 +335,7 @@
                 >
                   <template slot-scope="scope">
                     <div>
-                      <span>{{scope.row.bonded_owner + ' ' + formatSymbol('balances')}}</span>
+                      <span>{{scope.row.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
                     </div>
                   </template>
                 </el-table-column>
@@ -346,7 +346,7 @@
                 >
                   <template slot-scope="scope">
                     <div>
-                      <span>{{scope.row.bonded_nominators + ' ' + formatSymbol('balances')}}</span>
+                      <span>{{scope.row.bonded_nominators|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
                     </div>
                   </template>
                 </el-table-column>
@@ -394,7 +394,7 @@
 import Identicon from "@polkadot/vue-identicon";
 import SearchInput from "@/views/Components/SearchInput";
 import { mapState } from "vuex";
-import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
+import { timeAgo, parseTimeToUtc, hashFormat, accuracyFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 import Balances from "../ExtrinsicDetail/Balances";
 import { fmtPercentage, getCommission } from "../../utils/format";
@@ -408,7 +408,8 @@ export default {
   filters: {
     timeAgo,
     parseTimeToUtc,
-    hashFormat
+    hashFormat,
+    accuracyFormat
   },
   directives: {
     clipboard
@@ -418,6 +419,7 @@ export default {
       address: "",
       showKton: false,
       role: "",
+      currency: "ring",
       accountInfo: {},
       transfersInfo: {
         count: 0,
@@ -458,8 +460,19 @@ export default {
   computed: {
     ...mapState({
       metadata: state => state.polka.metadata,
+      token: state => state.polka.token,
       sourceSelected: state => state.global.sourceSelected
     }),
+    tokenDetail() {
+      if (this.token && this.token.detail) {
+        if (this.sourceSelected === "kusama") {
+          return this.token.detail[this.token.token];
+        } else {
+          return this.token.detail[this.currency.toUpperCase()];
+        }
+      }
+      return {};
+    },
     shouldShowKton() {
       return this.sourceSelected === "darwinia";
     }
@@ -685,6 +698,7 @@ export default {
         right: 16px;
         .switch-hotspot {
           padding: 10px;
+          cursor: pointer;
         }
         .svg-icon {
           font-size: 10px;

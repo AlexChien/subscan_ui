@@ -9,6 +9,10 @@ export function bnShift(number, shift) {
   shift = parseInt(shift)
   return new BigNumber(number).shiftedBy(shift).toNumber();
 }
+export function bnDp(number, digit) {
+  digit = parseInt(digit)
+  return new BigNumber(number).dp(digit).toNumber();
+}
 export function getCommission(perf, accuracy) {
   if (isNaN(accuracy)) {
     return perf;

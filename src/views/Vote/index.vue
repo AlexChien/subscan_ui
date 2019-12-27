@@ -40,14 +40,14 @@
           <el-table-column min-width="150" prop="bonded_owner" :label="$t('validator_bonded')">
             <template slot-scope="scope">
               <div>
-                <span>{{scope.row.bonded_owner + ' ' + formatSymbol('balances')}}</span>
+                <span>{{scope.row.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column min-width="150" prop="bonded_nominators" :label="$t('total_bonded')">
             <template slot-scope="scope">
               <div>
-                <span>{{scope.row.bonded_nominators + ' ' + formatSymbol('balances')}}</span>
+                <span>{{scope.row.bonded_nominators|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
               </div>
             </template>
           </el-table-column>
@@ -91,7 +91,7 @@ import { mapState } from "vuex";
 import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
-import { timeAgo, hashFormat } from "Utils/filters";
+import { timeAgo, hashFormat, accuracyFormat } from "Utils/filters";
 import { fmtPercentage, getCommission } from "../../utils/format";
 export default {
   name: "Vote",
@@ -106,6 +106,7 @@ export default {
       isLoading: false,
       nominators: [],
       total: 0,
+      currency: "ring",
       selectList: [
         {
           label: this.$t("all"),
@@ -129,12 +130,24 @@ export default {
   computed: {
     ...mapState({
       metadata: state => state.polka.metadata,
+      token: state => state.polka.token,
       sourceSelected: state => state.global.sourceSelected
-    })
+    }),
+    tokenDetail() {
+      if (this.token && this.token.detail) {
+        if (this.sourceSelected === "kusama") {
+          return this.token.detail[this.token.token];
+        } else {
+          return this.token.detail[this.currency.toUpperCase()];
+        }
+      }
+      return {};
+    }
   },
   filters: {
     timeAgo,
-    hashFormat
+    hashFormat,
+    accuracyFormat
   },
   created() {
     this.init();

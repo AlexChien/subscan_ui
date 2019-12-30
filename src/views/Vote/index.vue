@@ -10,10 +10,10 @@
         <div class="for-block align-items-center">
           <div>{{$t('for')}}</div>
           <template v-if="$route.query.address">
-            <div
+            <router-link
               class="link"
-              @click="$router.push(`/account/${$route.query.address}`)"
-            >{{` ${$route.query.address} `}}</div>
+              :to="`/account/${$route.query.address}`"
+            >{{$route.query.address}}</router-link>
           </template>
           <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
@@ -30,9 +30,9 @@
                   :content="scope.row.validator_stash"
                   placement="top-start"
                 >
-                  <span
-                    @click="$router.push(`/validator/${scope.row.validator_stash}`)"
-                  >{{scope.row.validator_stash | hashFormat}}</span>
+                  <router-link
+                    :to="`/validator/${scope.row.validator_stash}`"
+                  >{{scope.row.validator_stash | hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -53,11 +53,10 @@
           </el-table-column>
           <el-table-column min-width="100" prop="count_nominators" :label="$t('nominator')">
             <template slot-scope="scope">
-              <div
-                :class="{link:scope.row.count_nominators > 0}"
-                @click="scope.row.count_nominators > 0 && $router.push(`/nominator?address=${scope.row.validator_stash}`)"
-              >
-                <span>{{scope.row.count_nominators}}</span>
+              <div :class="{link:scope.row.count_nominators > 0}">
+                <router-link
+                  :to="scope.row.count_nominators > 0 ? `/nominator?address=${scope.row.validator_stash}`: `${$route.fullPath}`"
+                >{{scope.row.count_nominators}}</router-link>
               </div>
             </template>
           </el-table-column>

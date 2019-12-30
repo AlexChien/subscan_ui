@@ -10,10 +10,7 @@
         <div class="for-block align-items-center">
           <div>{{$t('validator_hash_tag')}}</div>
           <template v-if="$route.query.address">
-            <div
-              class="link"
-              @click="$router.push(`/account/${$route.query.address}`)"
-            >{{` ${$route.query.address} `}}</div>
+            <router-link class="link" :to="`/account/${$route.query.address}`">{{$route.query.address}}</router-link>
           </template>
           <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
@@ -31,9 +28,7 @@
                     :value="scope.row.nominator_stash"
                   />
                 </div>
-                <span
-                  @click="$router.push(`/account/${scope.row.nominator_stash}`)"
-                >{{scope.row.nominator_stash}}</span>
+                <router-link :to="`/account/${scope.row.nominator_stash}`">{{scope.row.nominator_stash}}</router-link>
               </div>
             </template>
           </el-table-column>

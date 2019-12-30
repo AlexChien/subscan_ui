@@ -4,10 +4,9 @@
       <div class="left align-items-center">
         <div class="label">{{$t('hash')}}</div>
         <el-tooltip class="item" effect="light" :content="transferData.hash" placement="top-start">
-          <div
-            class="value hash-v"
-            @click="$router.push(`/extrinsic/${transferData.hash}`)"
-          >{{transferData.hash}}</div>
+          <div class="value hash-v link">
+            <router-link :to="`/extrinsic/${transferData.hash}`">{{transferData.hash}}</router-link>
+          </div>
         </el-tooltip>
       </div>
       <div class="right">{{transferData.block_timestamp|timeAgo(currentTime, this.isMobile())}}</div>
@@ -22,22 +21,21 @@
             :content="transferData.from"
             placement="top-start"
           >
-            <div
-              class="from"
-              @click="$router.push(`/account/${transferData.from}`)"
-            >{{transferData.from}}</div>
+            <div class="from link">
+              <router-link :to="`/account/${transferData.from}`">{{transferData.from}}</router-link>
+            </div>
           </el-tooltip>
         </div>
         <div class="to-wrapper align-items-center">
           <div class="label">{{$t('to')}}</div>
           <el-tooltip class="item" effect="light" :content="transferData.to" placement="top-start">
-            <div class="to" @click="$router.push(`/account/${transferData.to}`)">{{transferData.to}}</div>
+            <div class="to link">
+              <router-link :to="`/account/${transferData.to}`">{{transferData.to}}</router-link>
+            </div>
           </el-tooltip>
         </div>
       </div>
-      <div
-        class="right"
-      >{{`${transferData.amount} ${this.formatSymbol(transferData.module)}`}}</div>
+      <div class="right">{{`${transferData.amount} ${this.formatSymbol(transferData.module)}`}}</div>
     </div>
   </div>
 </template>
@@ -45,7 +43,7 @@
 <script>
 import { timeAgo } from "Utils/filters";
 import { mapState } from "vuex";
-import {isMobile} from "../../utils/tools";
+import { isMobile } from "../../utils/tools";
 
 export default {
   props: {
@@ -67,14 +65,14 @@ export default {
   },
   methods: {
     formatSymbol(module) {
-      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
-        return ''
+      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
+        return "";
       }
 
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
     },
     isMobile() {
-        return isMobile();
+      return isMobile();
     }
   }
 };
@@ -148,7 +146,7 @@ export default {
       line-height: 20px;
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     height: 104px;
     .transfer-item-top {
       .left {

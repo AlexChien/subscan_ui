@@ -63,9 +63,7 @@
             <div class="info-item">
               <div class="label">{{$t('validators')}}</div>
               <div class="value link copy align-items-center">
-                <div
-                  @click="$router.push(`/account/${blockInfo.validator}`)"
-                >{{blockInfo.validator}}</div>
+                <router-link :to="`/account/${blockInfo.validator}`">{{blockInfo.validator}}</router-link>
                 <div
                   class="copy-btn"
                   v-if="blockInfo.validator"
@@ -93,9 +91,8 @@
                   <template slot-scope="scope">
                     <div
                       class="link"
-                      @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
                     >
-                      <span>{{scope.row.extrinsic_index}}</span>
+                      <router-link :to="`/extrinsic/${scope.row.extrinsic_index}`">{{scope.row.extrinsic_index}}</router-link>
                     </div>
                   </template>
                 </el-table-column>
@@ -103,7 +100,6 @@
                   <template slot-scope="scope">
                     <div
                       class="link"
-                      @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)"
                     >
                       <el-tooltip
                         class="item"
@@ -111,7 +107,7 @@
                         :content="scope.row.extrinsic_hash"
                         placement="top-start"
                       >
-                        <span>{{scope.row.extrinsic_hash|hashFormat}}</span>
+                        <router-link :to="`/extrinsic/${scope.row.extrinsic_hash}`">{{scope.row.extrinsic_hash|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -162,7 +158,6 @@
                   <template slot-scope="scope">
                     <div
                       class="link"
-                      @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)"
                     >
                       <el-tooltip
                         class="item"
@@ -170,7 +165,7 @@
                         :content="scope.row.extrinsic_hash"
                         placement="top-start"
                       >
-                        <span>{{scope.row.extrinsic_hash|hashFormat}}</span>
+                        <router-link :to="`/extrinsic/${scope.row.extrinsic_hash}`">{{scope.row.extrinsic_hash|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>

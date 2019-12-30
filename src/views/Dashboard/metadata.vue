@@ -1,7 +1,7 @@
 <template>
   <div class="metadata-wrapper subscan-card">
     <div>
-      <router-link class="nav-item" to="/block" tag="div" active-class="choosed">
+      <router-link class="nav-item" to="/block" tag="a" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="latest-blocks"></icon-svg>
           <div class="label">{{$t('latest_blocks')}}</div>
@@ -17,29 +17,45 @@
             <count-to class="value" :end="metadata.count_extrinsic" :duration="0.8" :decimal="0" />
     </div>-->
     <div>
-      <router-link class="nav-item" to="/extrinsic" tag="div" active-class="choosed">
+      <router-link class="nav-item" to="/extrinsic" tag="a" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="signed-extrinsics"></icon-svg>
           <div class="label">{{$t('signed_extrinsics')}}</div>
-          <count-to class="value" :end="Number(metadata.count_signed_extrinsic||0)" :duration="0.8" :decimal="0" />
+          <count-to
+            class="value"
+            :end="Number(metadata.count_signed_extrinsic||0)"
+            :duration="0.8"
+            :decimal="0"
+          />
         </div>
       </router-link>
     </div>
     <div>
-      <router-link class="nav-item" to="/validator" tag="div" active-class="choosed">
+      <router-link class="nav-item" to="/validator" tag="a" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="active-accounts"></icon-svg>
           <div class="label">{{$t('validators')}}</div>
-          <count-to class="value" :end="Number(metadata.current_validator_count||0)" :duration="0.8" :decimal="0" :options="validatorCountOpts"/>
+          <count-to
+            class="value"
+            :end="Number(metadata.current_validator_count||0)"
+            :duration="0.8"
+            :decimal="0"
+            :options="validatorCountOpts"
+          />
         </div>
       </router-link>
     </div>
     <div>
-      <router-link class="nav-item" to="/transfer" tag="div" active-class="choosed">
+      <router-link class="nav-item" to="/transfer" tag="a" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="transfers"></icon-svg>
           <div class="label">{{$t('transfers')}}</div>
-          <count-to class="value" :end="Number(metadata.count_transfer||0)" :duration="0.8" :decimal="0"/>
+          <count-to
+            class="value"
+            :end="Number(metadata.count_transfer||0)"
+            :duration="0.8"
+            :decimal="0"
+          />
         </div>
       </router-link>
     </div>
@@ -66,8 +82,8 @@ export default {
     }),
     validatorCountOpts() {
       return {
-        suffix: '/' + Number(this.metadata.validator_count||0),
-      }
+        suffix: "/" + Number(this.metadata.validator_count || 0)
+      };
     }
   }
 };
@@ -76,12 +92,12 @@ export default {
 <style lang='scss' scoped>
 .metadata-wrapper {
   display: flex;
-  &>div{
+  & > div {
     flex: 1;
     display: flex;
     justify-content: center;
   }
-  .nav-item{
+  .nav-item {
     cursor: pointer;
     &.event {
       cursor: default;
@@ -110,7 +126,7 @@ export default {
       line-height: 30px;
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     flex-direction: column;
     .nav-item {
       width: 100%;

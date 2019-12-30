@@ -22,9 +22,7 @@
                   :content="scope.row.address"
                   placement="top-start"
                 >
-                  <span
-                    @click="$router.push(`/account/${scope.row.address}`)"
-                  >{{scope.row.address}}</span>
+                  <router-link :to="`/account/${scope.row.address}`">{{scope.row.address}}</router-link>
                 </el-tooltip>
               </div>
             </template>

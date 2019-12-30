@@ -163,6 +163,11 @@
     }
 
     --black-color: #302b3c;
+    .link {
+      a {
+        color: var(--link-color);
+      }
+    }
     @media screen and (max-width:$screen-xs) {
       .main {
         padding-left: 20px;

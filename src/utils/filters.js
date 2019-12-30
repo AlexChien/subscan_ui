@@ -1,4 +1,5 @@
 import moment from "moment";
+import {bnShift} from "./format";
 export function timeAgo(time, now = Date.now(), shouldTruncate) {
   time = +time * 1000;
   const d = new Date(time);
@@ -163,6 +164,14 @@ export function toThousandslsFilter(num) {
   return (+num || 0)
     .toString()
     .replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ","));
+}
+
+export function accuracyFormat(num, accuracy) {
+  if (accuracy) {
+    return bnShift(num, -accuracy);
+  } else {
+    return num;
+  }
 }
 
 export function hashFormat(hash) {

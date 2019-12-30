@@ -61,7 +61,9 @@
             prop="bonded_owner"
             :label="$t('self_bonded')"
           >
-            <template slot-scope="scope">{{scope.row.bonded_owner + ' ' + formatSymbol('balances')}}</template>
+            <template
+              slot-scope="scope"
+            >{{scope.row.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</template>
           </el-table-column>
           <el-table-column
             sortable="custom"
@@ -71,7 +73,7 @@
           >
             <template
               slot-scope="scope"
-            >{{scope.row.bonded_nominators + ' ' + formatSymbol('balances')}}</template>
+            >{{scope.row.bonded_nominators|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</template>
           </el-table-column>
           <el-table-column
             sortable="custom"
@@ -104,7 +106,7 @@
 <script>
 import Identicon from "@polkadot/vue-identicon";
 import { mapState } from "vuex";
-import { hashFormat } from "Utils/filters";
+import { hashFormat, accuracyFormat } from "Utils/filters";
 import Pagination from "Components/Pagination";
 import { getCommission } from "../../utils/format";
 export default {
@@ -123,6 +125,7 @@ export default {
       isBtnLoading: false,
       currentPage: 0,
       total: 0,
+      currency: "ring",
       rowSize: 12,
       currentOrder: "",
       currentOrderField: ""
@@ -133,13 +136,25 @@ export default {
     $route: "getValidatorData"
   },
   filters: {
-    hashFormat
+    hashFormat,
+    accuracyFormat
   },
   computed: {
     ...mapState({
       metadata: state => state.polka.metadata,
+      token: state => state.polka.token,
       sourceSelected: state => state.global.sourceSelected
     }),
+    tokenDetail() {
+      if (this.token && this.token.detail) {
+        if (this.sourceSelected === "kusama") {
+          return this.token.detail[this.token.token];
+        } else {
+          return this.token.detail[this.currency.toUpperCase()];
+        }
+      }
+      return {};
+    },
     isWaiting() {
       return this.type === "waiting";
     }

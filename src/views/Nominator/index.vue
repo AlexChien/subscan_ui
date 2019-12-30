@@ -40,7 +40,7 @@
           <el-table-column min-width="180" prop="bonded" :label="$t('voted')">
             <template slot-scope="scope">
               <div>
-                <span>{{scope.row.bonded + ' ' + formatSymbol('balances')}}</span>
+                <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
               </div>
             </template>
           </el-table-column>
@@ -65,7 +65,7 @@ import { mapState } from "vuex";
 import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
-import { timeAgo, hashFormat } from "Utils/filters";
+import { timeAgo, hashFormat, accuracyFormat } from "Utils/filters";
 import { fmtPercentage } from '../../utils/format';
 export default {
   name: "Nominator",
@@ -80,6 +80,7 @@ export default {
       isLoading: false,
       nominators: [],
       total: 0,
+      currency: "ring",
       selectList: [
         {
           label: this.$t("all"),
@@ -102,12 +103,24 @@ export default {
   },
   computed: {
     ...mapState({
-      sourceSelected: state => state.global.sourceSelected
-    })
+      sourceSelected: state => state.global.sourceSelected,
+      token: state => state.polka.token
+    }),
+    tokenDetail() {
+      if (this.token && this.token.detail) {
+        if (this.sourceSelected === "kusama") {
+          return this.token.detail[this.token.token];
+        } else {
+          return this.token.detail[this.currency.toUpperCase()];
+        }
+      }
+      return {};
+    }
   },
   filters: {
     timeAgo,
-    hashFormat
+    hashFormat,
+    accuracyFormat
   },
   created() {
     this.init();

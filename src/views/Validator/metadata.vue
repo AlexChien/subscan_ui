@@ -19,7 +19,7 @@
       </router-link>
     </div>
     <div>
-      <router-link class="nav-item" to="/transfer" tag="div" active-class="choosed">
+      <router-link :to="$route.fullPath" tag="div" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="era"></icon-svg>
           <div class="label">{{$t('era')}}</div>

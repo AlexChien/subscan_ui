@@ -102,6 +102,12 @@
                 ></balances>
               </div>
             </div>
+            <div class="info-item">
+              <div class="label">{{$t('fee')}}</div>
+              <div
+                class="value"
+              >{{extrinsicInfo.fee|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
+            </div>
           </template>
           <div class="info-item" v-if="extrinsicInfo.signature">
             <div class="label">{{$t('nonce')}}</div>
@@ -113,10 +119,6 @@
               <icon-svg class="icon" :icon-class="extrinsicInfo.success?'success':'failed'" />
               {{extrinsicInfo.success?'Success':'Fail'}}
             </div>
-          </div>
-          <div class="info-item">
-            <div class="label">{{$t('fee')}}</div>
-            <div class="value">{{extrinsicInfo.fee|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
           </div>
           <div class="mobile-detail-wrapper" :class="{'is-fold': isFold}">
             <div class="info-item">

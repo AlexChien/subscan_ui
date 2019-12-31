@@ -505,6 +505,9 @@ export default {
       this.isLoading = true;
       this.isIntroLoading = true;
       const key = this.$route.params.key;
+      let loadingInstance = this.$loading({
+        target: '.main'
+      });
       this.$api["polkaGetSearchRes"]({ key, row: 1, page: 0 })
         .then(async res => {
           if (res === undefined || typeof res.account !== "object") {
@@ -515,6 +518,7 @@ export default {
           this.role = res.account && res.account.role;
           this.notFound = false;
           this.isIntroLoading = false;
+          loadingInstance.close();
           await Promise.all([
             this.getTransferInfo(),
             this.getExtrinsicInfo(),
@@ -530,6 +534,7 @@ export default {
           this.accountInfo = {};
           this.isLoading = false;
           this.isIntroLoading = false;
+          loadingInstance.close();
         });
     },
     async getTransferInfo() {

@@ -13,10 +13,7 @@
             <div class="icon">
               <identicon :size="30" theme="polkadot" :value="$route.query.address" />
             </div>
-            <div
-              class="link"
-              @click="$router.push(`/account/${$route.query.address}`)"
-            >{{` ${$route.query.address} `}}</div>
+            <router-link class="link" :to="`/account/${$route.query.address}`">{{$route.query.address}}</router-link>
           </template>
           <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
@@ -27,16 +24,14 @@
           <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
             <template slot-scope="scope">
               <div class="link">
-                <span
-                  @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
-                >{{scope.row.extrinsic_index}}</span>
+                <router-link :to="`/extrinsic/${scope.row.extrinsic_index}`">{{scope.row.extrinsic_index}}</router-link>
               </div>
             </template>
           </el-table-column>
           <el-table-column min-width="100" prop="block_num" :label="$t('block')">
             <template slot-scope="scope">
               <div class="link">
-                <span @click="$router.push(`/block/${scope.row.block_num}`)">{{scope.row.block_num}}</span>
+                <router-link :to="`/block/${scope.row.block_num}`">{{scope.row.block_num}}</router-link>
               </div>
             </template>
           </el-table-column>
@@ -45,16 +40,14 @@
           </el-table-column>
           <el-table-column min-width="150" prop="from" :label="$t('from')">
             <template slot-scope="scope">
-              <div :class="scope.row.from === $route.query.address ? '' : 'link'">
+              <div :class="scope.row.from === $route.query.address ? 'defaul-cursor' : 'link'">
                 <el-tooltip
                   class="item"
                   effect="light"
                   :content="scope.row.from"
                   placement="top-start"
                 >
-                  <span
-                    @click="$router.push(`/account/${scope.row.from}`)"
-                  >{{scope.row.from|hashFormat}}</span>
+                  <router-link :to="scope.row.from === $route.query.address ? `${$route.fullPath}` : `/account/${scope.row.from}`">{{scope.row.from|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -68,16 +61,14 @@
           </el-table-column>
           <el-table-column min-width="150" prop="to" :label="$t('to')">
             <template slot-scope="scope">
-              <div :class="scope.row.to === $route.query.address ? '' : 'link'">
+              <div :class="scope.row.to === $route.query.address ? 'defaul-cursor' : 'link'">
                 <el-tooltip
                   class="item"
                   effect="light"
                   :content="scope.row.to"
                   placement="top-start"
                 >
-                  <span
-                    @click="$router.push(`/account/${scope.row.to}`)"
-                  >{{scope.row.to|hashFormat}}</span>
+                  <router-link :to="scope.row.to === $route.query.address ? `${$route.fullPath}` : `/account/${scope.row.to}`">{{scope.row.to|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -101,9 +92,7 @@
                   :content="scope.row.hash"
                   placement="top-end"
                 >
-                  <span
-                    @click="$router.push(`/extrinsic/${scope.row.hash}`)"
-                  >{{scope.row.hash|hashFormat}}</span>
+                  <router-link :to="`/extrinsic/${scope.row.hash}`">{{scope.row.hash|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -274,6 +263,11 @@ export default {
       min-height: 120px;
       margin-top: 10px;
       padding: 13px 20px;
+      .defaul-cursor {
+        a {
+          cursor: auto;
+        }
+      }
       .link {
         color: var(--link-color);
         span {

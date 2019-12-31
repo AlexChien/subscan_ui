@@ -113,11 +113,9 @@
                 </div>
                 <div class="desc-item align-items-center">
                   <div class="label">{{$t('role')}}</div>
-                  <div
-                    v-if="role==='validator'"
-                    class="value link"
-                    @click="$router.push(`/validator/${address}`)"
-                  >{{$t('validator')}}</div>
+                  <div v-if="role==='validator'" class="value link">
+                    <router-link :to="`/validator/${address}`">{{$t('validator')}}</router-link>
+                  </div>
                   <div
                     v-else-if="role==='nominator'"
                     class="value link"
@@ -139,20 +137,16 @@
                 <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
                   <template slot-scope="scope">
                     <div class="link">
-                      <span
-                        @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
-                      >{{scope.row.extrinsic_index}}</span>
+                      <router-link
+                        :to="`/extrinsic/${scope.row.extrinsic_index}`"
+                      >{{scope.row.extrinsic_index}}</router-link>
                     </div>
                   </template>
                 </el-table-column>
                 <el-table-column min-width="100" prop="block_num" :label="$t('block')">
                   <template slot-scope="scope">
                     <div class="link">
-                      <div class="link">
-                        <span
-                          @click="$router.push(`/block/${scope.row.block_num}`)"
-                        >{{scope.row.block_num}}</span>
-                      </div>
+                      <router-link :to="`/block/${scope.row.block_num}`">{{scope.row.block_num}}</router-link>
                     </div>
                   </template>
                 </el-table-column>
@@ -170,9 +164,9 @@
                         :content="scope.row.extrinsic_hash"
                         placement="top-start"
                       >
-                        <span
-                          @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)"
-                        >{{scope.row.extrinsic_hash|hashFormat}}</span>
+                        <router-link
+                          :to="`/extrinsic/${scope.row.extrinsic_hash}`"
+                        >{{scope.row.extrinsic_hash|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -221,18 +215,16 @@
                 <el-table-column min-width="120" prop="extrinsic_index" :label="$t('extrinsic_id')">
                   <template slot-scope="scope">
                     <div class="link">
-                      <span
-                        @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
-                      >{{scope.row.extrinsic_index}}</span>
+                      <router-link
+                        :to="`/extrinsic/${scope.row.extrinsic_index}`"
+                      >{{scope.row.extrinsic_index}}</router-link>
                     </div>
                   </template>
                 </el-table-column>
                 <el-table-column min-width="120" prop="block_num" :label="$t('block')">
                   <template slot-scope="scope">
                     <div class="link">
-                      <span
-                        @click="$router.push(`/block/${scope.row.block_num}`)"
-                      >{{scope.row.block_num}}</span>
+                      <router-link :to="`/block/${scope.row.block_num}`">{{scope.row.block_num}}</router-link>
                     </div>
                   </template>
                 </el-table-column>
@@ -248,9 +240,9 @@
                         :content="scope.row.from"
                         placement="top-start"
                       >
-                        <span
-                          @click="$router.push(`/account/${scope.row.from}`)"
-                        >{{scope.row.from|hashFormat}}</span>
+                        <router-link
+                          :to="`/account/${scope.row.from}`"
+                        >{{scope.row.from|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -271,9 +263,7 @@
                         :content="scope.row.to"
                         placement="top-start"
                       >
-                        <span
-                          @click="$router.push(`/account/${scope.row.to}`)"
-                        >{{scope.row.to|hashFormat}}</span>
+                        <router-link :to="`/account/${scope.row.to}`">{{scope.row.to|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -297,9 +287,9 @@
                         :content="scope.row.hash"
                         placement="top-end"
                       >
-                        <span
-                          @click="$router.push(`/extrinsic/${scope.row.hash}`)"
-                        >{{scope.row.hash|hashFormat}}</span>
+                        <router-link
+                          :to="`/extrinsic/${scope.row.hash}`"
+                        >{{scope.row.hash|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -321,9 +311,9 @@
                         :content="scope.row.validator_stash"
                         placement="top-start"
                       >
-                        <span
-                          @click="$router.push(`/validator/${scope.row.validator_stash}`)"
-                        >{{scope.row.validator_stash | hashFormat}}</span>
+                        <router-link
+                          :to="`/validator/${scope.row.validator_stash}`"
+                        >{{scope.row.validator_stash | hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -352,11 +342,10 @@
                 </el-table-column>
                 <el-table-column min-width="100" prop="count_nominators" :label="$t('nominator')">
                   <template slot-scope="scope">
-                    <div
-                      :class="{link:scope.row.count_nominators > 0}"
-                      @click="scope.row.count_nominators > 0 && $router.push(`/nominator?address=${scope.row.validator_stash}`)"
-                    >
-                      <span>{{scope.row.count_nominators}}</span>
+                    <div :class="{link:scope.row.count_nominators > 0}">
+                      <router-link
+                        :to="scope.row.count_nominators > 0 ? `/nominator?address=${scope.row.validator_stash}`: `${$route.fullPath}`"
+                      >{{scope.row.count_nominators}}</router-link>
                     </div>
                   </template>
                 </el-table-column>

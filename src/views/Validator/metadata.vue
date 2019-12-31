@@ -1,20 +1,31 @@
 <template>
   <div class="metadata-wrapper subscan-card">
     <div>
-      <router-link class="nav-item" to="/validator" tag="div" active-class="choosed">
+      <router-link class="nav-item" to="/validator" tag="a" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="active-accounts"></icon-svg>
           <div class="label">{{$t('validators')}}</div>
-          <count-to class="value" :end="Number(metadata.current_validator_count||0)" :duration="0.8" :decimal="0" :options="validatorCountOpts"/>
+          <count-to
+            class="value"
+            :end="Number(metadata.current_validator_count||0)"
+            :duration="0.8"
+            :decimal="0"
+            :options="validatorCountOpts"
+          />
         </div>
       </router-link>
     </div>
     <div>
-      <router-link class="nav-item" to="/waiting" tag="div" active-class="choosed">
+      <router-link class="nav-item" to="/waiting" tag="a" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="sandglass"></icon-svg>
           <div class="label">{{$t('waiting')}}</div>
-          <count-to class="value" :end="Number(metadata.waiting_validator||0)" :duration="0.8" :decimal="0" />
+          <count-to
+            class="value"
+            :end="Number(metadata.waiting_validator||0)"
+            :duration="0.8"
+            :decimal="0"
+          />
         </div>
       </router-link>
     </div>
@@ -23,7 +34,13 @@
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="era"></icon-svg>
           <div class="label">{{$t('era')}}</div>
-          <count-to class="value" :end="Number(metadata.eraProcess||0)" :duration="0.8" :decimal="0" :options="eraCountOpts"/>
+          <count-to
+            class="value"
+            :end="Number(metadata.eraProcess||0)"
+            :duration="0.8"
+            :decimal="0"
+            :options="eraCountOpts"
+          />
         </div>
       </router-link>
     </div>
@@ -41,13 +58,13 @@ export default {
     }),
     eraCountOpts() {
       return {
-        suffix: '/' + Number(this.metadata.eraLength||0),
-      }
+        suffix: "/" + Number(this.metadata.eraLength || 0)
+      };
     },
     validatorCountOpts() {
       return {
-        suffix: '/' + Number(this.metadata.validator_count||0),
-      }
+        suffix: "/" + Number(this.metadata.validator_count || 0)
+      };
     }
   }
 };
@@ -56,12 +73,12 @@ export default {
 <style lang='scss' scoped>
 .metadata-wrapper {
   display: flex;
-  &>div{
+  & > div {
     flex: 1;
     display: flex;
     justify-content: center;
   }
-  .nav-item{
+  .nav-item {
     cursor: pointer;
     &.event {
       cursor: default;
@@ -90,7 +107,7 @@ export default {
       line-height: 30px;
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     flex-direction: column;
     .nav-item {
       width: 100%;

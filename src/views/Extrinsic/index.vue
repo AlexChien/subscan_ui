@@ -13,16 +13,16 @@
             <div class="icon">
               <identicon :size="30" theme="polkadot" :value="$route.query.address" />
             </div>
-            <div
+            <router-link
               class="link"
-              @click="$router.push(`/account/${$route.query.address}`)"
-            >{{` ${$route.query.address} `}}</div>
+              :to="`/account/${$route.query.address}`"
+            >{{$route.query.address}}</router-link>
           </template>
           <template v-else-if="$route.query.block">
-            <div
+            <router-link
               class="link"
-              @click="$router.push(`/block/${$route.query.block}`)"
-            >{{` Block#${$route.query.block} `}}</div>
+              :to="`/block/${$route.query.block}`"
+            >{{` Block#${$route.query.block} `}}</router-link>
           </template>
           <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
@@ -36,20 +36,16 @@
           <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
             <template slot-scope="scope">
               <div class="link">
-                <span
-                  @click="$router.push(`/extrinsic/${scope.row.extrinsic_index}`)"
-                >{{scope.row.extrinsic_index}}</span>
+                <router-link
+                  :to="`/extrinsic/${scope.row.extrinsic_index}`"
+                >{{scope.row.extrinsic_index}}</router-link>
               </div>
             </template>
           </el-table-column>
           <el-table-column min-width="100" prop="block_num" :label="$t('block')">
             <template slot-scope="scope">
               <div class="link">
-                <div class="link">
-                  <span
-                    @click="$router.push(`/block/${scope.row.block_num}`)"
-                  >{{scope.row.block_num}}</span>
-                </div>
+                <router-link :to="`/block/${scope.row.block_num}`">{{scope.row.block_num}}</router-link>
               </div>
             </template>
           </el-table-column>
@@ -62,9 +58,9 @@
                   :content="scope.row.extrinsic_hash"
                   placement="top-start"
                 >
-                  <span
-                    @click="$router.push(`/extrinsic/${scope.row.extrinsic_hash}`)"
-                  >{{scope.row.extrinsic_hash|hashFormat}}</span>
+                  <router-link
+                    :to="`/extrinsic/${scope.row.extrinsic_hash}`"
+                  >{{scope.row.extrinsic_hash|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -188,7 +184,7 @@ export default {
           page,
           signed: this.signedChecked ? "signed" : "all",
           address: this.$route.query.address
-        }
+        };
         if (this.$route.query.address) {
           ops.signed = "all";
         }

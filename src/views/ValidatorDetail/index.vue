@@ -83,7 +83,7 @@
             <div class="info-item">
               <div class="label">{{$t('rank')}}</div>
               <div v-if="this.$route.name === 'waitingDetail'" class="value">{{$t('waiting')}}</div>
-              <div v-else class="value">{{validatorInfo.rank_validator}}</div>
+              <div v-else class="value">{{validatorInfo.rank_validator + 1}}</div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('self_bonded')}}</div>

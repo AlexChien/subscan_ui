@@ -3,7 +3,7 @@
     :class="{'is-home-page': isHomePage}"
   >
     <div class="container align-items-center">
-      <router-link class="logo" to="/" tag="div"></router-link>
+      <router-link class="logo" to="/" tag="a"></router-link>
       <div class="rate">
         <div v-if="this.sourceSelected === 'kusama'" class="kms-rate">
           <span class="label">{{$t('kusama.short')}}</span>
@@ -12,17 +12,17 @@
       </div>
       <div class="right-menu align-items-center">
         <ul class="nav-item-list align-items-center">
-          <router-link class="nav-item" to="/block" tag="li" active-class="choosed">{{$t('blocks')}}</router-link>
-          <router-link class="nav-item" to="/extrinsic" tag="li" active-class="choosed">{{$t('extrinsics')}}</router-link>
-          <router-link class="nav-item" to="/transfer" tag="li" active-class="choosed">{{$t('transfers')}}</router-link>
+          <router-link class="nav-item" to="/block" tag="a" active-class="choosed">{{$t('blocks')}}</router-link>
+          <router-link class="nav-item" to="/extrinsic" tag="a" active-class="choosed">{{$t('extrinsics')}}</router-link>
+          <router-link class="nav-item" to="/transfer" tag="a" active-class="choosed">{{$t('transfers')}}</router-link>
           <el-dropdown class="account-dropdown" trigger="click">
             <li class="nav-item">{{$t('accounts')}}</li>
             <el-dropdown-menu slot="dropdown" class="account-dropdown-menu">
               <el-dropdown-item class="menu-item">
-                <router-link class="account-nav-item" to="/validator" tag="li" active-class="choosed">{{$t('validators')}}</router-link>
+                <router-link class="account-nav-item" to="/validator" tag="a" active-class="choosed">{{$t('validators')}}</router-link>
               </el-dropdown-item>
               <el-dropdown-item class="menu-item">
-                <router-link class="account-nav-item" to="/account" tag="li" active-class="choosed">{{$t('holders')}}</router-link>
+                <router-link class="account-nav-item" to="/account" tag="a" active-class="choosed">{{$t('holders')}}</router-link>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>

@@ -30,7 +30,7 @@
       </router-link>
     </div>
     <div>
-      <router-link :to="$route.fullPath" tag="div" active-class="choosed">
+      <router-link class="nav-item era" :to="$route.fullPath" tag="div" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="era"></icon-svg>
           <div class="label">{{$t('era')}}</div>
@@ -80,7 +80,7 @@ export default {
   }
   .nav-item {
     cursor: pointer;
-    &.event {
+    &.era {
       cursor: default;
     }
   }

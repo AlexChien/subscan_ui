@@ -40,18 +40,26 @@
           <div>
             <div class="info-item">
               <div class="label">{{$t('stash')}}</div>
-              <div class="value link align-items-center">
+              <div class="value link copy align-items-center">
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="validatorInfo.validator_stash" />
                 </div>
                 <router-link
                   :to="`/account/${validatorInfo.validator_stash}`"
                 >{{validatorInfo.validator_stash}}</router-link>
+                <div
+                  class="copy-btn"
+                  v-if="validatorInfo.validator_stash"
+                  v-clipboard:copy="validatorInfo.validator_stash"
+                  v-clipboard:success="clipboardSuccess"
+                >
+                  <icon-svg class="iconfont" icon-class="copy" />
+                </div>
               </div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('controller')}}</div>
-              <div class="value link align-items-center">
+              <div class="value link copy align-items-center">
                 <div class="icon identicon">
                   <identicon
                     :size="24"
@@ -62,6 +70,14 @@
                 <router-link
                   :to="`/account/${validatorInfo.validator_controller}`"
                 >{{validatorInfo.validator_controller}}</router-link>
+                <div
+                  class="copy-btn"
+                  v-if="validatorInfo.validator_controller"
+                  v-clipboard:copy="validatorInfo.validator_controller"
+                  v-clipboard:success="clipboardSuccess"
+                >
+                  <icon-svg class="iconfont" icon-class="copy" />
+                </div>
               </div>
             </div>
             <div class="info-item">

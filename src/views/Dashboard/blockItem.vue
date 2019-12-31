@@ -3,24 +3,25 @@
     <div class="block-left">
       <div class="block-num align-items-center">
         <div class="label">{{$t('block_hash_tag')}}</div>
-        <div
-          class="value"
-          @click="$router.push(`/block/${blockData.block_num}`)"
-        >{{+blockData.block_num|toThousandslsFilter}}</div>
+        <div class="value link">
+          <router-link
+            :to="`/block/${blockData.block_num}`"
+          >{{+blockData.block_num|toThousandslsFilter}}</router-link>
+        </div>
       </div>
       <div class="block-includes align-items-center">
         <div class="label">{{$t('includes')}}</div>
         <div class="value">
-          <div
-            class="extrinsics"
-            :class="{empty: blockData.extrinsics_count==0}"
-            @click="blockData.extrinsics_count != 0 && $router.push(`/block/${blockData.block_num}?detail_type=extrinsic`)"
-          >{{blockData.extrinsics_count}} {{$t('extrinsic')}}</div>
-          <div
-            class="event"
-            :class="{empty: blockData.event_count==0}"
-            @click="blockData.event_count != 0 && $router.push(`/block/${blockData.block_num}?detail_type=event`)"
-          >{{blockData.event_count}} {{$t('event')}}</div>
+          <div class="extrinsics empty" :class="{link: blockData.extrinsics_count > 0}">
+            <router-link
+              :to="blockData.extrinsics_count > 0 ? `/block/${blockData.block_num}?detail_type=extrinsic` : `${$route.fullPath}`"
+            >{{blockData.extrinsics_count}} {{$t('extrinsic')}}</router-link>
+          </div>
+          <div class="event empty" :class="{link: blockData.event_count > 0}">
+            <router-link
+              :to="blockData.event_count > 0 ? `/block/${blockData.block_num}?detail_type=event` : `${$route.fullPath}`"
+            >{{blockData.event_count}} {{$t('event')}}</router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -90,7 +91,9 @@ export default {
         .extrinsics.empty,
         .event.empty {
           cursor: auto;
-          color: rgba(152, 149, 159, 1);
+          a {
+            color: rgba(152, 149, 159, 1);
+          }
         }
       }
     }

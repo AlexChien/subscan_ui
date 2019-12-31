@@ -44,9 +44,9 @@
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="validatorInfo.validator_stash" />
                 </div>
-                <div
-                  @click="$router.push(`/account/${validatorInfo.validator_stash}`)"
-                >{{validatorInfo.validator_stash}}</div>
+                <router-link
+                  :to="`/account/${validatorInfo.validator_stash}`"
+                >{{validatorInfo.validator_stash}}</router-link>
               </div>
             </div>
             <div class="info-item">
@@ -59,9 +59,9 @@
                     :value="validatorInfo.validator_controller"
                   />
                 </div>
-                <span
-                  @click="$router.push(`/account/${validatorInfo.validator_controller}`)"
-                >{{validatorInfo.validator_controller}}</span>
+                <router-link
+                  :to="`/account/${validatorInfo.validator_controller}`"
+                >{{validatorInfo.validator_controller}}</router-link>
               </div>
             </div>
             <div class="info-item">
@@ -110,9 +110,7 @@
                         :content="scope.row.nominator_stash"
                         placement="top-start"
                       >
-                        <span
-                          @click="$router.push(`/account/${scope.row.nominator_stash}`)"
-                        >{{scope.row.nominator_stash | hashFormat}}</span>
+                        <router-link :to="`/account/${scope.row.nominator_stash}`">{{scope.row.nominator_stash | hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>

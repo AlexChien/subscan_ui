@@ -48,9 +48,9 @@
                   :content="scope.row.validator_stash"
                   placement="top-start"
                 >
-                  <span
-                    @click="isWaiting ? $router.push(`/waiting/${scope.row.validator_stash}`) :$router.push(`/validator/${scope.row.validator_stash}`)"
-                  >{{scope.row.validator_stash | hashFormat}}</span>
+                  <router-link
+                    :to="isWaiting ? `/waiting/${scope.row.validator_stash}` : `/validator/${scope.row.validator_stash}`"
+                  >{{scope.row.validator_stash | hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -85,9 +85,8 @@
             <template slot-scope="scope">
               <div
                 :class="{link:scope.row.count_nominators > 0}"
-                @click="scope.row.count_nominators > 0 && $router.push(`/nominator?address=${scope.row.validator_stash}`)"
               >
-                <span>{{scope.row.count_nominators}}</span>
+                <router-link :to="scope.row.count_nominators > 0 ? `/nominator?address=${scope.row.validator_stash}` : `${$route.fullPath}`">{{scope.row.count_nominators}}</router-link>
               </div>
             </template>
           </el-table-column>

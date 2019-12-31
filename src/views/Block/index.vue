@@ -10,8 +10,8 @@
         <el-table :data="blockData" style="width: 100%">
           <el-table-column min-width="120" prop="block_num" :label="$t('block')">
             <template slot-scope="scope">
-              <div class="link" @click="$router.push(`/block/${scope.row.block_num}`)">
-                <span>{{scope.row.block_num}}</span>
+              <div class="link">
+                <router-link :to="`/block/${scope.row.block_num}`">{{scope.row.block_num}}</router-link>
               </div>
             </template>
           </el-table-column>
@@ -20,21 +20,19 @@
           </el-table-column>
           <el-table-column min-width="55" prop="extrinsics_count" :label="$t('extrinsics')">
             <template slot-scope="scope">
-              <div 
-                :class="{link:scope.row.extrinsics_count>0}"
-                @click="scope.row.extrinsics_count > 0 && $router.push(`/block/${scope.row.block_num}?detail_type=extrinsic`)"
-              >
-                <span>{{scope.row.extrinsics_count}}</span>
+              <div :class="{link:scope.row.extrinsics_count>0}">
+                <router-link
+                  :to="scope.row.extrinsics_count > 0 ? `/block/${scope.row.block_num}?detail_type=extrinsic` : `${$route.fullPath}`"
+                >{{scope.row.extrinsics_count}}</router-link>
               </div>
             </template>
           </el-table-column>
           <el-table-column min-width="50" prop="event_count" :label="$t('events')">
             <template slot-scope="scope">
-              <div 
-                :class="{link:scope.row.event_count>0}"
-                @click="scope.row.event_count > 0 && $router.push(`/block/${scope.row.block_num}?detail_type=event`)"
-              >
-                <span>{{scope.row.event_count}}</span>
+              <div :class="{link:scope.row.event_count>0}">
+                <router-link
+                  :to="scope.row.event_count > 0 ? `/block/${scope.row.block_num}?detail_type=event` : `${$route.fullPath}`"
+                >{{scope.row.event_count}}</router-link>
               </div>
             </template>
           </el-table-column>
@@ -47,7 +45,9 @@
                   :content="scope.row.validator"
                   placement="top-start"
                 >
-                  <span @click="$router.push(`/account/${scope.row.validator}`)">{{scope.row.validator|hashFormat}}</span>
+                  <router-link
+                    :to="`/account/${scope.row.validator}`"
+                  >{{scope.row.validator|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -61,7 +61,7 @@
                   :content="scope.row.hash"
                   placement="top-end"
                 >
-                  <span @click="$router.push(`/block/${scope.row.hash}`)">{{scope.row.hash|hashFormat}}</span>
+                  <router-link :to="`/block/${scope.row.hash}`">{{scope.row.hash|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -99,19 +99,19 @@ export default {
       total: 0,
       selectList: [
         {
-          label: this.$t('all'),
+          label: this.$t("all"),
           value: "all"
         },
         {
-          label: this.$t('block'),
+          label: this.$t("block"),
           value: "block"
         },
         {
-          label: this.$t('extrinsic'),
+          label: this.$t("extrinsic"),
           value: "extrinsic"
         },
         {
-          label: this.$t('account'),
+          label: this.$t("account"),
           value: "account"
         }
       ]
@@ -151,12 +151,12 @@ export default {
     downloadClick() {
       const tableData = [
         [
-            this.$t('block'),
-            this.$t('block_timestamp'),
-            this.$t('extrinsics'),
-            this.$t('events'),
-            this.$t('validator'),
-            this.$t('block_hash')
+          this.$t("block"),
+          this.$t("block_timestamp"),
+          this.$t("extrinsics"),
+          this.$t("events"),
+          this.$t("validator"),
+          this.$t("block_hash")
         ]
       ];
       this.blockData.forEach(item => {
@@ -210,7 +210,7 @@ export default {
       }
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .container {
       .table-bottom {
         flex-direction: column;

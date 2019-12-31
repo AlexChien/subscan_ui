@@ -32,8 +32,9 @@
             <div class="label">{{$t('block')}}</div>
             <div
               class="value link"
-              @click="$router.push(`/block/${extrinsicInfo.block_num}`)"
-            >{{extrinsicInfo.block_num}}</div>
+            >
+              <router-link :to="`/block/${extrinsicInfo.block_num}`">{{extrinsicInfo.block_num}}</router-link>
+            </div>
           </div>
           <div class="info-item" v-if="extrinsicInfo.signature">
             <div class="label">{{$t('extrinsic_hash')}}</div>
@@ -63,9 +64,7 @@
               <div class="icon identicon">
                 <identicon :size="24" theme="polkadot" :value="extrinsicInfo.account_id" />
               </div>
-              <div
-                @click="$router.push(`/account/${extrinsicInfo.account_id}`)"
-              >{{extrinsicInfo.account_id}}</div>
+              <router-link :to="`/account/${extrinsicInfo.account_id}`">{{extrinsicInfo.account_id}}</router-link>
               <div
                 class="copy-btn"
                 v-if="extrinsicInfo.account_id"
@@ -83,9 +82,7 @@
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="extrinsicInfo.transfer.to" />
                 </div>
-                <div
-                  @click="$router.push(`/account/${extrinsicInfo.transfer.to}`)"
-                >{{extrinsicInfo.transfer.to}}</div>
+                <router-link :to="`/account/${extrinsicInfo.transfer.to}`">{{extrinsicInfo.transfer.to}}</router-link>
                 <div
                   class="copy-btn"
                   v-if="extrinsicInfo.transfer.to"
@@ -156,7 +153,6 @@
                   <template>
                     <div
                       class="link"
-                      @click="$router.push(`/extrinsic/${extrinsicInfo.extrinsic_hash}`)"
                     >
                       <el-tooltip
                         class="item"
@@ -164,7 +160,7 @@
                         :content="extrinsicInfo.extrinsic_hash"
                         placement="top-start"
                       >
-                        <span>{{extrinsicInfo.extrinsic_hash|hashFormat}}</span>
+                        <router-link :to="`/extrinsic/${extrinsicInfo.extrinsic_hash}`">{{extrinsicInfo.extrinsic_hash|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>

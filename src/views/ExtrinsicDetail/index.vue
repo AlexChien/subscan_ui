@@ -30,9 +30,7 @@
           </div>
           <div class="info-item">
             <div class="label">{{$t('block')}}</div>
-            <div
-              class="value link"
-            >
+            <div class="value link">
               <router-link :to="`/block/${extrinsicInfo.block_num}`">{{extrinsicInfo.block_num}}</router-link>
             </div>
           </div>
@@ -46,7 +44,7 @@
                 v-clipboard:copy="extrinsicInfo.extrinsic_hash"
                 v-clipboard:success="clipboardSuccess"
               >
-                <icon-svg class="iconfont" icon-class="copy"/>
+                <icon-svg class="iconfont" icon-class="copy" />
               </div>
             </div>
           </div>
@@ -71,7 +69,7 @@
                 v-clipboard:copy="extrinsicInfo.account_id"
                 v-clipboard:success="clipboardSuccess"
               >
-                <icon-svg class="iconfont" icon-class="copy"/>
+                <icon-svg class="iconfont" icon-class="copy" />
               </div>
             </div>
           </div>
@@ -82,21 +80,26 @@
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="extrinsicInfo.transfer.to" />
                 </div>
-                <router-link :to="`/account/${extrinsicInfo.transfer.to}`">{{extrinsicInfo.transfer.to}}</router-link>
+                <router-link
+                  :to="`/account/${extrinsicInfo.transfer.to}`"
+                >{{extrinsicInfo.transfer.to}}</router-link>
                 <div
                   class="copy-btn"
                   v-if="extrinsicInfo.transfer.to"
                   v-clipboard:copy="extrinsicInfo.transfer.to"
                   v-clipboard:success="clipboardSuccess"
                 >
-                  <icon-svg class="iconfont" icon-class="copy"/>
+                  <icon-svg class="iconfont" icon-class="copy" />
                 </div>
               </div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('value')}}</div>
               <div class="value align-items-center">
-                <balances :amount="extrinsicInfo.transfer.amount" :module="extrinsicInfo.transfer.module"></balances>
+                <balances
+                  :amount="extrinsicInfo.transfer.amount"
+                  :module="extrinsicInfo.transfer.module"
+                ></balances>
               </div>
             </div>
           </template>
@@ -111,9 +114,11 @@
               {{extrinsicInfo.success?'Success':'Fail'}}
             </div>
           </div>
-          <div class="mobile-detail-wrapper"
-            :class="{'is-fold': isFold}"
-          >
+          <div class="info-item">
+            <div class="label">{{$t('fee')}}</div>
+            <div class="value">{{extrinsicInfo.fee|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
+          </div>
+          <div class="mobile-detail-wrapper" :class="{'is-fold': isFold}">
             <div class="info-item">
               <div class="label">{{$t('parameters')}}</div>
               <div class="value">
@@ -128,9 +133,7 @@
               <div class="value">{{extrinsicInfo.signature}}</div>
             </div>
           </div>
-          <div class="info-item toggle-btn"
-            :class="{'is-fold': isFold}"
-          >
+          <div class="info-item toggle-btn" :class="{'is-fold': isFold}">
             <div v-if="isFold" class="text" @click="toggleMobileDetail(false)">{{$t('view_more')}}</div>
             <div v-else class="text" @click="toggleMobileDetail(true)">{{$t('fold_up')}}</div>
           </div>
@@ -151,16 +154,16 @@
                 </el-table-column>
                 <el-table-column min-width="140" :label="$t('hash')" fit>
                   <template>
-                    <div
-                      class="link"
-                    >
+                    <div class="link">
                       <el-tooltip
                         class="item"
                         effect="light"
                         :content="extrinsicInfo.extrinsic_hash"
                         placement="top-start"
                       >
-                        <router-link :to="`/extrinsic/${extrinsicInfo.extrinsic_hash}`">{{extrinsicInfo.extrinsic_hash|hashFormat}}</router-link>
+                        <router-link
+                          :to="`/extrinsic/${extrinsicInfo.extrinsic_hash}`"
+                        >{{extrinsicInfo.extrinsic_hash|hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -194,10 +197,15 @@
 <script>
 import Identicon from "@polkadot/vue-identicon";
 import SearchInput from "@/views/Components/SearchInput";
-import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
+import {
+  timeAgo,
+  parseTimeToUtc,
+  hashFormat,
+  accuracyFormat
+} from "Utils/filters";
 import clipboard from "Directives/clipboard";
 import { mapState } from "vuex";
-import Balances from './Balances'
+import Balances from "./Balances";
 
 export default {
   name: "ExtrinsicDetail",
@@ -209,7 +217,8 @@ export default {
   filters: {
     timeAgo,
     parseTimeToUtc,
-    hashFormat
+    hashFormat,
+    accuracyFormat
   },
   directives: {
     clipboard
@@ -221,24 +230,25 @@ export default {
         success: true
       },
       activeTab: "event",
+      currency: "ring",
       notFound: false,
       isLoading: false,
       isFold: true,
       selectList: [
         {
-          label: this.$t('all'),
+          label: this.$t("all"),
           value: "all"
         },
         {
-          label: this.$t('block'),
+          label: this.$t("block"),
           value: "block"
         },
         {
-          label: this.$t('extrinsic'),
+          label: this.$t("extrinsic"),
           value: "extrinsic"
         },
         {
-          label: this.$t('account'),
+          label: this.$t("account"),
           value: "account"
         }
       ]
@@ -246,9 +256,21 @@ export default {
   },
   computed: {
     ...mapState({
-      sourceSelected: state => state.global.sourceSelected
-    })
+      sourceSelected: state => state.global.sourceSelected,
+      token: state => state.polka.token
+    }),
+    tokenDetail() {
+      if (this.token && this.token.detail) {
+        if (this.sourceSelected === "kusama") {
+          return this.token.detail[this.token.token];
+        } else {
+          return this.token.detail[this.currency.toUpperCase()];
+        }
+      }
+      return {};
+    }
   },
+
   created() {
     const key = this.$route.params.key;
     const reg = /^[0-9,/-]*$/;
@@ -271,11 +293,11 @@ export default {
       this.isFold = isFold;
     },
     formatSymbol(module) {
-      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
-        return ''
+      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
+        return "";
       }
 
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
+      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
     },
     async getExtrinsicInfo() {
       const key = this.$route.params.key;
@@ -313,7 +335,7 @@ export default {
     clipboardSuccess() {
       this.$message({
         type: "success",
-        message: this.$t('copy_success')
+        message: this.$t("copy_success")
       });
     }
   }
@@ -483,7 +505,7 @@ export default {
       color: rgba(152, 149, 159, 1);
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .extrinsic-detail-header {
       height: inherit;
       flex-direction: column;
@@ -521,20 +543,21 @@ export default {
           justify-content: center;
           align-items: center;
           &:after {
-            content: '';
+            content: "";
             width: 0;
             height: 0;
             margin-left: 13px;
             border-width: 0 5px 7px;
             border-style: solid;
-            border-color: transparent transparent var(--main-color) transparent ;
+            border-color: transparent transparent var(--main-color) transparent;
           }
           &.is-fold {
             &:after {
               margin-left: 5px;
               border-width: 7px 5px 0;
               border-style: solid;
-              border-color: var(--main-color) transparent transparent transparent;
+              border-color: var(--main-color) transparent transparent
+                transparent;
             }
           }
         }
@@ -585,7 +608,7 @@ export default {
         margin-top: 12px;
         border-radius: 2px;
         color: var(--main-color);
-        background-color: #FFF;
+        background-color: #fff;
         border: 1px solid var(--main-color);
         text-align: center;
         font-size: 14px;

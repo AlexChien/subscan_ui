@@ -44,10 +44,10 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column min-width="150" prop="bonded_nominators" :label="$t('total_bonded')">
+          <el-table-column min-width="150" prop="total_bonded" :label="$t('total_bonded')">
             <template slot-scope="scope">
               <div>
-                <span>{{scope.row.bonded_nominators|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
+                <span>{{getTotalBonded(scope.row.bonded_nominators, scope.row.bonded_owner)|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
               </div>
             </template>
           </el-table-column>
@@ -70,7 +70,7 @@
           <el-table-column min-width="100" prop="my_share" :label="$t('my_share')">
             <template
               slot-scope="scope"
-            >{{getMyShare(scope.row.bonded, scope.row.bonded_nominators, 2)}}</template>
+            >{{getMyShare(scope.row.bonded, getTotalBonded(scope.row.bonded_nominators, scope.row.bonded_owner), 2)}}</template>
           </el-table-column>
         </el-table>
       </div>
@@ -91,7 +91,7 @@ import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat, accuracyFormat } from "Utils/filters";
-import { fmtPercentage, getCommission } from "../../utils/format";
+import { fmtPercentage, getCommission, bnPlus } from "../../utils/format";
 export default {
   name: "Vote",
   components: {
@@ -166,6 +166,9 @@ export default {
     },
     getMyShare(vote, total, digits) {
       return fmtPercentage(vote, total, digits) + "%";
+    },
+    getTotalBonded(own, nominator) {
+      return bnPlus(own, nominator).toString();
     },
     getCommission(perf) {
       return getCommission(perf, this.metadata.commissionAccuracy);

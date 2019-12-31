@@ -15,8 +15,8 @@
       <template v-else-if="validatorInfo">
         <div class="validator-header space-between align-items-center">
           <div class="header-left align-items-center">
-            <div class="address">{{$t('validator_hash_tag') + ' ' + address}}</div>
-            <div class="copy-btn" v-clipboard:copy="address" v-clipboard:success="clipboardSuccess">
+            <div class="address">{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
+            <div class="copy-btn" v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')" v-clipboard:success="clipboardSuccess">
               <icon-svg class="iconfont" icon-class="copy" />
             </div>
           </div>
@@ -79,7 +79,7 @@
               <div class="label">{{$t('total_bonded')}}</div>
               <div
                 class="value"
-              >{{validatorInfo.bonded_nominators|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
+              >{{getTotalBonded(validatorInfo.bonded_nominators, validatorInfo.bonded_owner)|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('nominator')}}</div>
@@ -125,7 +125,7 @@
                 <el-table-column min-width="100" prop="my_share" :label="$t('share')">
                   <template
                     slot-scope="scope"
-                  >{{getMyShare(scope.row.bonded, validatorInfo.bonded_nominators, 2)}}</template>
+                  >{{getMyShare(scope.row.bonded, getTotalBonded(validatorInfo.bonded_nominators, validatorInfo.bonded_owner), 2)}}</template>
                 </el-table-column>
               </el-table>
             </el-tab-pane>
@@ -153,7 +153,7 @@ import {
 } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 import Balances from "../ExtrinsicDetail/Balances";
-import { fmtPercentage, getCommission } from "../../utils/format";
+import { fmtPercentage, getCommission, bnPlus } from "../../utils/format";
 
 export default {
   name: "AccountDetail",
@@ -218,7 +218,7 @@ export default {
       sourceSelected: state => state.global.sourceSelected
     }),
     shouldShowKton() {
-      return this.sourceSelected === "darwinia";
+      return this.sourceSelected === "darwinia"  || this.sourceSelected === 'icefrog';
     },
     tokenDetail() {
       if (this.token && this.token.detail) {
@@ -248,6 +248,9 @@ export default {
     },
     getMyShare(vote, total, digits) {
       return fmtPercentage(vote, total, digits) + "%";
+    },
+    getTotalBonded(own, nominator) {
+      return bnPlus(own, nominator).toString();
     },
     getCommission(perf) {
       return getCommission(perf, this.metadata.commissionAccuracy);

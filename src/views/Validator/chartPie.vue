@@ -65,6 +65,13 @@ export default {
           vIcon: vIconPurple,
           oIcon: oIcon
         },
+        icefrog: {
+          mainColor: "#5930dd",
+          colors: ["#5930dd", "#a995eb", "#d7d7d7"],
+          nIcon: nIconPurple,
+          vIcon: vIconPurple,
+          oIcon: oIcon
+        },
         kusama: {
           mainColor: "#e90979",
           colors: ["#e90979", "#ffaccb", "#d7d7d7"],

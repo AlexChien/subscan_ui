@@ -131,6 +131,10 @@ export default {
         {
           label: "Darwinia Crayfish",
           value: "darwinia"
+        },
+        {
+          label: "Darwinia Icefrog",
+          value: "icefrog"
         }
       ]
     };
@@ -315,8 +319,12 @@ export default {
         background-size: contain;
       }
 
-      .crayfish-button {
+      .darwinia-button {
         background: url("../../assets/images/crayfish-button.png") no-repeat left center;
+        background-size: contain;
+      }
+      .icefrog-button {
+        background: url("../../assets/images/icefrog-button.png") no-repeat left center;
         background-size: contain;
       }
 
@@ -419,7 +427,7 @@ export default {
 }
 </style>
 <style lang="scss">
-@each $theme in darwinia, kusama {
+@each $theme in darwinia, kusama, icefrog {
   .#{$theme} {
     > .nav-bar-wrapper {
       background: var(--navbar-bg);

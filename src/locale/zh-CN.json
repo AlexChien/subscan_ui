@@ -41,6 +41,7 @@
   "extrinsic_id": "交易ID",
   "extrinsics_root": "交易根",
   "extrinsics": "交易",
+  "fee": "手续费",
   "fold_up": "收起",
   "for": "",
   "from": "来自",

@@ -67,6 +67,13 @@ export default {
           tIcon: tIconPurple,
           oIcon: oIcon
         },
+        icefrog: {
+          mainColor: "#5930dd",
+          colors: ["#5930dd", "#a995eb", "#d7d7d7"],
+          bIcon: bIconPurple,
+          tIcon: tIconPurple,
+          oIcon: oIcon
+        },
         kusama: {
           mainColor: "#e90979",
           colors: ["#e90979", "#ffaccb", "#d7d7d7"],

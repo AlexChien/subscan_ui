@@ -21,6 +21,24 @@ export default [{
     }
   }
 }, {
+  name: 'icefrog',
+  value: {
+    balances: {
+      value: "RING",
+      icon: ring_icon
+    },
+    kton: {
+      value: "KTON",
+      icon: kton_icon
+    },
+    domain: {
+      value: 'https://icefrog.subscan.io'
+    },
+    donate: {
+      address: '5DobnXBB9EU8gJR8ygCM5GvHHuvSRCfWypuC2vDqW35Udbku'
+    }
+  }
+}, {
   name: 'kusama',
   value: {
     balances: {

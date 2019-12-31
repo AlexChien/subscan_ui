@@ -4,7 +4,8 @@
     <div class="container">
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
-          <div>{{$t('validator')}}</div>
+          <div v-if="isWaiting">{{$t('waiting')}}</div>
+          <div v-else>{{$t('validator')}}</div>
         </div>
         <div class="validator-search-wrapper">
           <el-input
@@ -12,21 +13,15 @@
             debounce
             :placeholder="$t('search_validator')"
             v-model.trim="inputValue"
-            @input="search"
           >
-            <el-button class="search-button" slot="append" @click="search" :loading="isBtnLoading">
+            <el-button class="search-button" slot="append" :loading="isBtnLoading">
               <icon-svg class="icon" icon-class="search" />
             </el-button>
           </el-input>
         </div>
       </div>
       <div class="transfer-table subscan-card" v-loading="isLoading">
-        <el-table
-          @sort-change="handleSortChange"
-          :data="validators"
-          style="width: 100%"
-          max-height="634"
-        >
+        <el-table @sort-change="handleSortChange" :data="filteredValidators" style="width: 100%">
           <el-table-column
             v-if="!isWaiting"
             min-width="70"
@@ -50,7 +45,7 @@
                 >
                   <router-link
                     :to="isWaiting ? `/waiting/${scope.row.validator_stash}` : `/validator/${scope.row.validator_stash}`"
-                  >{{scope.row.validator_stash | hashFormat}}</router-link>
+                  >{{scope.row.nickname || scope.row.account_index}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -68,12 +63,12 @@
           <el-table-column
             sortable="custom"
             min-width="150"
-            prop="bonded_nominators"
+            prop="total_bonded"
             :label="$t('total_bonded')"
           >
             <template
               slot-scope="scope"
-            >{{scope.row.bonded_nominators|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</template>
+            >{{scope.row.total_bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</template>
           </el-table-column>
           <el-table-column
             sortable="custom"
@@ -83,21 +78,17 @@
             fit
           >
             <template slot-scope="scope">
-              <div
-                :class="{link:scope.row.count_nominators > 0}"
-              >
-                <router-link :to="scope.row.count_nominators > 0 ? `/nominator?address=${scope.row.validator_stash}` : `${$route.fullPath}`">{{scope.row.count_nominators}}</router-link>
+              <div :class="scope.row.count_nominators > 0 ? 'link' : 'defaul-cursor'">
+                <router-link
+                  :to="scope.row.count_nominators > 0 ? `/nominator?address=${scope.row.validator_stash}` : `${$route.fullPath}`"
+                >{{scope.row.count_nominators}}</router-link>
               </div>
             </template>
           </el-table-column>
           <el-table-column min-width="120" prop="validator_prefs_value" :label="$t('commission')">
-            <!-- <template slot-scope="scope">{{`${scope.row.validator_prefs_value}`}}</template> -->
             <template slot-scope="scope">{{getCommission(scope.row.validator_prefs_value)}}</template>
           </el-table-column>
         </el-table>
-      </div>
-      <div v-if="isWaiting" class="table-bottom space-between align-items-center">
-        <pagination :page-size="rowSize" :total="total" @currentChange="currentChange" />
       </div>
     </div>
   </div>
@@ -106,13 +97,12 @@
 import Identicon from "@polkadot/vue-identicon";
 import { mapState } from "vuex";
 import { hashFormat, accuracyFormat } from "Utils/filters";
-import Pagination from "Components/Pagination";
-import { getCommission } from "../../utils/format";
+import { getCommission, bnPlus } from "../../utils/format";
+import { BigNumber } from "bignumber.js";
 export default {
   name: "Validators",
   components: {
-    Identicon,
-    Pagination
+    Identicon
   },
   data() {
     return {
@@ -122,10 +112,8 @@ export default {
       validators: [],
       isOnSearch: false,
       isBtnLoading: false,
-      currentPage: 0,
       total: 0,
       currency: "ring",
-      rowSize: 12,
       currentOrder: "",
       currentOrderField: ""
     };
@@ -156,6 +144,30 @@ export default {
     },
     isWaiting() {
       return this.type === "waiting";
+    },
+    filteredValidators() {
+      let keyWord = this.inputValue.toLowerCase();
+      return this.validators.filter(function(validator) {
+        if (validator) {
+          if (
+            validator.validator_stash &&
+            validator.validator_stash.toLowerCase().includes(keyWord)
+          ) {
+            return true;
+          } else if (
+            validator.account_index &&
+            validator.account_index.toLowerCase().includes(keyWord)
+          ) {
+            return true;
+          } else if (
+            validator.nickname &&
+            validator.nickname.toLowerCase().includes(keyWord)
+          ) {
+            return true;
+          }
+        }
+        return false;
+      });
     }
   },
   created() {
@@ -167,16 +179,13 @@ export default {
       this.getValidatorData();
     },
     search() {
-      this.currentPage = 0;
-      this.total = 0;
       this.getValidatorData();
     },
     getCommission(perf) {
       return getCommission(perf, this.metadata.commissionAccuracy);
     },
-    currentChange(pageSize) {
-      this.currentPage = --pageSize;
-      this.getValidatorData();
+    getTotalBonded(own, nominator) {
+      return bnPlus(own, nominator).toString();
     },
     handleSortChange(change) {
       this.currentOrderField = change.prop || "";
@@ -192,7 +201,29 @@ export default {
           this.currentOrderField = "";
           break;
       }
-      this.getValidatorData();
+      if (this.currentOrderField === "total_bonded" && this.currentOrderField) {
+        this.sortByTotalBonded();
+      } else {
+        this.getValidatorData();
+      }
+    },
+    sortByTotalBonded() {
+      this.validators.sort((prev, next) => {
+        let prevTotal = new BigNumber(prev && prev.total_bonded);
+        let nextTotal = new BigNumber(next && next.total_bonded);
+        let result = prevTotal.minus(nextTotal);
+        let sort = 0;
+        if (result.isNegative()) {
+          sort = this.currentOrder === "desc" ? 1 : -1;
+        }
+        if (result.isPositive()) {
+          sort = this.currentOrder === "desc" ? -1 : 1;
+        }
+        if (result.isZero()) {
+          sort = 0;
+        }
+        return sort;
+      });
     },
     formatSymbol(module) {
       if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
@@ -212,13 +243,19 @@ export default {
         this.type = "";
       }
       const data = await this.$api[api]({
-        key: this.inputValue,
-        row: this.rowSize,
         page: this.currentPage,
         order: this.currentOrder,
         order_field: this.currentOrderField
       });
       this.validators = data.list || [];
+      this.validators.forEach(validator => {
+        if (validator) {
+          validator.total_bonded = this.getTotalBonded(
+            validator.bonded_owner,
+            validator.bonded_nominators
+          );
+        }
+      });
       this.total = +data.count || this.validators.length;
       this.isLoading = false;
     }
@@ -252,6 +289,11 @@ export default {
       min-height: 120px;
       margin-top: 10px;
       padding: 13px 20px;
+      .defaul-cursor {
+        a {
+          cursor: auto;
+        }
+      }
       .link {
         color: var(--link-color);
         span {

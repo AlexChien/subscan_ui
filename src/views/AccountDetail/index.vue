@@ -114,7 +114,7 @@
                 <div class="desc-item align-items-center">
                   <div class="label">{{$t('role')}}</div>
                   <div v-if="role==='validator'" class="value link">
-                    <router-link :to="`/validator/${address}`">{{$t('validator')}}</router-link>
+                    <router-link :to="`/validator/${accountInfo.account.stash}`">{{$t('validator')}}</router-link>
                   </div>
                   <div
                     v-else-if="role==='nominator'"

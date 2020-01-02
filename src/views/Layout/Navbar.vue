@@ -41,10 +41,7 @@
               :key="item.value"
             >
               <i class="choosed-icon" :class="{show: sourceSelected===item.value}"></i>
-              <span
-                class="menu-dropdown-item-label"
-                @click="changeSource(item.value)"
-              >{{item.label}}</span>
+              <a class="menu-dropdown-item-label" :href="getSourceHref(item.value)">{{item.label}}</a>
             </li>
           </el-dropdown-menu>
         </el-dropdown>
@@ -225,9 +222,8 @@ export default {
     closeDrawer() {
       this.drawer = false;
     },
-    changeSource(source) {
-      // this.$store.dispatch("SetSourceSelected", source);
-      window.location.href = this.$const[`SYMBOL/${source}`]['domain']['value'];
+    getSourceHref(source) {
+      return this.$const[`SYMBOL/${source}`]['domain']['value'];
     },
     changeTime() {
       this.currentTime = Date.now();

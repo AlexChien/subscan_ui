@@ -69,6 +69,7 @@
   "others": "Others",
   "parameters": "Parameters",
   "parent_hash": "Parent Hash",
+  "partner": "Partner",
   "placeholder": {
     "search_by": "Search by Block / Extrinsic / Account"
   },

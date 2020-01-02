@@ -15,20 +15,25 @@
       <template v-else-if="validatorInfo">
         <div class="validator-header space-between align-items-center">
           <div class="header-left align-items-center">
-            <div class="address">{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
-            <div class="copy-btn" v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')" v-clipboard:success="clipboardSuccess">
+            <div
+              class="address"
+            >{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
+            <div
+              class="copy-btn"
+              v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')"
+              v-clipboard:success="clipboardSuccess"
+            >
               <icon-svg class="iconfont" icon-class="copy" />
             </div>
           </div>
           <div
             class="header-left align-items-center mobile"
-            v-clipboard:copy="address"
+            v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')"
             v-clipboard:success="clipboardSuccess"
           >
-            <div class="icon">
-              <identicon :size="40" theme="polkadot" :value="address" />
-            </div>
-            <div class="address">{{address}}</div>
+            <div
+              class="address"
+            >{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
           </div>
           <search-input
             class="header-right"
@@ -126,7 +131,9 @@
                         :content="scope.row.nominator_stash"
                         placement="top-start"
                       >
-                        <router-link :to="`/account/${scope.row.nominator_stash}`">{{scope.row.nominator_stash | hashFormat}}</router-link>
+                        <router-link
+                          :to="`/account/${scope.row.nominator_stash}`"
+                        >{{scope.row.nominator_stash | hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -234,7 +241,9 @@ export default {
       sourceSelected: state => state.global.sourceSelected
     }),
     shouldShowKton() {
-      return this.sourceSelected === "darwinia"  || this.sourceSelected === 'icefrog';
+      return (
+        this.sourceSelected === "darwinia" || this.sourceSelected === "icefrog"
+      );
     },
     tokenDetail() {
       if (this.token && this.token.detail) {
@@ -324,8 +333,6 @@ export default {
     .header-left {
       &.mobile {
         display: none;
-      }
-      .icon {
       }
       .address {
         font-size: 18px;

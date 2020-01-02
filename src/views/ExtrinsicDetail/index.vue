@@ -102,7 +102,7 @@
                 ></balances>
               </div>
             </div>
-            <div class="info-item">
+            <div class="info-item" v-if="extrinsicInfo.fee !== '0'">
               <div class="label">{{$t('fee')}}</div>
               <div
                 class="value"

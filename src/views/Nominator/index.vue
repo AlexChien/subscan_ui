@@ -10,7 +10,7 @@
         <div class="for-block align-items-center">
           <div>{{$t('validator_hash_tag')}}</div>
           <template v-if="$route.query.address">
-            <router-link class="link" :to="`/account/${$route.query.address}`">{{$route.query.address}}</router-link>
+            <router-link class="link" :to="`/validator/${$route.query.address}`">{{$route.query.address}}</router-link>
           </template>
           <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>

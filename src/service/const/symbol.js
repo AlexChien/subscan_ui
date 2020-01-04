@@ -31,6 +31,10 @@ export default [{
       value: "KTON",
       icon: kton_icon
     },
+    power: {
+      value: "POWER",
+      icon: ring_icon
+    },
     domain: {
       value: 'https://icefrog.subscan.io'
     },

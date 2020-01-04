@@ -58,7 +58,7 @@
           >
             <template
               slot-scope="scope"
-            >{{scope.row.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</template>
+            >{{scope.row.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</template>
           </el-table-column>
           <el-table-column
             sortable="custom"
@@ -68,7 +68,7 @@
           >
             <template
               slot-scope="scope"
-            >{{scope.row.total_bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</template>
+            >{{scope.row.total_bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</template>
           </el-table-column>
           <el-table-column
             sortable="custom"
@@ -99,6 +99,7 @@ import { mapState } from "vuex";
 import { hashFormat, accuracyFormat } from "Utils/filters";
 import { getCommission, bnPlus } from "../../utils/format";
 import { BigNumber } from "bignumber.js";
+import { getTokenDetail, formatSymbol } from "../../utils/tools";
 export default {
   name: "Validators",
   components: {
@@ -133,14 +134,7 @@ export default {
       sourceSelected: state => state.global.sourceSelected
     }),
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === "kusama") {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
-      }
-      return {};
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
     },
     isWaiting() {
       return this.type === "waiting";
@@ -225,11 +219,8 @@ export default {
         return sort;
       });
     },
-    formatSymbol(module) {
-      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-        return "";
-      }
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     getCurrency() {},
     async getValidatorData() {

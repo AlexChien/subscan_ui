@@ -325,7 +325,7 @@
                 >
                   <template slot-scope="scope">
                     <div>
-                      <span>{{scope.row.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
+                      <span>{{scope.row.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</span>
                     </div>
                   </template>
                 </el-table-column>
@@ -336,7 +336,7 @@
                 >
                   <template slot-scope="scope">
                     <div>
-                      <span>{{getTotalBonded(scope.row.bonded_nominators, scope.row.bonded_owner)|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
+                      <span>{{getTotalBonded(scope.row.bonded_nominators, scope.row.bonded_owner)|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</span>
                     </div>
                   </template>
                 </el-table-column>
@@ -387,6 +387,7 @@ import { timeAgo, parseTimeToUtc, hashFormat, accuracyFormat } from "Utils/filte
 import clipboard from "Directives/clipboard";
 import Balances from "../ExtrinsicDetail/Balances";
 import { fmtPercentage, getCommission, bnPlus } from "../../utils/format";
+import { getTokenDetail, formatSymbol } from "../../utils/tools";
 export default {
   name: "AccountDetail",
   components: {
@@ -453,14 +454,7 @@ export default {
       sourceSelected: state => state.global.sourceSelected
     }),
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === "kusama") {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
-      }
-      return {};
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
     },
     shouldShowKton() {
       return this.sourceSelected === "darwinia" || this.sourceSelected === 'icefrog'
@@ -495,11 +489,8 @@ export default {
     getCommission(perf) {
       return getCommission(perf, this.metadata.commissionAccuracy);
     },
-    formatSymbol(module) {
-      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-        return "";
-      }
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     async getAccountInfo() {
       this.isLoading = true;

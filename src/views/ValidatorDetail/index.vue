@@ -94,13 +94,13 @@
               <div class="label">{{$t('self_bonded')}}</div>
               <div
                 class="value"
-              >{{validatorInfo.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
+              >{{validatorInfo.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('total_bonded')}}</div>
               <div
                 class="value"
-              >{{getTotalBonded(validatorInfo.bonded_nominators, validatorInfo.bonded_owner)|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
+              >{{getTotalBonded(validatorInfo.bonded_nominators, validatorInfo.bonded_owner)|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('nominator')}}</div>
@@ -141,7 +141,7 @@
                 <el-table-column min-width="180" prop="bonded" :label="$t('voted')">
                   <template slot-scope="scope">
                     <div>
-                      <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
+                      <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</span>
                     </div>
                   </template>
                 </el-table-column>
@@ -177,6 +177,7 @@ import {
 import clipboard from "Directives/clipboard";
 import Balances from "../ExtrinsicDetail/Balances";
 import { fmtPercentage, getCommission, bnPlus } from "../../utils/format";
+import { getTokenDetail, formatSymbol } from "../../utils/tools";
 
 export default {
   name: "AccountDetail",
@@ -246,14 +247,7 @@ export default {
       );
     },
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === "kusama") {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
-      }
-      return {};
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
     }
   },
   created() {
@@ -283,11 +277,8 @@ export default {
     changeAssetType(type) {
       this.showKton = type === "kton";
     },
-    formatSymbol(module) {
-      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-        return "";
-      }
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     async getValidatorInfo() {
       this.isIntroLoading = true;

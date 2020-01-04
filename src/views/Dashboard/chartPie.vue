@@ -32,7 +32,7 @@ import tIconPurple from "../../assets/images/t-purple.png";
 import lIconPink from "../../assets/images/l-pink.png";
 import tIconPink from "../../assets/images/t-pink.png";
 import oIcon from "../../assets/images/o.png";
-import { getTokenDetail } from "../../utils/tools";
+import { getCurrencyTokenDetail } from "../../utils/tools";
 
 export default {
   computed: {
@@ -41,7 +41,7 @@ export default {
       token: state => state.polka.token
     }),
     tokenDetail() {
-      return getTokenDetail(this.token, this.sourceSelected, this.currency);
+      return getCurrencyTokenDetail(this.token, this.sourceSelected, this.currency);
     },
     chartName() {
       if (this.sourceSelected === "kusama") {

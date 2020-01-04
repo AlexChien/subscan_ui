@@ -210,6 +210,17 @@ export function isMobile() {
     window.innerWidth <= 768;
 }
 
+export function getCurrencyTokenDetail(token, sourceSelected, currency) {
+  if (token && token.detail) {
+    if (sourceSelected === "kusama") {
+      return token.detail[token.token];
+    } else {
+      return token.detail[currency.toUpperCase()];
+    }
+  }
+  return {};
+}
+
 export function getTokenDetail(token, sourceSelected, currency) {
   if (token && token.detail) {
     if (sourceSelected === "kusama") {

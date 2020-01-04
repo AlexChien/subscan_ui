@@ -27,20 +27,15 @@
         @click="search"
         :loading="isBtnLoading"
       >{{$t('search')}}</el-button>
-      <el-button
-        class="search-button-mobile"
-        slot="append"
-        @click="search"
-        :loading="isBtnLoading"
-      >
-        <icon-svg class="icon" icon-class="search"/>
+      <el-button class="search-button-mobile" slot="append" @click="search" :loading="isBtnLoading">
+        <icon-svg class="icon" icon-class="search" />
       </el-button>
     </el-input>
   </div>
 </template>
 
 <script>
-const bs58 = require('bs58');
+const bs58 = require("bs58");
 export default {
   data() {
     return {
@@ -80,19 +75,18 @@ export default {
     ss58Check(ss58) {
       //增加类型2
       const KNOWN_TYPES = [0, 1, 2, 42, 43, 68, 69];
-      let a
+      let a;
       try {
-        a = bs58.decode(ss58)
-      }
-      catch (e) {
-        return false
+        a = bs58.decode(ss58);
+      } catch (e) {
+        return false;
       }
       let type = a[0];
       if (KNOWN_TYPES.indexOf(type) === -1) {
-        return false
+        return false;
       }
       if (a.length < 3) {
-        return false
+        return false;
         //throw new Error('Invalid length of payload for address', a.length)
       }
       return true;
@@ -125,7 +119,17 @@ export default {
         if (this.ss58Check(this.inputValue)) {
           this.$router.push(`/account/${this.inputValue}`);
         } else {
-          this.$router.push(`/noData`);
+          this.$api["polkaGetSearchRes"]({
+            key: this.inputValue,
+            row: 1,
+            page: 0
+          })
+            .then(() => {
+              this.$router.push(`/account/${this.inputValue}`);
+            })
+            .catch(() => {
+              this.$router.push(`/noData`);
+            });
         }
       }
     }
@@ -210,7 +214,7 @@ export default {
       }
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .search-input {
       .el-input-group__append {
         .search-button {

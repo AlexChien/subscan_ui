@@ -3,7 +3,7 @@
     <div class="header-content space-between">
       <div class="header-left align-items-center">
         <icon-svg class="icon" icon-class="chart" />
-        <span class="title">{{$t('transfer_history')}}</span>
+        <span class="title">{{$t('locked_detail')}}</span>
       </div>
     </div>
     <div class="chart-content subscan-card" ref="chart"></div>
@@ -31,6 +31,7 @@ import vIconPurple from "../../assets/images/v-purple.png";
 import nIconPink from "../../assets/images/n-pink.png";
 import vIconPink from "../../assets/images/v-pink.png";
 import oIcon from "../../assets/images/o.png";
+import { getTokenDetail } from "../../utils/tools";
 export default {
   computed: {
     ...mapState({
@@ -38,14 +39,7 @@ export default {
       token: state => state.polka.token
     }),
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === 'kusama') {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
-      }
-      return {};
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
     },
     iconImg() {
       if (this.sourceSelected === "kusama") {
@@ -59,6 +53,13 @@ export default {
       currency: "ring",
       colorMap: {
         darwinia: {
+          mainColor: "#5930dd",
+          colors: ["#5930dd", "#a995eb", "#d7d7d7"],
+          nIcon: nIconPurple,
+          vIcon: vIconPurple,
+          oIcon: oIcon
+        },
+        icefrog: {
           mainColor: "#5930dd",
           colors: ["#5930dd", "#a995eb", "#d7d7d7"],
           nIcon: nIconPurple,
@@ -123,17 +124,23 @@ export default {
       );
       const data = [
         {
-          name: this.$t("validator_bonded"),
-          formatVal: fmtNumber(bnShift(newV.validator_bonded, -(newV.accuracy + 3)), 0),
+          name: this.$t("validator_stake"),
+          formatVal: fmtNumber(
+            bnShift(newV.validator_bonded, -(newV.accuracy + 3)),
+            0
+          ),
           value: fmtPercentage(newV.validator_bonded, newV.locked_balance, 1)
         },
         {
-          name: this.$t("nominator_bonded"),
-          formatVal: fmtNumber(bnShift(newV.nominator_bonded, -(newV.accuracy + 3)), 0),
+          name: this.$t("nominator_stake"),
+          formatVal: fmtNumber(
+            bnShift(newV.nominator_bonded, -(newV.accuracy + 3)),
+            0
+          ),
           value: fmtPercentage(newV.nominator_bonded, newV.locked_balance, 1)
         },
         {
-          name: this.$t("others"),
+          name: this.$t("other_stake"),
           formatVal: fmtNumber(bnShift(others, -(newV.accuracy + 3)), 0),
           value: fmtPercentage(others, newV.locked_balance, 1)
         }
@@ -152,7 +159,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 shape: {
-                  r: 25
+                  r: 27
                 },
                 style: {
                   fill: "#fff",
@@ -169,8 +176,36 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
+                invisible: this.sourceSelected === 'icefrog',
                 style: {
                   image: this.iconImg,
+                  width: 35,
+                  height: 35
+                }
+              },
+              {
+                type: "text",
+                id: "power",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                invisible: this.sourceSelected !== 'icefrog',
+                style: {
+                    text: 'POWER',
+                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                }
+              },
+              {
+                type: "image",
+                id: "logo_kton",
+                z: 99,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: kton,
                   width: 35,
                   height: 35
                 }
@@ -183,7 +218,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected !== "darwinia",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -240,7 +275,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 shape: {
-                  r: 25
+                  r: 27
                 },
                 style: {
                   fill: "#fff",
@@ -257,8 +292,36 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
+                invisible: this.sourceSelected === 'icefrog',
                 style: {
                   image: this.iconImg,
+                  width: 35,
+                  height: 35
+                }
+              },
+              {
+                type: "text",
+                id: "power",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                invisible: this.sourceSelected !== 'icefrog',
+                style: {
+                    text: 'POWER',
+                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                }
+              },
+              {
+                type: "image",
+                id: "logo_kton",
+                z: 99,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: kton,
                   width: 35,
                   height: 35
                 }
@@ -269,7 +332,7 @@ export default {
             type: "image",
             id: "logosddd",
             z: -100,
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected !== "darwinia",
             left: "38%",
             bottom: "12",
             bounding: "raw",
@@ -298,17 +361,23 @@ export default {
       if (newV.validator_bonded) {
         data = [
           {
-            name: this.$t("validator_bonded"),
-            formatVal: fmtNumber(bnShift(newV.validator_bonded, -(newV.accuracy + 3)), 0),
+            name: this.$t("validator_stake"),
+            formatVal: fmtNumber(
+              bnShift(newV.validator_bonded, -(newV.accuracy + 3)),
+              0
+            ),
             value: fmtPercentage(newV.validator_bonded, newV.locked_balance, 1)
           },
           {
-            name: this.$t("nominator_bonded"),
-            formatVal: fmtNumber(bnShift(newV.nominator_bonded, -(newV.accuracy + 3)), 0),
+            name: this.$t("nominator_stake"),
+            formatVal: fmtNumber(
+              bnShift(newV.nominator_bonded, -(newV.accuracy + 3)),
+              0
+            ),
             value: fmtPercentage(newV.nominator_bonded, newV.locked_balance, 1)
           },
           {
-            name: this.$t("others"),
+            name: this.$t("other_stake"),
             formatVal: fmtNumber(bnShift(others, -(newV.accuracy + 3)), 0),
             value: fmtPercentage(others, newV.locked_balance, 1)
           }
@@ -329,7 +398,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 shape: {
-                  r: 25
+                  r: 27
                 },
                 style: {
                   fill: "#fff",
@@ -346,8 +415,36 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
+                invisible: this.sourceSelected === 'icefrog',
                 style: {
                   image: this.iconImg,
+                  width: 35,
+                  height: 35
+                }
+              },
+              {
+                type: "text",
+                id: "power",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                invisible: this.sourceSelected !== 'icefrog',
+                style: {
+                    text: 'POWER',
+                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                }
+              },
+              {
+                type: "image",
+                id: "logo_kton",
+                z: 99,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: kton,
                   width: 35,
                   height: 35
                 }
@@ -360,7 +457,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected !== "darwinia",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -451,15 +548,15 @@ export default {
     getXAxisData() {
       return [
         {
-          name: this.$t("validator_bonded"),
+          name: this.$t("validator_stake"),
           icon: "image://" + this.colorMap[this.sourceSelected].vIcon
         },
         {
-          name: this.$t("nominator_bonded"),
+          name: this.$t("nominator_stake"),
           icon: "image://" + this.colorMap[this.sourceSelected].nIcon
         },
         {
-          name: this.$t("others"),
+          name: this.$t("other_stake"),
           icon: "image://" + this.colorMap[this.sourceSelected].oIcon
         }
       ];

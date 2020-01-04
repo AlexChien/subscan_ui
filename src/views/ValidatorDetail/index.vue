@@ -15,20 +15,25 @@
       <template v-else-if="validatorInfo">
         <div class="validator-header space-between align-items-center">
           <div class="header-left align-items-center">
-            <div class="address">{{$t('validator_hash_tag') + ' ' + address}}</div>
-            <div class="copy-btn" v-clipboard:copy="address" v-clipboard:success="clipboardSuccess">
+            <div
+              class="address"
+            >{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
+            <div
+              class="copy-btn"
+              v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')"
+              v-clipboard:success="clipboardSuccess"
+            >
               <icon-svg class="iconfont" icon-class="copy" />
             </div>
           </div>
           <div
             class="header-left align-items-center mobile"
-            v-clipboard:copy="address"
+            v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')"
             v-clipboard:success="clipboardSuccess"
           >
-            <div class="icon">
-              <identicon :size="40" theme="polkadot" :value="address" />
-            </div>
-            <div class="address">{{address}}</div>
+            <div
+              class="address"
+            >{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
           </div>
           <search-input
             class="header-right"
@@ -40,18 +45,26 @@
           <div>
             <div class="info-item">
               <div class="label">{{$t('stash')}}</div>
-              <div class="value link align-items-center">
+              <div class="value link copy align-items-center">
                 <div class="icon identicon">
                   <identicon :size="24" theme="polkadot" :value="validatorInfo.validator_stash" />
                 </div>
                 <router-link
                   :to="`/account/${validatorInfo.validator_stash}`"
                 >{{validatorInfo.validator_stash}}</router-link>
+                <div
+                  class="copy-btn"
+                  v-if="validatorInfo.validator_stash"
+                  v-clipboard:copy="validatorInfo.validator_stash"
+                  v-clipboard:success="clipboardSuccess"
+                >
+                  <icon-svg class="iconfont" icon-class="copy" />
+                </div>
               </div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('controller')}}</div>
-              <div class="value link align-items-center">
+              <div class="value link copy align-items-center">
                 <div class="icon identicon">
                   <identicon
                     :size="24"
@@ -62,24 +75,32 @@
                 <router-link
                   :to="`/account/${validatorInfo.validator_controller}`"
                 >{{validatorInfo.validator_controller}}</router-link>
+                <div
+                  class="copy-btn"
+                  v-if="validatorInfo.validator_controller"
+                  v-clipboard:copy="validatorInfo.validator_controller"
+                  v-clipboard:success="clipboardSuccess"
+                >
+                  <icon-svg class="iconfont" icon-class="copy" />
+                </div>
               </div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('rank')}}</div>
               <div v-if="this.$route.name === 'waitingDetail'" class="value">{{$t('waiting')}}</div>
-              <div v-else class="value">{{validatorInfo.rank_validator}}</div>
+              <div v-else class="value">{{validatorInfo.rank_validator + 1}}</div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('self_bonded')}}</div>
               <div
                 class="value"
-              >{{validatorInfo.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
+              >{{validatorInfo.bonded_owner|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('total_bonded')}}</div>
               <div
                 class="value"
-              >{{validatorInfo.bonded_nominators|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
+              >{{getTotalBonded(validatorInfo.bonded_nominators, validatorInfo.bonded_owner)|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
             </div>
             <div class="info-item">
               <div class="label">{{$t('nominator')}}</div>
@@ -110,7 +131,9 @@
                         :content="scope.row.nominator_stash"
                         placement="top-start"
                       >
-                        <router-link :to="`/account/${scope.row.nominator_stash}`">{{scope.row.nominator_stash | hashFormat}}</router-link>
+                        <router-link
+                          :to="`/account/${scope.row.nominator_stash}`"
+                        >{{scope.row.nominator_stash | hashFormat}}</router-link>
                       </el-tooltip>
                     </div>
                   </template>
@@ -118,14 +141,14 @@
                 <el-table-column min-width="180" prop="bonded" :label="$t('voted')">
                   <template slot-scope="scope">
                     <div>
-                      <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
+                      <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</span>
                     </div>
                   </template>
                 </el-table-column>
                 <el-table-column min-width="100" prop="my_share" :label="$t('share')">
                   <template
                     slot-scope="scope"
-                  >{{getMyShare(scope.row.bonded, validatorInfo.bonded_nominators, 2)}}</template>
+                  >{{getMyShare(scope.row.bonded, getTotalBonded(validatorInfo.bonded_nominators, validatorInfo.bonded_owner), 2)}}</template>
                 </el-table-column>
               </el-table>
             </el-tab-pane>
@@ -153,7 +176,8 @@ import {
 } from "Utils/filters";
 import clipboard from "Directives/clipboard";
 import Balances from "../ExtrinsicDetail/Balances";
-import { fmtPercentage, getCommission } from "../../utils/format";
+import { fmtPercentage, getCommission, bnPlus } from "../../utils/format";
+import { getTokenDetail, formatSymbol } from "../../utils/tools";
 
 export default {
   name: "AccountDetail",
@@ -218,17 +242,12 @@ export default {
       sourceSelected: state => state.global.sourceSelected
     }),
     shouldShowKton() {
-      return this.sourceSelected === "darwinia";
+      return (
+        this.sourceSelected === "darwinia" || this.sourceSelected === "icefrog"
+      );
     },
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === "kusama") {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
-      }
-      return {};
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
     }
   },
   created() {
@@ -249,17 +268,17 @@ export default {
     getMyShare(vote, total, digits) {
       return fmtPercentage(vote, total, digits) + "%";
     },
+    getTotalBonded(own, nominator) {
+      return bnPlus(own, nominator).toString();
+    },
     getCommission(perf) {
       return getCommission(perf, this.metadata.commissionAccuracy);
     },
     changeAssetType(type) {
       this.showKton = type === "kton";
     },
-    formatSymbol(module) {
-      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-        return "";
-      }
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     async getValidatorInfo() {
       this.isIntroLoading = true;
@@ -305,8 +324,6 @@ export default {
     .header-left {
       &.mobile {
         display: none;
-      }
-      .icon {
       }
       .address {
         font-size: 18px;

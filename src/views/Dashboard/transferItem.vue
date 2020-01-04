@@ -43,7 +43,7 @@
 <script>
 import { timeAgo } from "Utils/filters";
 import { mapState } from "vuex";
-import { isMobile } from "../../utils/tools";
+import { isMobile, formatSymbol } from "../../utils/tools";
 
 export default {
   props: {
@@ -64,12 +64,8 @@ export default {
     timeAgo
   },
   methods: {
-    formatSymbol(module) {
-      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-        return "";
-      }
-
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     isMobile() {
       return isMobile();

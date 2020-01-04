@@ -206,6 +206,41 @@ export function toUTC(date) {
 export function isMobile() {
   const u = navigator.userAgent;
   return (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) &&
-    !!u.match(/AppleWebKit.*Mobile.*/)) ||
+      !!u.match(/AppleWebKit.*Mobile.*/)) ||
     window.innerWidth <= 768;
+}
+
+export function getCurrencyTokenDetail(token, sourceSelected, currency) {
+  if (token && token.detail) {
+    if (sourceSelected === "kusama") {
+      return token.detail[token.token];
+    } else {
+      return token.detail[currency.toUpperCase()];
+    }
+  }
+  return {};
+}
+
+export function getTokenDetail(token, sourceSelected, currency) {
+  if (token && token.detail) {
+    if (sourceSelected === "kusama") {
+      return token.detail[token.token];
+    } else if (sourceSelected === "icefrog") {
+      return token.detail['POWER'];
+    } else {
+      return token.detail[currency.toUpperCase()];
+    }
+  }
+  return {};
+}
+
+export function formatSymbol(module, $const, sourceSelected, isValidate) {
+  if (!$const[`SYMBOL/${sourceSelected}`]) {
+    return "";
+  }
+  if (isValidate && sourceSelected === 'icefrog') {
+    return $const[`SYMBOL/${sourceSelected}`]['power'].value || "";
+  } else {
+    return $const[`SYMBOL/${sourceSelected}`][module].value || "";
+  }
 }

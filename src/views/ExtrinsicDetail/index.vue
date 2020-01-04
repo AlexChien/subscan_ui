@@ -208,6 +208,7 @@ import {
 import clipboard from "Directives/clipboard";
 import { mapState } from "vuex";
 import Balances from "./Balances";
+import { getTokenDetail, formatSymbol } from "../../utils/tools";
 
 export default {
   name: "ExtrinsicDetail",
@@ -262,14 +263,7 @@ export default {
       token: state => state.polka.token
     }),
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === "kusama") {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
-      }
-      return {};
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
     }
   },
 
@@ -294,12 +288,8 @@ export default {
     toggleMobileDetail(isFold) {
       this.isFold = isFold;
     },
-    formatSymbol(module) {
-      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-        return "";
-      }
-
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     async getExtrinsicInfo() {
       const key = this.$route.params.key;

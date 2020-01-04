@@ -3,7 +3,7 @@
     <div class="header-content space-between">
       <div class="header-left align-items-center">
         <icon-svg class="icon" icon-class="chart" />
-        <span class="title">{{$t('transfer_history')}}</span>
+        <span class="title">{{chartName}}</span>
       </div>
     </div>
     <div class="chart-content subscan-card" ref="chart"></div>
@@ -25,13 +25,14 @@ import kton from "../../assets/images/kton@2x.png";
 import kusama from "../../assets/images/ksm@2x.png";
 import switchIcon from "../../assets/images/switch-purple.png";
 
-import bIconBlack from "../../assets/images/b-black.png";
+import lIconBlack from "../../assets/images/l-black.png";
 import tIconBlack from "../../assets/images/t-black.png";
-import bIconPurple from "../../assets/images/b-purple.png";
+import lIconPurple from "../../assets/images/l-purple.png";
 import tIconPurple from "../../assets/images/t-purple.png";
-import bIconPink from "../../assets/images/b-pink.png";
+import lIconPink from "../../assets/images/l-pink.png";
 import tIconPink from "../../assets/images/t-pink.png";
 import oIcon from "../../assets/images/o.png";
+import { getTokenDetail } from "../../utils/tools";
 
 export default {
   computed: {
@@ -40,14 +41,15 @@ export default {
       token: state => state.polka.token
     }),
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === 'kusama') {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
+    },
+    chartName() {
+      if (this.sourceSelected === "kusama") {
+        return this.$t("statistics", { type: "KSM" });
       }
-      return {};
+      return this.currency === "kton"
+        ? this.$t("statistics", { type: "KTON" })
+        : this.$t("statistics", { type: "RING" });
     },
     iconImg() {
       if (this.sourceSelected === "kusama") {
@@ -63,35 +65,35 @@ export default {
         darwinia: {
           mainColor: "#5930dd",
           colors: ["#5930dd", "#a995eb", "#d7d7d7"],
-          bIcon: bIconPurple,
+          bIcon: lIconPurple,
           tIcon: tIconPurple,
           oIcon: oIcon
         },
         icefrog: {
           mainColor: "#5930dd",
           colors: ["#5930dd", "#a995eb", "#d7d7d7"],
-          bIcon: bIconPurple,
+          bIcon: lIconPurple,
           tIcon: tIconPurple,
           oIcon: oIcon
         },
         kusama: {
           mainColor: "#e90979",
           colors: ["#e90979", "#ffaccb", "#d7d7d7"],
-          bIcon: bIconPink,
+          bIcon: lIconPink,
           tIcon: tIconPink,
           oIcon: oIcon
         },
         polkadot: {
           mainColor: "#e90979",
           colors: ["#e90979", "#ffaccb", "#d7d7d7"],
-          bIcon: bIconPink,
+          bIcon: lIconPink,
           tIcon: tIconPink,
           oIcon: oIcon
         },
         edgeware: {
           mainColor: "#000000",
           colors: ["#000000", "#a6a6a6", "#d7d7d7"],
-          bIcon: bIconBlack,
+          bIcon: lIconBlack,
           tIcon: tIconBlack,
           oIcon: oIcon
         }
@@ -132,13 +134,19 @@ export default {
       );
       const data = [
         {
-          name: this.$t("total_bonded"),
-          formatVal: fmtNumber(bnShift(newV.locked_balance, -(newV.accuracy + 3)), 0),
+          name: this.$t("locked"),
+          formatVal: fmtNumber(
+            bnShift(newV.locked_balance, -(newV.accuracy + 3)),
+            0
+          ),
           value: fmtPercentage(newV.locked_balance, newV.total_issuance, 1)
         },
         {
           name: this.$t("transferrable"),
-          formatVal: fmtNumber(bnShift(newV.available_balance, -(newV.accuracy + 3)), 0),
+          formatVal: fmtNumber(
+            bnShift(newV.available_balance, -(newV.accuracy + 3)),
+            0
+          ),
           value: fmtPercentage(newV.available_balance, newV.total_issuance, 1)
         },
         {
@@ -190,6 +198,20 @@ export default {
                   width: 35,
                   height: 35
                 }
+              },
+              {
+                type: "image",
+                id: "logo_kton",
+                z: 99,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: kton,
+                  width: 35,
+                  height: 35
+                }
               }
             ]
           },
@@ -199,7 +221,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected === "kusama",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -278,6 +300,20 @@ export default {
                   width: 35,
                   height: 35
                 }
+              },
+              {
+                type: "image",
+                id: "logo_kton",
+                z: 99,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: kton,
+                  width: 35,
+                  height: 35
+                }
               }
             ]
           },
@@ -285,7 +321,7 @@ export default {
             type: "image",
             id: "logosddd",
             z: -100,
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected === "kusama",
             left: "38%",
             bottom: "12",
             bounding: "raw",
@@ -314,14 +350,20 @@ export default {
       if (newV.total_issuance) {
         data = [
           {
-            name: this.$t("total_bonded"),
-            formatVal: fmtNumber(bnShift(newV.locked_balance, -(newV.accuracy + 3)), 0),
+            name: this.$t("locked"),
+            formatVal: fmtNumber(
+              bnShift(newV.locked_balance, -(newV.accuracy + 3)),
+              0
+            ),
             value:
               fmtPercentage(newV.locked_balance, newV.total_issuance, 1) || 0
           },
           {
             name: this.$t("transferrable"),
-            formatVal: fmtNumber(bnShift(newV.available_balance, -(newV.accuracy + 3)), 0),
+            formatVal: fmtNumber(
+              bnShift(newV.available_balance, -(newV.accuracy + 3)),
+              0
+            ),
             value:
               fmtPercentage(newV.available_balance, newV.total_issuance, 1) || 0
           },
@@ -376,6 +418,20 @@ export default {
                   width: 35,
                   height: 35
                 }
+              },
+              {
+                type: "image",
+                id: "logo_kton",
+                z: 99,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                bounding: "raw",
+                style: {
+                  image: kton,
+                  width: 35,
+                  height: 35
+                }
               }
             ]
           },
@@ -385,7 +441,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected === "kusama",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -476,7 +532,7 @@ export default {
     getXAxisData() {
       return [
         {
-          name: this.$t("total_bonded"),
+          name: this.$t("locked"),
           icon: "image://" + this.colorMap[this.sourceSelected].bIcon
         },
         {

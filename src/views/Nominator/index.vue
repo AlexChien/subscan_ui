@@ -35,7 +35,7 @@
           <el-table-column min-width="180" prop="bonded" :label="$t('voted')">
             <template slot-scope="scope">
               <div>
-                <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances')}}</span>
+                <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</span>
               </div>
             </template>
           </el-table-column>
@@ -62,6 +62,7 @@ import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat, accuracyFormat } from "Utils/filters";
 import { fmtPercentage } from '../../utils/format';
+import { getTokenDetail, formatSymbol } from "../../utils/tools";
 export default {
   name: "Nominator",
   components: {
@@ -102,14 +103,7 @@ export default {
       token: state => state.polka.token
     }),
     tokenDetail() {
-      if (this.token && this.token.detail) {
-        if (this.sourceSelected === "kusama") {
-          return this.token.detail[this.token.token];
-        } else {
-          return this.token.detail[this.currency.toUpperCase()];
-        }
-      }
-      return {};
+      return getTokenDetail(this.token, this.sourceSelected, this.currency);
     }
   },
   filters: {
@@ -126,12 +120,8 @@ export default {
       this.isLoading = true;
       this.getNominatorData();
     },
-    formatSymbol(module) {
-      if (!this.$const[`SYMBOL/${this.sourceSelected}`]) {
-        return "";
-      }
-
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || "";
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     async getNominatorData(page = 0) {
       const data = await this.$api["polkaGetNominators"]({

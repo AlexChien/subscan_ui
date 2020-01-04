@@ -117,6 +117,7 @@ import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat } from "Utils/filters";
+import { formatSymbol } from "../../utils/tools";
 export default {
   name: "Transfer",
   components: {
@@ -173,12 +174,8 @@ export default {
       }
       this.getTransferData();
     },
-    formatSymbol(module) {
-      if(!this.$const[`SYMBOL/${this.sourceSelected}`]){
-        return ''
-      }
-
-      return this.$const[`SYMBOL/${this.sourceSelected}`][module].value || '';
+    formatSymbol(module, isValidate) {
+      return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
     async getTransferData(page = 0) {
       const data = await this.$api["polkaGetTransfers"]({

@@ -125,12 +125,18 @@ export default {
       const data = [
         {
           name: this.$t("validator_stake"),
-          formatVal: fmtNumber(bnShift(newV.validator_bonded, -(newV.accuracy + 3)), 0),
+          formatVal: fmtNumber(
+            bnShift(newV.validator_bonded, -(newV.accuracy + 3)),
+            0
+          ),
           value: fmtPercentage(newV.validator_bonded, newV.locked_balance, 1)
         },
         {
           name: this.$t("nominator_stake"),
-          formatVal: fmtNumber(bnShift(newV.nominator_bonded, -(newV.accuracy + 3)), 0),
+          formatVal: fmtNumber(
+            bnShift(newV.nominator_bonded, -(newV.accuracy + 3)),
+            0
+          ),
           value: fmtPercentage(newV.nominator_bonded, newV.locked_balance, 1)
         },
         {
@@ -153,7 +159,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 shape: {
-                  r: 25
+                  r: 27
                 },
                 style: {
                   fill: "#fff",
@@ -170,12 +176,27 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
+                invisible: this.sourceSelected === 'icefrog',
                 style: {
                   image: this.iconImg,
                   width: 35,
                   height: 35
                 }
-              }, {
+              },
+              {
+                type: "text",
+                id: "power",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                invisible: this.sourceSelected !== 'icefrog',
+                style: {
+                    text: 'POWER',
+                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                }
+              },
+              {
                 type: "image",
                 id: "logo_kton",
                 z: 99,
@@ -197,7 +218,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected !== "darwinia",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -254,7 +275,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 shape: {
-                  r: 25
+                  r: 27
                 },
                 style: {
                   fill: "#fff",
@@ -271,12 +292,27 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
+                invisible: this.sourceSelected === 'icefrog',
                 style: {
                   image: this.iconImg,
                   width: 35,
                   height: 35
                 }
-              }, {
+              },
+              {
+                type: "text",
+                id: "power",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                invisible: this.sourceSelected !== 'icefrog',
+                style: {
+                    text: 'POWER',
+                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                }
+              },
+              {
                 type: "image",
                 id: "logo_kton",
                 z: 99,
@@ -296,7 +332,7 @@ export default {
             type: "image",
             id: "logosddd",
             z: -100,
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected !== "darwinia",
             left: "38%",
             bottom: "12",
             bounding: "raw",
@@ -326,12 +362,18 @@ export default {
         data = [
           {
             name: this.$t("validator_stake"),
-            formatVal: fmtNumber(bnShift(newV.validator_bonded, -(newV.accuracy + 3)), 0),
+            formatVal: fmtNumber(
+              bnShift(newV.validator_bonded, -(newV.accuracy + 3)),
+              0
+            ),
             value: fmtPercentage(newV.validator_bonded, newV.locked_balance, 1)
           },
           {
             name: this.$t("nominator_stake"),
-            formatVal: fmtNumber(bnShift(newV.nominator_bonded, -(newV.accuracy + 3)), 0),
+            formatVal: fmtNumber(
+              bnShift(newV.nominator_bonded, -(newV.accuracy + 3)),
+              0
+            ),
             value: fmtPercentage(newV.nominator_bonded, newV.locked_balance, 1)
           },
           {
@@ -356,7 +398,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 shape: {
-                  r: 25
+                  r: 27
                 },
                 style: {
                   fill: "#fff",
@@ -373,12 +415,27 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
+                invisible: this.sourceSelected === 'icefrog',
                 style: {
                   image: this.iconImg,
                   width: 35,
                   height: 35
                 }
-              }, {
+              },
+              {
+                type: "text",
+                id: "power",
+                z: 100,
+                left: "center",
+                top: "middle",
+                cursor: "default",
+                invisible: this.sourceSelected !== 'icefrog',
+                style: {
+                    text: 'POWER',
+                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                }
+              },
+              {
                 type: "image",
                 id: "logo_kton",
                 z: 99,
@@ -400,7 +457,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === 'kusama',
+            ignore: this.sourceSelected !== "darwinia",
             bounding: "raw",
             style: {
               image: switchIcon,

@@ -160,7 +160,7 @@ export default {
       if (this.token.detail) {
         let tokenDetail = this.token.detail[this.token.token];
         let price = '$' + fmtNumber(tokenDetail.price, 3);
-        let change = '(' + fmtNumber(+tokenDetail.price_change, 2) + '%)';
+        let change = ' (' + fmtNumber(+tokenDetail.price_change, 2) + '%)';
         return price + change;
       } else {
         return '';

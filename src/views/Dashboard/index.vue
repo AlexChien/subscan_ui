@@ -16,7 +16,6 @@
 import MetaData from "./metadata";
 import ChartPie from "./chartPie";
 import { mapState } from "vuex";
-import Chart from "./chart";
 import LatestBlocks from "./latestBlocks";
 import Transfers from "./transfers";
 
@@ -24,7 +23,6 @@ export default {
   name: "Dashboard",
   components: {
     MetaData,
-    Chart,
     ChartPie,
     LatestBlocks,
     Transfers

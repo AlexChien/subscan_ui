@@ -29,6 +29,7 @@ export default {
       isLoading: false,
       colorMap: {
         darwinia: "#5930DD",
+        icefrog: "#5930DD",
         kusama: "#E90979",
         polkadot: "#E90979",
         edgeware: "#000000"
@@ -358,7 +359,7 @@ export default {
           containLabel: false
         },
         tooltip: {
-          trigger: "item",
+          trigger: "axis",
           axisPointer: {
             type: "none"
           },
@@ -366,11 +367,12 @@ export default {
             color: "#302B3C"
           },
           formatter: function(params) {
+            let param = params && params[0];
             return (
               "<div class='tooltip-wrapper'><div class='time'>" +
-              params.name +
+              param.name +
               "</div><div class='number'>" +
-              params.data +
+              param.data +
               " times</div></div>"
             );
           },

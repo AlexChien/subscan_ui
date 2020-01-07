@@ -6,6 +6,12 @@
         :selectList="selectList"
         :placeholder="$t('placeholder.search_by')"
       />
+      <div class="chart-top space-between align-items-center">
+        <div class="for-block align-items-center">
+          <div>{{$t('transfer_history')}}</div>
+        </div>
+      </div>
+      <chartBar class="chart-component" />
       <div class="table-top space-between align-items-center">
         <div class="for-block align-items-center">
           <div>{{$t('for')}}</div>
@@ -13,7 +19,10 @@
             <div class="icon">
               <identicon :size="30" theme="polkadot" :value="$route.query.address" />
             </div>
-            <router-link class="link" :to="`/account/${$route.query.address}`">{{$route.query.address}}</router-link>
+            <router-link
+              class="link"
+              :to="`/account/${$route.query.address}`"
+            >{{$route.query.address}}</router-link>
           </template>
           <div v-else class="all">{{$t('all')}}</div>
           <div>{{`(${total})`}}</div>
@@ -24,7 +33,9 @@
           <el-table-column min-width="100" prop="extrinsic_index" :label="$t('extrinsic_id')">
             <template slot-scope="scope">
               <div class="link">
-                <router-link :to="`/extrinsic/${scope.row.extrinsic_index}`">{{scope.row.extrinsic_index}}</router-link>
+                <router-link
+                  :to="`/extrinsic/${scope.row.extrinsic_index}`"
+                >{{scope.row.extrinsic_index}}</router-link>
               </div>
             </template>
           </el-table-column>
@@ -47,7 +58,9 @@
                   :content="scope.row.from"
                   placement="top-start"
                 >
-                  <router-link :to="scope.row.from === $route.query.address ? `${$route.fullPath}` : `/account/${scope.row.from}`">{{scope.row.from|hashFormat}}</router-link>
+                  <router-link
+                    :to="scope.row.from === $route.query.address ? `${$route.fullPath}` : `/account/${scope.row.from}`"
+                  >{{scope.row.from|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -68,15 +81,15 @@
                   :content="scope.row.to"
                   placement="top-start"
                 >
-                  <router-link :to="scope.row.to === $route.query.address ? `${$route.fullPath}` : `/account/${scope.row.to}`">{{scope.row.to|hashFormat}}</router-link>
+                  <router-link
+                    :to="scope.row.to === $route.query.address ? `${$route.fullPath}` : `/account/${scope.row.to}`"
+                  >{{scope.row.to|hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
           </el-table-column>
           <el-table-column min-width="120" prop="amount" :label="$t('value')" fit>
-            <template
-              slot-scope="scope"
-            >{{`${scope.row.amount} ${formatSymbol(scope.row.module)}`}}</template>
+            <template slot-scope="scope">{{`${scope.row.amount} ${formatSymbol(scope.row.module)}`}}</template>
           </el-table-column>
           <el-table-column min-width="70" prop="success" :label="$t('result')">
             <template slot-scope="scope">
@@ -112,6 +125,7 @@
 import Identicon from "@polkadot/vue-identicon";
 import XLSX from "xlsx";
 import moment from "moment";
+import ChartBar from "./chartBar";
 import { mapState } from "vuex";
 import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
@@ -124,7 +138,8 @@ export default {
     SearchInput,
     CsvDownload,
     Pagination,
-    Identicon
+    Identicon,
+    ChartBar
   },
   data() {
     return {
@@ -133,19 +148,19 @@ export default {
       total: 0,
       selectList: [
         {
-          label: this.$t('all'),
+          label: this.$t("all"),
           value: "all"
         },
         {
-          label: this.$t('block'),
+          label: this.$t("block"),
           value: "block"
         },
         {
-          label: this.$t('extrinsic'),
+          label: this.$t("extrinsic"),
           value: "extrinsic"
         },
         {
-          label: this.$t('account'),
+          label: this.$t("account"),
           value: "account"
         }
       ]
@@ -172,10 +187,13 @@ export default {
       } else {
         this.isLoading = true;
       }
-      this.getTransferData();
+      this.getData();
     },
     formatSymbol(module, isValidate) {
       return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
+    },
+    async getData() {
+      await Promise.all([this.getTransferData()]);
     },
     async getTransferData(page = 0) {
       const data = await this.$api["polkaGetTransfers"]({
@@ -193,14 +211,14 @@ export default {
     downloadClick() {
       const tableData = [
         [
-          this.$t('extrinsic_id'),
-          this.$t('block'),
-          this.$t('block_timestamp'),
-          this.$t('from'),
-          this.$t('to'),
-          this.$t('value'),
-          this.$t('result'),
-          this.$t('hash')
+          this.$t("extrinsic_id"),
+          this.$t("block"),
+          this.$t("block_timestamp"),
+          this.$t("from"),
+          this.$t("to"),
+          this.$t("value"),
+          this.$t("result"),
+          this.$t("hash")
         ]
       ];
       this.transfersData.forEach(item => {
@@ -241,7 +259,7 @@ export default {
       .for-block {
         font-size: 14px;
         font-weight: bold;
-        color: rgba(48, 43, 60, 1);
+        color: #302b3c;
         .icon {
           padding-left: 10px;
           transform: translateY(2px);
@@ -255,6 +273,15 @@ export default {
           padding: 0 10px;
         }
       }
+    }
+    .chart-top {
+      margin: 20px 0 10px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #302b3c;
+    }
+    .chart-component {
+      height: 155px;
     }
     .transfer-table {
       min-height: 120px;
@@ -304,10 +331,12 @@ export default {
       }
     }
   }
-  @media screen and (max-width:$screen-xs) {
+  @media screen and (max-width: $screen-xs) {
     .container {
-      .table-top {
+      .chart-top {
         margin-top: 0;
+      }
+      .table-top {
         .for-block {
           .link {
             max-width: 250px;

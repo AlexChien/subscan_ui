@@ -29,7 +29,7 @@ export default {
       isLoading: false,
       colorMap: {
         darwinia: "#5930DD",
-        iceforg: "#5930DD",
+        icefrog: "#5930DD",
         kusama: "#E90979",
         polkadot: "#E90979",
         edgeware: "#000000"

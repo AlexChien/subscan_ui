@@ -89,8 +89,7 @@ export function parseTimeToUtc(time, cFormat) {
   if (arguments.length === 0) {
     return null;
   }
-
-  if ((time + "").length === 10) {
+  if ((time + "").length >= 10) {
     time = +time * 1000;
   }
   const format = cFormat || "YYYY-MM-DD HH:mm:ss";

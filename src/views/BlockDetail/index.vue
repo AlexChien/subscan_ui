@@ -230,6 +230,7 @@
 import SearchInput from "@/views/Components/SearchInput";
 import { timeAgo, parseTimeToUtc, hashFormat } from "Utils/filters";
 import clipboard from "Directives/clipboard";
+import _ from 'lodash';
 export default {
   name: "BlockDetail",
   components: {
@@ -303,16 +304,16 @@ export default {
             return Promise.reject(res);
           }
           this.notFound = false;
-          res.extrinsics.forEach(item => {
+          _.forEach(res.extrinsics, (item) => {
             item.params = JSON.parse(item.params);
           });
-          res.events.forEach(item => {
+          _.forEach(res.events, (item) => {
             let params = JSON.parse(item.params);
             item.params = params.filter(param => {
               return param.type;
             });
           });
-          res.logs.forEach(item => {
+          _.forEach(res.logs, (item) => {
             item.data = JSON.parse(item.data);
           });
           this.blockInfo = res;

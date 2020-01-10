@@ -2,7 +2,13 @@ import moment from "moment";
 import _ from 'lodash';
 import api from "Plugins/api";
 
-const {polkaGetMetadata, polkaGetBlocks, polkaGetTransfers, polkaGetDaily, polkaGetToken} = api;
+const {
+  polkaGetMetadata,
+  polkaGetBlocks,
+  polkaGetTransfers,
+  polkaGetDaily,
+  polkaGetToken
+} = api;
 
 export default {
   state: {
@@ -37,15 +43,21 @@ export default {
     }
   },
   actions: {
-    async SetMetadata({commit}) {
+    async SetMetadata({
+      commit
+    }) {
       const data = await polkaGetMetadata();
       commit("SET_METADATA", data);
     },
-    async SetLatestBlocks({commit}, payload) {
+    async SetLatestBlocks({
+      commit
+    }, payload) {
       const data = await polkaGetBlocks(payload);
       commit("SET_LATEST_BLOCKS", data.blocks);
     },
-    async SetToken({commit}) {
+    async SetToken({
+      commit
+    }) {
       const data = await polkaGetToken();
       commit("SET_TOKEN", data);
     },
@@ -53,29 +65,72 @@ export default {
     //   const data = await polkaGetExtrinsics(payload);
     //   commit("SET_LATEST_EXTRINSICS", data.extrinsics);
     // },
-    async SetTransfers({commit}, payload) {
+    async SetTransfers({
+      commit
+    }, payload) {
       const data = await polkaGetTransfers(payload);
       commit("SET_TRANSFERS", data.transfers);
     },
-    async SetDailyChart({commit}, payload) {
+    async SetDailyChart({
+      commit
+    }, payload) {
       let emptyDailyData = [];
       const start = moment(payload.start);
       const end = moment(payload.end);
-      const days = (end.valueOf() - start.valueOf()) / (24 * 3600 * 1000)
-      for (let i = 0; i < days; i++) {
+      let days = (end.valueOf() - start.valueOf()) / (24 * 3600 * 1000);
+      let timeSpans = days;
+      let span = {
+        days: 1
+      };
+      let timeFormat = "YYYY-MM-DD";
+      let timeUTC = "time_utc";
+      switch (payload.format) {
+        case 'hour':
+          timeSpans = days * 24;
+          span = {
+            hours: 1
+          };
+          timeFormat = "YYYY-MM-DD: HH:mm";
+          timeUTC = "time_hour_utc";
+          break;
+        case '6hour':
+          timeSpans = days * 4;
+          span = {
+            hours: 6
+          };
+          timeFormat = "YYYY-MM-DD: HH:mm";
+          timeUTC = "time_six_hour_utc";
+          break;
+        case 'day':
+          timeSpans = days;
+          span = {
+            days: 1
+          };
+          timeFormat = "YYYY-MM-DD";
+          timeUTC = "time_utc";
+          break;
+        default:
+          break;
+      }
+      emptyDailyData.push({
+        time: start.format(timeFormat),
+        transfer_count: 0
+      })
+      for (let i = 0; i < timeSpans - 1; i++) {
         emptyDailyData.push({
-          time: start.add(1, 'days').format("YYYY-MM-DD"),
+          time: start.add(span).format(timeFormat),
           transfer_count: 0
         })
       }
       const data = await polkaGetDaily(payload);
-
       data.list.forEach((item) => {
-        const timeLabel = moment(item.time_utc).format("YYYY-MM-DD");
-        const index = _.findIndex(emptyDailyData, {time: timeLabel});
+        const timeLabel = moment.utc(item[timeUTC]).format(timeFormat);
+        const index = _.findIndex(emptyDailyData, {
+          time: timeLabel
+        });
         emptyDailyData[index] = {
           time: timeLabel,
-          transfer_count: item.transfer_count
+          transfer_count: item.total
         }
       })
       commit("SET_DAILY_CHART", emptyDailyData);

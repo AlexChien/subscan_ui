@@ -88,7 +88,7 @@
   "signature": "签名",
   "signed_extrinsics": "签名交易",
   "signed_only": "仅签名交易",
-  "stash": "资金",
+  "stash": "账户",
   "state_root": "状态根",
   "statistics": "{type} 统计",
   "time": "时间",

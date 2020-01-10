@@ -16,16 +16,13 @@
 import MetaData from "./metadata";
 import ChartPie from "./chartPie";
 import { mapState } from "vuex";
-import Chart from "./chart";
 import LatestBlocks from "./latestBlocks";
 import Transfers from "./transfers";
-import moment from "moment";
 
 export default {
   name: "Dashboard",
   components: {
     MetaData,
-    Chart,
     ChartPie,
     LatestBlocks,
     Transfers
@@ -90,16 +87,10 @@ export default {
       ]);
     },
     async getData() {
-      const end = moment();
-      const start = moment().subtract(15, "days");
       await Promise.all([
         this.$store.dispatch("SetLatestBlocks", { row: 25, page: 0 }),
         // this.$store.dispatch("SetLatestExtrinsics", { row: 25, page: 0 }),
         this.$store.dispatch("SetTransfers", { row: 25, page: 0 }),
-        this.$store.dispatch("SetDailyChart", {
-          start: start.format("YYYY-MM-DD"),
-          end: end.format("YYYY-MM-DD")
-        })
       ]);
     },
     changeTime() {

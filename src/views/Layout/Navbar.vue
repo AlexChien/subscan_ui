@@ -91,7 +91,7 @@
 <script>
 import { mapState } from "vuex";
 import SearchInput from '@/views/Components/SearchInput';
-import { fmtNumber} from '../../utils/format';
+import { fmtNumber, fmtPercentage} from '../../utils/format';
 export default {
   name: "NavBar",
   components: {
@@ -160,7 +160,7 @@ export default {
       if (this.token.detail) {
         let tokenDetail = this.token.detail[this.token.token];
         let price = '$' + fmtNumber(tokenDetail.price, 3);
-        let change = ' (' + fmtNumber(+tokenDetail.price_change, 2) + '%)';
+        let change = ' (' + fmtPercentage(tokenDetail.price_change, 1, 2) + '%)';
         return price + change;
       } else {
         return '';

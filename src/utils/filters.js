@@ -177,5 +177,9 @@ export function hashFormat(hash) {
   if (hash === "") {
     return "";
   }
-  return `${hash.slice(0, 7)}....${hash.slice(-5)}`;
+  if (hash.length > 12) {
+    return `${hash.slice(0, 7)}....${hash.slice(-5)}`;
+  } else {
+    return hash;
+  }
 }

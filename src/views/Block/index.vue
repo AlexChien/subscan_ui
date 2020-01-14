@@ -46,8 +46,8 @@
                   placement="top-start"
                 >
                   <router-link
-                    :to="`/account/${scope.row.validator}`"
-                  >{{scope.row.validator|hashFormat}}</router-link>
+                    :to="`/validator/${scope.row.validator}`"
+                  >{{scope.row.validator_name | getValidator(scope.row.validator_index_ids, scope.row.validator) | hashFormat}}</router-link>
                 </el-tooltip>
               </div>
             </template>
@@ -124,7 +124,10 @@ export default {
   },
   filters: {
     timeAgo,
-    hashFormat
+    hashFormat,
+    getValidator: function(nickname, index, stash) {
+      return nickname || index || stash
+    }
   },
   created() {
     this.init();

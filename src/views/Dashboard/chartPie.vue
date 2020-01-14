@@ -62,13 +62,6 @@ export default {
     return {
       currency: "ring",
       colorMap: {
-        darwinia: {
-          mainColor: "#5930dd",
-          colors: ["#5930dd", "#a995eb", "#d7d7d7"],
-          bIcon: lIconPurple,
-          tIcon: tIconPurple,
-          oIcon: oIcon
-        },
         icefrog: {
           mainColor: "#5930dd",
           colors: ["#5930dd", "#a995eb", "#d7d7d7"],
@@ -116,7 +109,7 @@ export default {
           },
           lineStyle: {
             width: 1,
-            color: this.colorMap[source || "darwinia"].mainColor
+            color: this.colorMap[source || "kusama"].mainColor
           }
         }
       });
@@ -499,7 +492,7 @@ export default {
             avoidLabelOverlap: false,
             legendHoverLink: false,
             hoverAnimation: false,
-            color: this.colorMap[this.sourceSelected || "darwinia"].colors,
+            color: this.colorMap[this.sourceSelected || "kusama"].colors,
             label: {
               normal: {
                 show: false,
@@ -546,7 +539,7 @@ export default {
       ];
     },
     getColorStop(source) {
-      let sourceColor = this.colorMap[source || "darwinia"].mainColor;
+      let sourceColor = this.colorMap[source || "kusama"].mainColor;
       return [
         {
           offset: 0,

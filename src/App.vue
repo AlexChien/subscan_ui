@@ -29,10 +29,6 @@ export default {
           value: "kusama"
         },
         {
-          key: "crayfish",
-          value: "darwinia"
-        },
-        {
           key: "icefrog",
           value: "icefrog"
         }
@@ -122,20 +118,6 @@ export default {
         border-bottom: none;
       }
     }
-  }
-
-  &.darwinia {
-    --main-color: #5930dd;
-    --main-color-light: #5930dd80;
-    --main-color-white: #5930dd0d;
-    --main-button-color: #302b3c;
-    --link-color: #4572de;
-    --navbar-bg: linear-gradient(
-      315deg,
-      rgba(254, 56, 118, 1) 0%,
-      rgba(124, 48, 221, 1) 71%,
-      rgba(58, 48, 221, 1) 100%
-    );
   }
 
   &.icefrog {

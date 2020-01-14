@@ -28,7 +28,6 @@ export default {
       chartFormat: "hour",
       isLoading: false,
       colorMap: {
-        darwinia: "#5930DD",
         icefrog: "#5930DD",
         kusama: "#E90979",
         polkadot: "#E90979",
@@ -52,7 +51,7 @@ export default {
           },
           lineStyle: {
             width: 1,
-            color: this.colorMap[source || "darwinia"]
+            color: this.colorMap[source || "kusama"]
           }
         }
       });
@@ -415,7 +414,7 @@ export default {
       });
     },
     getColorStop(source) {
-      let sourceColor = this.colorMap[source || "darwinia"];
+      let sourceColor = this.colorMap[source || "kusama"];
       return [
         {
           offset: 0,

@@ -243,7 +243,7 @@ export default {
     }),
     shouldShowKton() {
       return (
-        this.sourceSelected === "darwinia" || this.sourceSelected === "icefrog"
+        this.sourceSelected === "icefrog"
       );
     },
     tokenDetail() {

@@ -52,13 +52,6 @@ export default {
     return {
       currency: "ring",
       colorMap: {
-        darwinia: {
-          mainColor: "#5930dd",
-          colors: ["#5930dd", "#a995eb", "#d7d7d7"],
-          nIcon: nIconPurple,
-          vIcon: vIconPurple,
-          oIcon: oIcon
-        },
         icefrog: {
           mainColor: "#5930dd",
           colors: ["#5930dd", "#a995eb", "#d7d7d7"],
@@ -106,7 +99,7 @@ export default {
           },
           lineStyle: {
             width: 1,
-            color: this.colorMap[source || "darwinia"].mainColor
+            color: this.colorMap[source || "kusama"].mainColor
           }
         }
       });
@@ -193,7 +186,7 @@ export default {
                 invisible: this.sourceSelected !== 'icefrog',
                 style: {
                     text: 'POWER',
-                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                    fill: this.colorMap[this.sourceSelected || "kusama"].mainColor,
                 }
               },
               {
@@ -218,7 +211,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected !== "darwinia",
+            ignore: this.sourceSelected !== "kusama",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -309,7 +302,7 @@ export default {
                 invisible: this.sourceSelected !== 'icefrog',
                 style: {
                     text: 'POWER',
-                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                    fill: this.colorMap[this.sourceSelected || "kusama"].mainColor,
                 }
               },
               {
@@ -332,7 +325,7 @@ export default {
             type: "image",
             id: "logosddd",
             z: -100,
-            ignore: this.sourceSelected !== "darwinia",
+            ignore: this.sourceSelected !== "kusama",
             left: "38%",
             bottom: "12",
             bounding: "raw",
@@ -432,7 +425,7 @@ export default {
                 invisible: this.sourceSelected !== 'icefrog',
                 style: {
                     text: 'POWER',
-                    fill: this.colorMap[this.sourceSelected || "darwinia"].mainColor,
+                    fill: this.colorMap[this.sourceSelected || "kusama"].mainColor,
                 }
               },
               {
@@ -457,7 +450,7 @@ export default {
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected !== "darwinia",
+            ignore: this.sourceSelected !== "kusama",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -515,7 +508,7 @@ export default {
             avoidLabelOverlap: false,
             legendHoverLink: false,
             hoverAnimation: false,
-            color: this.colorMap[this.sourceSelected || "darwinia"].colors,
+            color: this.colorMap[this.sourceSelected || "kusama"].colors,
             label: {
               normal: {
                 show: false,
@@ -562,7 +555,7 @@ export default {
       ];
     },
     getColorStop(source) {
-      let sourceColor = this.colorMap[source || "darwinia"].mainColor;
+      let sourceColor = this.colorMap[source || "kusama"].mainColor;
       return [
         {
           offset: 0,

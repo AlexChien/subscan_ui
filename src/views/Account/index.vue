@@ -138,7 +138,7 @@ export default {
       sourceSelected: state => state.global.sourceSelected
     }),
     shouldShowKton() {
-      return this.sourceSelected === 'darwinia' || this.sourceSelected === 'icefrog'
+      return this.sourceSelected === 'icefrog'
     }
   },
   created() {

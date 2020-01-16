@@ -109,10 +109,10 @@ export default {
       margin-top: 20px;
       height: 156px;
       .metadata-component {
-        width: 780px;
+        width: 800px;
       }
       .chart-component {
-        width: 380px;
+        width: 360px;
       }
     }
     .blocks-transfers-wrapper {

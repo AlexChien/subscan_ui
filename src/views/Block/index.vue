@@ -15,10 +15,17 @@
               </div>
             </template>
           </el-table-column>
+          <el-table-column min-width="70" prop="success" :label="$t('status')">
+            <template slot-scope="scope">
+              <el-tooltip class="item" effect="light" :content="scope.row.finalized ? $t('finalized') : $t('unfinalized')" placement="top-start">
+                <icon-svg class="icon finalize" :icon-class="scope.row.finalized ? 'success' : 'pending'" />
+              </el-tooltip>
+            </template>
+          </el-table-column>
           <el-table-column min-width="150" prop="block_timestamp" :label="$t('age')">
             <template slot-scope="scope">{{scope.row.block_timestamp|timeAgo}}</template>
           </el-table-column>
-          <el-table-column min-width="55" prop="extrinsics_count" :label="$t('extrinsics')">
+          <el-table-column min-width="90" prop="extrinsics_count" :label="$t('extrinsics')">
             <template slot-scope="scope">
               <div :class="{link:scope.row.extrinsics_count>0}">
                 <router-link
@@ -27,7 +34,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column min-width="50" prop="event_count" :label="$t('events')">
+          <el-table-column min-width="70" prop="event_count" :label="$t('events')">
             <template slot-scope="scope">
               <div :class="{link:scope.row.event_count>0}">
                 <router-link
@@ -126,7 +133,7 @@ export default {
     timeAgo,
     hashFormat,
     getValidator: function(nickname, index, stash) {
-      return nickname || index || stash
+      return nickname || index || stash;
     }
   },
   created() {
@@ -178,7 +185,9 @@ export default {
       XLSX.utils.book_append_sheet(new_workbook, worksheet, "SheetJS");
       XLSX.writeFile(
         new_workbook,
-        `block-${this.blockData[this.blockData.length - 1].block_num}-${this.blockData[0].block_num}.csv`
+        `block-${this.blockData[this.blockData.length - 1].block_num}-${
+          this.blockData[0].block_num
+        }.csv`
       );
     },
     currentChange(pageSize) {
@@ -203,6 +212,9 @@ export default {
         span {
           cursor: pointer;
         }
+      }
+      .finalize {
+        font-size: 26px;
       }
     }
     .table-bottom {

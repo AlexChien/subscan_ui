@@ -25,7 +25,12 @@
         </div>
       </div>
     </div>
-    <div class="block-right align-items-center">{{blockData.block_timestamp|timeAgo(currentTime)}}</div>
+    <div class="block-right align-items-center">
+      <span>{{blockData.block_timestamp|timeAgo(currentTime)}}</span>
+      <el-tooltip class="item" effect="light" :content="blockData.finalize ? $t('finalized') : $t('unfinalized')" placement="top-start">
+        <icon-svg class="icon" :icon-class="blockData.finalize?'success':'pending'" />
+      </el-tooltip>
+    </div>
   </div>
 </template>
 
@@ -108,6 +113,10 @@ export default {
     font-size: 14px;
     font-weight: 600;
     color: rgba(152, 149, 159, 1);
+    .icon {
+      margin-left: 5px;
+      font-size: 20px;
+    }
   }
 }
 </style>

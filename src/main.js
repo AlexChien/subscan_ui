@@ -45,8 +45,8 @@ ElementLocale.i18n((key, value) => i18n.t(key, value));
 
 //引入谷歌分析
 const isProd = process.env.NODE_ENV === 'production';
-//区分darwinia, kusama-cc3, icefrog
-let ua = 'UA-152561314-1';
+//区分kusama-cc3, icefrog
+let ua = 'UA-152561314-3';
 let href = window.location && window.location.href;
 if (href.indexOf('kusama') > -1) {
   ua = 'UA-152561314-3';

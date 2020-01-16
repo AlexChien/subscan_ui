@@ -126,10 +126,6 @@ export default {
           value: "kusama"
         },
         {
-          label: "Darwinia Crayfish",
-          value: "darwinia"
-        },
-        {
           label: "Darwinia Icefrog",
           value: "icefrog"
         }
@@ -311,12 +307,7 @@ export default {
       .network-button{
         width: 130px;
         height: 30px;
-        background: url("../../assets/images/crayfish-button.png") no-repeat left center;
-        background-size: contain;
-      }
-
-      .darwinia-button {
-        background: url("../../assets/images/crayfish-button.png") no-repeat left center;
+        background: url("../../assets/images/kusama-button.png") no-repeat left center;
         background-size: contain;
       }
       .icefrog-button {
@@ -423,7 +414,7 @@ export default {
 }
 </style>
 <style lang="scss">
-@each $theme in darwinia, kusama, icefrog {
+@each $theme in kusama, icefrog {
   .#{$theme} {
     > .nav-bar-wrapper {
       background: var(--navbar-bg);

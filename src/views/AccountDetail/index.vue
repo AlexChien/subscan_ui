@@ -457,7 +457,7 @@ export default {
       return getTokenDetail(this.token, this.sourceSelected, this.currency);
     },
     shouldShowKton() {
-      return this.sourceSelected === "darwinia" || this.sourceSelected === 'icefrog'
+      return this.sourceSelected === 'icefrog'
     }
   },
   created() {

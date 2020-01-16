@@ -36,6 +36,13 @@
               <div class="value">{{blockInfo.block_timestamp|parseTimeToUtc}}</div>
             </div>
             <div class="info-item">
+              <div class="label">{{$t('status')}}</div>
+              <div class="value finalize align-items-center">
+                <icon-svg class="icon" :icon-class="blockInfo.finalize?'success':'pending'" />
+                <div>{{blockInfo.finalize ? $t('finalized') : $t('unfinalized')}}</div>
+              </div>
+            </div>
+            <div class="info-item">
               <div class="label">{{$t('hash')}}</div>
               <div class="value copy align-items-center">
                 <div>{{blockInfo.hash}}</div>
@@ -412,6 +419,12 @@ export default {
             color: var(--main-color-light);
             cursor: pointer;
           }
+        }
+      }
+      .finalize {
+        .icon {
+          font-size: 24px;
+          margin-right: 10px;
         }
       }
     }

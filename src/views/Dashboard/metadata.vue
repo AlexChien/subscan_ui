@@ -1,6 +1,35 @@
 <template>
   <div class="metadata-wrapper subscan-card">
-    <div>
+    <div class="block-data">
+      <router-link class="nav-item" to="/block" tag="a" active-class="choosed">
+        <div class="metadata-item">
+          <icon-svg class="icon" icon-class="latest-blocks"></icon-svg>
+          <div class="label">{{$t('finalized_and_latest_block')}}</div>
+          <count-to
+            class="value"
+            :end="Number(metadata.finalized_blockNum||0)"
+            :duration="0.8"
+            :decimal="0"
+            :options="blockCountOpts"
+          />
+        </div>
+      </router-link>
+    </div>
+    <div class="block-data mobile">
+      <router-link class="nav-item" to="/block" tag="a" active-class="choosed">
+        <div class="metadata-item">
+          <icon-svg class="icon" icon-class="finalized"></icon-svg>
+          <div class="label">{{$t('finalized_blocks')}}</div>
+          <count-to
+            class="value"
+            :end="Number(metadata.finalized_blockNum||0)"
+            :duration="0.8"
+            :decimal="0"
+          />
+        </div>
+      </router-link>
+    </div>
+    <div class="block-data mobile">
       <router-link class="nav-item" to="/block" tag="a" active-class="choosed">
         <div class="metadata-item">
           <icon-svg class="icon" icon-class="latest-blocks"></icon-svg>
@@ -82,7 +111,15 @@ export default {
     }),
     validatorCountOpts() {
       return {
-        suffix: "/" + Number(this.metadata.validator_count || 0)
+        suffix:
+          "/" +
+          Number(this.metadata.validator_count || 0).toLocaleString("en-US")
+      };
+    },
+    blockCountOpts() {
+      return {
+        suffix:
+          "/" + Number(this.metadata.blockNum || 0).toLocaleString("en-US")
       };
     }
   }
@@ -96,6 +133,14 @@ export default {
     flex: 1;
     display: flex;
     justify-content: center;
+    &:first-child {
+      flex: 0 0 230px;
+    }
+  }
+  .block-data {
+    &.mobile {
+      display: none;
+    }
   }
   .nav-item {
     cursor: pointer;
@@ -128,6 +173,17 @@ export default {
   }
   @media screen and (max-width: $screen-xs) {
     flex-direction: column;
+    .block-data {
+      display: none;
+      &.mobile {
+        display: flex;
+      }
+    }
+    & > div {
+      &:first-child {
+        flex: 1;
+      }
+    }
     .nav-item {
       width: 100%;
     }

@@ -168,8 +168,10 @@ export function toThousandslsFilter(num) {
 export function accuracyFormat(num, accuracy) {
   if (accuracy) {
     return bnShift(num, -accuracy);
-  } else {
+  } else if (+accuracy === 0){
     return num;
+  } else {
+    return '';
   }
 }
 

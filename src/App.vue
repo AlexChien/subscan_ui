@@ -59,6 +59,7 @@ export default {
     GLOBAL.vbus.$on("CHANGE_LANGUAGE", language => {
       this.$i18n.locale = language;
     });
+    document.getElementsByTagName("body")[0].className = this.sourceSelected;
   },
   methods: {
     detectNetwork() {
@@ -79,7 +80,48 @@ export default {
 
 <style lang="scss">
 @import "./assets/style/index.scss";
+body {
+  &.icefrog {
+    --main-color: #5930dd;
+    --main-color-light: #5930dd80;
+    --main-color-white: #5930dd0d;
+    --main-button-color: #302b3c;
+    --link-color: #4572de;
+    --navbar-bg: linear-gradient(
+      315deg,
+      rgba(254, 56, 118, 1) 0%,
+      rgba(124, 48, 221, 1) 71%,
+      rgba(58, 48, 221, 1) 100%
+    );
+  }
 
+  &.kusama {
+    --main-color: #e90979;
+    --main-color-light: #e9097980;
+    --main-color-white: #e909790d;
+    --main-button-color: #302b3c;
+    --link-color: #4572de;
+    --navbar-bg: #000;
+  }
+
+  &.polkadot {
+    --main-color: #e90979;
+    --main-color-light: #e9097980;
+    --main-color-white: #e909790d;
+    --main-button-color: #302b3c;
+    --link-color: #4572de;
+    --navbar-bg: #e90979;
+  }
+
+  &.edgeware {
+    --main-color: #000;
+    --main-color-light: #00000080;
+    --main-color-white: #0000000d;
+    --main-button-color: #302b3c;
+    --link-color: #4572de;
+    --navbar-bg: #000;
+  }
+}
 #app {
   min-height: 100%;
   display: flex;

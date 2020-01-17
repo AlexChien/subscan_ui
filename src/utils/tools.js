@@ -212,7 +212,7 @@ export function isMobile() {
 
 export function getCurrencyTokenDetail(token, sourceSelected, currency) {
   if (token && token.detail) {
-    if (sourceSelected === "kusama") {
+    if (sourceSelected === "kusama" || sourceSelected === "edgeware") {
       return token.detail[token.token];
     } else {
       return token.detail[currency.toUpperCase()];
@@ -223,7 +223,7 @@ export function getCurrencyTokenDetail(token, sourceSelected, currency) {
 
 export function getTokenDetail(token, sourceSelected, currency) {
   if (token && token.detail) {
-    if (sourceSelected === "kusama") {
+    if (sourceSelected === "kusama" || sourceSelected === "edgeware") {
       return token.detail[token.token];
     } else if (sourceSelected === "icefrog") {
       return token.detail['POWER'];

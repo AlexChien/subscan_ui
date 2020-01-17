@@ -23,6 +23,7 @@ import {
 import ring from "../../assets/images/ring@2x.png";
 import kton from "../../assets/images/kton@2x.png";
 import kusama from "../../assets/images/ksm@2x.png";
+import edgeware from "../../assets/images/edgeware.png";
 import switchIcon from "../../assets/images/switch-purple.png";
 import nIconBlack from "../../assets/images/n-black.png";
 import vIconBlack from "../../assets/images/v-black.png";
@@ -42,10 +43,21 @@ export default {
       return getTokenDetail(this.token, this.sourceSelected, this.currency);
     },
     iconImg() {
-      if (this.sourceSelected === "kusama") {
-        return kusama;
+      let icon = "";
+      switch (this.sourceSelected) {
+        case "kusama":
+          icon = kusama;
+          break;
+        case "edgeware":
+          icon = edgeware;
+          break;
+        case "icefrog":
+          icon = this.currency === "kton" ? kton : ring;
+          break;
+        default:
+          break;
       }
-      return this.currency === "kton" ? kton : ring;
+      return icon;
     }
   },
   data() {
@@ -169,7 +181,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
-                invisible: this.sourceSelected === 'icefrog',
+                invisible: this.sourceSelected === "icefrog",
                 style: {
                   image: this.iconImg,
                   width: 35,
@@ -183,10 +195,10 @@ export default {
                 left: "center",
                 top: "middle",
                 cursor: "default",
-                invisible: this.sourceSelected !== 'icefrog',
+                invisible: this.sourceSelected !== "icefrog",
                 style: {
-                    text: 'POWER',
-                    fill: this.colorMap[this.sourceSelected || "kusama"].mainColor,
+                  text: "POWER",
+                  fill: this.colorMap[this.sourceSelected || "kusama"].mainColor
                 }
               },
               {
@@ -207,11 +219,11 @@ export default {
           },
           {
             type: "image",
-            id: "logosddd",
+            id: "switch_icon",
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected !== "kusama",
+            ignore: true,
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -285,7 +297,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
-                invisible: this.sourceSelected === 'icefrog',
+                invisible: this.sourceSelected === "icefrog",
                 style: {
                   image: this.iconImg,
                   width: 35,
@@ -299,10 +311,10 @@ export default {
                 left: "center",
                 top: "middle",
                 cursor: "default",
-                invisible: this.sourceSelected !== 'icefrog',
+                invisible: this.sourceSelected !== "icefrog",
                 style: {
-                    text: 'POWER',
-                    fill: this.colorMap[this.sourceSelected || "kusama"].mainColor,
+                  text: "POWER",
+                  fill: this.colorMap[this.sourceSelected || "kusama"].mainColor
                 }
               },
               {
@@ -323,9 +335,9 @@ export default {
           },
           {
             type: "image",
-            id: "logosddd",
+            id: "switch_icon",
             z: -100,
-            ignore: this.sourceSelected !== "kusama",
+            ignore: true,
             left: "38%",
             bottom: "12",
             bounding: "raw",
@@ -408,7 +420,7 @@ export default {
                 top: "middle",
                 cursor: "default",
                 bounding: "raw",
-                invisible: this.sourceSelected === 'icefrog',
+                invisible: this.sourceSelected === "icefrog",
                 style: {
                   image: this.iconImg,
                   width: 35,
@@ -422,10 +434,10 @@ export default {
                 left: "center",
                 top: "middle",
                 cursor: "default",
-                invisible: this.sourceSelected !== 'icefrog',
+                invisible: this.sourceSelected !== "icefrog",
                 style: {
-                    text: 'POWER',
-                    fill: this.colorMap[this.sourceSelected || "kusama"].mainColor,
+                  text: "POWER",
+                  fill: this.colorMap[this.sourceSelected || "kusama"].mainColor
                 }
               },
               {
@@ -446,11 +458,11 @@ export default {
           },
           {
             type: "image",
-            id: "logosddd",
+            id: "switch_icon",
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected !== "kusama",
+            ignore: true,
             bounding: "raw",
             style: {
               image: switchIcon,

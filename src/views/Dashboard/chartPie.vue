@@ -23,6 +23,7 @@ import {
 import ring from "../../assets/images/ring@2x.png";
 import kton from "../../assets/images/kton@2x.png";
 import kusama from "../../assets/images/ksm@2x.png";
+import edgeware from "../../assets/images/edgeware.png";
 import switchIcon from "../../assets/images/switch-purple.png";
 
 import lIconBlack from "../../assets/images/l-black.png";
@@ -41,21 +42,48 @@ export default {
       token: state => state.polka.token
     }),
     tokenDetail() {
-      return getCurrencyTokenDetail(this.token, this.sourceSelected, this.currency);
+      return getCurrencyTokenDetail(
+        this.token,
+        this.sourceSelected,
+        this.currency
+      );
     },
     chartName() {
-      if (this.sourceSelected === "kusama") {
-        return this.$t("statistics", { type: "KSM" });
+      let name = "";
+      switch (this.sourceSelected) {
+        case "kusama":
+          name = this.$t("statistics", { type: "KSM" });
+          break;
+        case "edgeware":
+          name = this.$t("statistics", { type: "testEDG" });
+          break;
+        case "icefrog":
+          name =
+            this.currency === "kton"
+              ? this.$t("statistics", { type: "KTON" })
+              : this.$t("statistics", { type: "RING" });
+          break;
+        default:
+          break;
       }
-      return this.currency === "kton"
-        ? this.$t("statistics", { type: "KTON" })
-        : this.$t("statistics", { type: "RING" });
+      return name;
     },
     iconImg() {
-      if (this.sourceSelected === "kusama") {
-        return kusama;
+      let icon = "";
+      switch (this.sourceSelected) {
+        case "kusama":
+          icon = kusama;
+          break;
+        case "edgeware":
+          icon = edgeware;
+          break;
+        case "icefrog":
+          icon = this.currency === "kton" ? kton : ring;
+          break;
+        default:
+          break;
       }
-      return this.currency === "kton" ? kton : ring;
+      return icon;
     }
   },
   data() {
@@ -210,11 +238,13 @@ export default {
           },
           {
             type: "image",
-            id: "logosddd",
+            id: "switch_icon",
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === "kusama",
+            ignore:
+              this.sourceSelected === "kusama" ||
+              this.sourceSelected === "edgeware",
             bounding: "raw",
             style: {
               image: switchIcon,
@@ -312,9 +342,11 @@ export default {
           },
           {
             type: "image",
-            id: "logosddd",
+            id: "switch_icon",
             z: -100,
-            ignore: this.sourceSelected === "kusama",
+            ignore:
+              this.sourceSelected === "kusama" ||
+              this.sourceSelected === "edgeware",
             left: "38%",
             bottom: "12",
             bounding: "raw",
@@ -430,11 +462,13 @@ export default {
           },
           {
             type: "image",
-            id: "logosddd",
+            id: "switch_icon",
             z: -100,
             left: "38%",
             bottom: "12",
-            ignore: this.sourceSelected === "kusama",
+            ignore:
+              this.sourceSelected === "kusama" ||
+              this.sourceSelected === "edgeware",
             bounding: "raw",
             style: {
               image: switchIcon,

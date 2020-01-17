@@ -38,8 +38,8 @@
             <div class="info-item">
               <div class="label">{{$t('status')}}</div>
               <div class="value finalize align-items-center">
-                <icon-svg class="icon" :icon-class="blockInfo.finalize?'success':'pending'" />
-                <div>{{blockInfo.finalize ? $t('finalized') : $t('unfinalized')}}</div>
+                <icon-svg class="icon" :icon-class="blockInfo.finalized?'success':'pending'" />
+                <div>{{blockInfo.finalized ? $t('finalized') : $t('unfinalized')}}</div>
               </div>
             </div>
             <div class="info-item">

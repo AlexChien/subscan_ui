@@ -542,6 +542,15 @@ export default {
           }
         ]
       });
+      myChart.on("legendselectchanged", function(params) {
+        const option = this.getOption();
+        const selectedLegends = params.selected;
+        const keys = Object.keys(selectedLegends);
+        keys.forEach(key => {
+          option.legend[0].selected[key] = true;
+        })
+        this.setOption(option);
+      });
     },
     switchKton() {
       if (this.currency === "kton") {

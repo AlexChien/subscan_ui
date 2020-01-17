@@ -45,28 +45,48 @@
           <img src="./../../assets/images/partner-7.png" />
         </a>
       </div>
-      <div class="info-container space-between align-items-center">
+      <div class="info-container align-items-center">
         <div class="copyright">{{$t('copy_right', { year: new Date().getFullYear()})}}</div>
-        <div class="donate" :class="{'is-home-page': isHomePage}">
-          <span class="donate-title">{{$t('donate')}}:</span>
-          <span class="donate-address">{{donateAddress}}</span>
-        </div>
-        <div class="contact">
-          <a target="_blank" rel="noopener" href="mailto:hello@subscan.io">
-            <div class="contact-item mail">
-              <icon-svg icon-class="mail" class="icon" />
+        <div class="icon-group">
+          <el-dropdown class="donate-dropdown" trigger="click">
+            <div class="donate">
+              <icon-svg icon-class="donate" class="icon" />
             </div>
-          </a>
-        </div>
-        <el-dropdown class="language-dropdown" trigger="click" @command="changeLanguage">
-          <div class="language">
-            <icon-svg icon-class="earth" class="icon" />
+            <el-dropdown-menu class="donate-menu" slot="dropdown">
+              <el-dropdown-item class="menu-item">
+                <div class="donate-menu-item">
+                  <div class="donate-content">
+                    <div class="donate-title">{{$t('donate')}}:</div>
+                    <a :href="donateUrl" class="donate-address">{{donateAddress}}</a>
+                  </div>
+                  <div
+                    class="copy-btn align-items-center"
+                    v-clipboard:copy="donateAddress"
+                    v-clipboard:success="clipboardSuccess"
+                  >
+                    <icon-svg class="iconfont" icon-class="copy" />
+                  </div>
+                </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <div class="contact">
+            <a target="_blank" rel="noopener" href="mailto:hello@subscan.io">
+              <div class="contact-item mail">
+                <icon-svg icon-class="mail" class="icon" />
+              </div>
+            </a>
           </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item class="menu-item" command="zh-CN">简体中文</el-dropdown-item>
-            <el-dropdown-item class="menu-item" command="en">English</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+          <el-dropdown class="language-dropdown" trigger="click" @command="changeLanguage">
+            <div class="language">
+              <icon-svg icon-class="earth" class="icon" />
+            </div>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item class="menu-item" command="zh-CN">简体中文</el-dropdown-item>
+              <el-dropdown-item class="menu-item" command="en">English</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
       </div>
     </div>
     <div class="container mobile space-between align-items-center">
@@ -76,12 +96,30 @@
           <img src="./../../assets/images/partner-mobile.png" />
         </div>
       </div>
-      <div class="donate" :class="{'is-home-page': isHomePage}">
-        <div class="donate-title">{{$t('donate')}}:</div>
-        <div class="donate-address">{{donateAddress}}</div>
-      </div>
       <div class="split-line" :class="{'is-home-page': isHomePage}"></div>
       <div class="copyright">{{$t('copy_right', { year: new Date().getFullYear()})}}</div>
+      <el-dropdown class="donate-dropdown" trigger="click">
+        <div class="donate">
+          <icon-svg icon-class="donate" class="icon" />
+        </div>
+        <el-dropdown-menu class="donate-menu" slot="dropdown">
+          <el-dropdown-item class="menu-item">
+            <div class="donate-menu-item">
+              <div class="donate-content">
+                <div class="donate-title">{{$t('donate')}}:</div>
+                <a :href="donateUrl" class="donate-address">{{donateAddress}}</a>
+              </div>
+              <div
+                class="copy-btn align-items-center"
+                v-clipboard:copy="donateAddress"
+                v-clipboard:success="clipboardSuccess"
+              >
+                <icon-svg class="iconfont" icon-class="copy" />
+              </div>
+            </div>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <div class="contact">
         <a target="_blank" rel="noopener" href="mailto:hello@subscan.io">
           <div class="contact-item mail">
@@ -95,6 +133,7 @@
 
 <script>
 import { mapState } from "vuex";
+import clipboard from "Directives/clipboard";
 export default {
   name: "FooterBar",
   computed: {
@@ -103,7 +142,20 @@ export default {
     }),
     donateAddress() {
       let source = this.$const[`SYMBOL/${this.sourceSelected}`];
-      return source && source["donate"]["address"];
+      let result = "";
+      if (source) {
+        result = source["donate"]["address"];
+      }
+      return result;
+    },
+    donateUrl() {
+      let source = this.$const[`SYMBOL/${this.sourceSelected}`];
+      let result = "";
+      if (source) {
+        result =
+          source["domain"]["value"] + "/account/" + source["donate"]["address"];
+      }
+      return result;
     },
     isHomePage() {
       let name = this.$route.name;
@@ -120,10 +172,19 @@ export default {
       return result;
     }
   },
+  directives: {
+    clipboard
+  },
   methods: {
     changeLanguage(language) {
       GLOBAL.vbus.$emit("CHANGE_LANGUAGE", language);
       this.$store.dispatch("SetLanguage", language);
+    },
+    clipboardSuccess() {
+      this.$message({
+        type: "success",
+        message: this.$t("copy_success")
+      });
     }
   }
 };
@@ -131,6 +192,7 @@ export default {
 
 <style lang='scss' scoped>
 .footer-bar {
+  color: var(--main-color);
   background: #302b3c;
   .container {
     flex-direction: column;
@@ -157,30 +219,29 @@ export default {
     .info-container {
       width: 100%;
       height: 50px;
+      display: flex;
     }
     .copyright {
       color: #fff;
       font-size: 14px;
     }
-    .donate {
-      font-size: 12px;
-      font-weight: 600;
+    .icon-group {
+      display: flex;
       flex: 1 1 auto;
-      text-align: right;
-      margin-right: 10px;
-      color: #fff;
-      .donate-title {
-        padding-right: 10px;
-      }
-      &:not(.is-home-page) {
-        visibility: hidden;
-      }
+      justify-content: flex-end;
     }
     .poweredby {
       color: #7b70ae;
       font-size: 14px;
       font-weight: bold;
       margin-left: 10px;
+    }
+    .donate {
+      cursor: pointer;
+      margin-right: 10px;
+      .icon {
+        font-size: 26px;
+      }
     }
     .contact {
       display: flex;
@@ -218,25 +279,8 @@ export default {
         line-height: 40px;
         padding-left: 10px;
       }
-      .donate {
-        text-align: left;
-        padding: 20px 10px;
-        margin: 0;
-        display: flex;
-        font-weight: normal;
-        &:not(.is-home-page) {
-          display: none;
-        }
-        .copyright {
-          line-height: 40px;
-        }
-        .donate-title {
-          flex: 0 0 auto;
-        }
-        .donate-address {
-          color: rgba(216, 216, 216, 0.6);
-          word-break: break-all;
-        }
+      .contact-item, .donate {
+        font-size: 0;
       }
       .partner {
         border: none;
@@ -273,6 +317,11 @@ export default {
         right: 10px;
         bottom: 7px;
       }
+      .donate-dropdown {
+        position: absolute;
+        right: 42px;
+        bottom: 7px;
+      }
       .language-dropdown {
         display: none;
       }
@@ -295,6 +344,46 @@ export default {
       color: #16181b;
       text-decoration: none;
       background-color: #f8f9fa;
+    }
+  }
+  &.donate-menu {
+    padding: 0;
+    .menu-item {
+      width: auto;
+      padding: 8px 15px;
+      cursor: default;
+      &:hover {
+        color: #212529;
+        text-decoration: none;
+        background-color: #fff;
+      }
+    }
+  }
+  .donate-menu-item {
+    display: flex;
+    .donate-content {
+      text-align: left;
+      padding-right: 10px;
+      border-right: 1px solid #d8d8d8;
+    }
+    .donate-title {
+      color: var(--main-color);
+      line-height: 22px;
+      font-weight: 600;
+    }
+    .donate-address {
+      display: inline-block;
+      color: var(--link-color);
+      font-size: 14px;
+      word-break: break-all;
+      max-width: 260px;
+      line-height: 18px;
+    }
+    .copy-btn {
+      cursor: pointer;
+      margin-left: 16px;
+      font-size: 18px;
+      color: var(--main-color-light);
     }
   }
 }

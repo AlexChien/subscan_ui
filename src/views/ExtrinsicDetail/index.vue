@@ -208,7 +208,7 @@ import {
 import clipboard from "Directives/clipboard";
 import { mapState } from "vuex";
 import Balances from "./Balances";
-import { getTokenDetail, formatSymbol } from "../../utils/tools";
+import { getCurrencyTokenDetail, formatSymbol } from "../../utils/tools";
 
 export default {
   name: "ExtrinsicDetail",
@@ -263,7 +263,7 @@ export default {
       token: state => state.polka.token
     }),
     tokenDetail() {
-      return getTokenDetail(this.token, this.sourceSelected, this.currency);
+      return getCurrencyTokenDetail(this.token, this.sourceSelected, this.currency);
     }
   },
 

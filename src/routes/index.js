@@ -9,37 +9,43 @@ export default [
     name: "validator",
     path: "/validator",
     component: () =>
-      import(/* webpackChunkName: "dashboard" */ "Views/Validator")
+      import(/* webpackChunkName: "validator" */ "Views/Validator")
   },
   {
     name: "validatorDetail",
     path: "/validator/:key",
     component: () =>
-      import(/* webpackChunkName: "dashboard" */ "Views/ValidatorDetail")
+      import(/* webpackChunkName: "validatorDetail" */ "Views/ValidatorDetail")
   },
   {
     name: "nominator",
     path: "/nominator",
     component: () =>
-      import(/* webpackChunkName: "dashboard" */ "Views/Nominator")
+      import(/* webpackChunkName: "nominator" */ "Views/Nominator")
+  },
+  {
+    name: "era",
+    path: "/era",
+    component: () =>
+      import(/* webpackChunkName: "era" */ "Views/Era")
   },
   {
     name: "vote",
     path: "/vote",
     component: () =>
-      import(/* webpackChunkName: "dashboard" */ "Views/Vote")
+      import(/* webpackChunkName: "vote" */ "Views/Vote")
   },
   {
     name: "waiting",
     path: "/waiting",
     component: () =>
-      import(/* webpackChunkName: "dashboard" */ "Views/Validator")
+      import(/* webpackChunkName: "validator" */ "Views/Validator")
   },
   {
     name: "waitingDetail",
     path: "/waiting/:key",
     component: () =>
-      import(/* webpackChunkName: "dashboard" */ "Views/ValidatorDetail")
+      import(/* webpackChunkName: "validatorDetail" */ "Views/ValidatorDetail")
   },
   {
     name: "block",
@@ -77,7 +83,7 @@ export default [
   {
     name: "accountDetail",
     path: "/account/:key",
-    component: () => import(/* webpackChunkName: "account" */ "Views/AccountDetail")
+    component: () => import(/* webpackChunkName: "accountDetail" */ "Views/AccountDetail")
   },
   {
     name: "404",

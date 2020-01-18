@@ -138,6 +138,14 @@ export default [
     options: {}
   },
   {
+    name: "getEras",
+    method: "POST",
+    desc: "获取eras列表",
+    baseURL: "",
+    path: "/scan/staking/era_stat",
+    options: {}
+  },
+  {
     name: "getVotes",
     method: "POST",
     desc: "获取votes列表",

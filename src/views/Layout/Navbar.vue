@@ -130,7 +130,7 @@ export default {
           value: "icefrog"
         },
         {
-          label: "Edgeware",
+          label: "Edgeware Testnet",
           value: "edgeware"
         }
       ]

@@ -16,6 +16,7 @@
   "block_hash_tag": "区块#",
   "block_time": "出块时间",
   "block_timestamp": "时间戳",
+  "blocks_produced": "出块数量",
   "bonded": "冻结",
   "bonded_currency": "冻结{currency}",
   "call": "调用",
@@ -28,6 +29,7 @@
   "destination": "接收账户",
   "donate": "捐赠",
   "download_csv_file": "下载 CSV 文件",
+  "end_block": "结束块",
   "era": "投票轮次",
   "error": {
     "404": "没有找到相关信息"
@@ -82,6 +84,7 @@
   },
   "rank": "排名",
   "result": "结果",
+  "reward": "总收益",
   "role": "身份",
   "search": "搜索",
   "search_validator": "搜索验证人",
@@ -91,6 +94,8 @@
   "signature": "签名",
   "signed_extrinsics": "签名交易",
   "signed_only": "仅签名交易",
+  "slash": "总罚金",
+  "start_block": "起始块",
   "stash": "账户",
   "state_root": "状态根",
   "statistics": "{type} 统计",

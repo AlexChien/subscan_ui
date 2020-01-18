@@ -1,5 +1,5 @@
 <template>
-  <div class="nominator-wrapper subscan-content">
+  <div class="era-wrapper subscan-content">
     <div class="container">
       <search-input
         class="search-input"
@@ -16,29 +16,73 @@
           <div>{{`(${total})`}}</div>
         </div>
       </div>
-      <div class="nominator-table subscan-card" v-loading="isLoading">
-        <el-table :data="nominators" style="width: 100%">
-          <el-table-column min-width="190" prop="nominator_stash" :label="$t('nominator')">
+      <div class="era-table subscan-card" v-loading="isLoading">
+        <el-table :data="eras" style="width: 100%" ref="eraTable">
+          <el-table-column min-width="100" prop="era" :label="$t('era')">
+            <template slot-scope="scope">{{scope.row.era}}</template>
+          </el-table-column>
+          <el-table-column min-width="100" prop="start_block_num" :label="$t('start_block')">
             <template slot-scope="scope">
-              <div class="link align-items-center">
-                <div class="icon identicon">
-                  <identicon :size="24" theme="polkadot" :value="scope.row.nominator_stash" />
-                </div>
+              <div class="link">
                 <router-link
-                  :to="`/account/${scope.row.nominator_stash}`"
-                >{{scope.row.nominator_stash}}</router-link>
+                  :to="`/block/${scope.row.start_block_num}`"
+                >{{scope.row.start_block_num}}</router-link>
               </div>
             </template>
           </el-table-column>
-          <el-table-column min-width="180" prop="bonded" :label="$t('voted')">
+          <el-table-column min-width="150" prop="end_block_num" :label="$t('end_block')">
             <template slot-scope="scope">
-              <div>
-                <span>{{scope.row.bonded|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</span>
+              <div class="link">
+                <router-link :to="`/block/${scope.row.end_block_num}`">{{scope.row.end_block_num}}</router-link>
               </div>
             </template>
           </el-table-column>
-          <el-table-column min-width="100" prop="share" :label="$t('share')">
-            <template slot-scope="scope">{{scope.row.share}}</template>
+          <el-table-column v-if="hasReward" min-width="150" prop="reward" :label="$t('reward')">
+            <template slot-scope="scope">
+              <div v-if="scope.row.reward === '0'">-</div>
+              <div
+                v-else
+              >{{scope.row.reward|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="150" prop="slash" :label="$t('slash')">
+            <template slot-scope="scope">
+              <div v-if="scope.row.slash === '0'">-</div>
+              <div
+                v-else
+              >{{scope.row.slash|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="150" prop="block_produced" :label="$t('blocks_produced')">
+            <template slot-scope="scope">
+              <div
+                class="link toggle-row"
+                @click="toggleRowExpansion(scope.row)"
+              >{{getBlockProduced(scope.row.block_produced).length}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column width="100" type="expand">
+            <template slot-scope="props">
+              <div class="expand-form">
+                <div v-if="props.row.block_produced && props.row.block_produced.length > 0">
+                  <div class="form-item align-items-center">
+                    <div class="label">{{$t('blocks_produced')}} :</div>
+                    <div class="block-produced-items">
+                      <div
+                        class="block-produced-item link"
+                        v-for="item in getBlockProduced(props.row.block_produced)"
+                        :key="item"
+                      >
+                        <router-link :to="`/block/${item}`">{{item}}</router-link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-else>
+                  <div class="label">{{$t('no_data')}}</div>
+                </div>
+              </div>
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -59,10 +103,9 @@ import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat, accuracyFormat } from "Utils/filters";
-import { fmtPercentage } from "../../utils/format";
 import { getTokenDetail, formatSymbol } from "../../utils/tools";
 export default {
-  name: "Nominator",
+  name: "era",
   components: {
     SearchInput,
     CsvDownload,
@@ -72,7 +115,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      nominators: [],
+      eras: [],
       validatorInfo: {},
       total: 0,
       currency: "ring",
@@ -107,6 +150,16 @@ export default {
     validatorIndex() {
       let info = this.validatorInfo;
       return info.nickname || info.account_index || info.validator_stash;
+    },
+    hasReward() {
+      let result = false;
+      this.eras &&
+        this.eras.forEach(era => {
+          if (era && era.reward !== "0") {
+            result = true;
+          }
+        });
+      return result;
     }
   },
   filters: {
@@ -121,13 +174,23 @@ export default {
   methods: {
     init() {
       this.isLoading = true;
-      this.getNominatorData();
+      this.getEraData();
+    },
+    toggleRowExpansion(row) {
+      this.$refs.eraTable.toggleRowExpansion(row, true);
+    },
+    getBlockProduced(blockProduced) {
+      let blocks = [];
+      if (blockProduced) {
+        blocks = blockProduced.split(",");
+      }
+      return blocks;
     },
     formatSymbol(module, isValidate) {
       return formatSymbol(module, this.$const, this.sourceSelected, isValidate);
     },
-    async getNominatorData(page = 0) {
-      const data = await this.$api["polkaGetNominators"]({
+    async getEraData(page = 0) {
+      const data = await this.$api["polkaGetEras"]({
         row: 25,
         page,
         address: this.$route.query.address
@@ -136,30 +199,34 @@ export default {
         Stash: this.$route.query.address
       });
       this.validatorInfo = (validatorInfo && validatorInfo.info) || {};
-      let total = this.validatorInfo.bonded_nominators || 0;
       if (data.list) {
-        this.nominators = data.list.map(function(val) {
-          let obj = {};
-          obj.nominator_stash = val.nominator_stash;
-          obj.bonded = val.bonded;
-          obj.hash = val.hash;
-          if (total) {
-            obj.share = fmtPercentage(val.bonded, total, 2) + "%";
-          }
-          return obj;
-        });
+        this.eras = data.list;
       } else {
-        this.nominators = [];
+        this.eras = [];
       }
       this.total = +data.count;
       this.isLoading = false;
     },
     downloadClick() {
       const tableData = [
-        [this.$t("account"), this.$t("voted"), this.$t("share")]
+        [
+          this.$t("era"),
+          this.$t("start_block_num"),
+          this.$t("end_block_num"),
+          this.$t("reward"),
+          this.$t("slash"),
+          this.$t("block_produced")
+        ]
       ];
-      this.nominators.forEach(item => {
-        let arr = [item.nominator_stash, item.bonded, item.rank_nominator];
+      this.eras.forEach(item => {
+        let arr = [
+          item.era,
+          item.start_block_num,
+          item.end_block_num,
+          item.reward,
+          item.slash,
+          item.block_produced
+        ];
         tableData.push(arr);
       });
       const worksheet = XLSX.utils.aoa_to_sheet(tableData);
@@ -167,19 +234,17 @@ export default {
       XLSX.utils.book_append_sheet(new_workbook, worksheet, "SheetJS");
       XLSX.writeFile(
         new_workbook,
-        `nominator-${
-          this.nominators[this.nominators.length - 1].nominator_stash
-        }-${this.nominators[0].nominator_stash}.csv`
+        `era-${this.eras[this.eras.length - 1].era}-${this.eras[0].era}.csv`
       );
     },
     currentChange(pageSize) {
-      this.getNominatorData(--pageSize);
+      this.getEraData(--pageSize);
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-.nominator-wrapper {
+.era-wrapper {
   .container {
     .search-input {
       height: 50px;
@@ -204,7 +269,7 @@ export default {
         }
       }
     }
-    .nominator-table {
+    .era-table {
       min-height: 120px;
       margin-top: 10px;
       padding: 13px 20px;
@@ -228,6 +293,22 @@ export default {
         background-color: var(--main-color-white);
         color: var(--main-color);
       }
+      .expand-form {
+        background: #f3f5f9;
+        padding: 10px 28px;
+        .form-item {
+          min-height: 40px;
+          font-size: 14px;
+          color: rgba(48, 43, 60, 1);
+          .label {
+            min-width: 140px;
+          }
+          .value {
+            width: 900px;
+            word-break: break-all;
+          }
+        }
+      }
       .detail-btn {
         width: 48px;
         height: 26px;
@@ -238,6 +319,21 @@ export default {
         text-align: center;
         cursor: pointer;
         user-select: none;
+      }
+      .toggle-row {
+        cursor: pointer;
+      }
+      .block-produced-item {
+        display: inline-block;
+        margin-right: 10px;
+        &::after {
+          content: ",";
+        }
+        &:last-child {
+          &::after {
+            content: "";
+          }
+        }
       }
     }
     .table-bottom {
@@ -270,33 +366,8 @@ export default {
 }
 </style>
 <style lang="scss">
-.nominator-wrapper {
-  .signed-checkbox {
-    .el-checkbox {
-      .el-checkbox__input {
-        .el-checkbox__inner {
-          width: 22px;
-          height: 22px;
-          background-color: #fff;
-          border-color: #dbdbdb;
-          &::after {
-            border-color: #000;
-            border-width: 2px;
-            height: 10px;
-            left: 7px;
-            top: 2px;
-            width: 5px;
-          }
-        }
-      }
-      .el-checkbox__label {
-        font-size: 14px;
-        font-weight: bold;
-        color: rgba(48, 43, 60, 1);
-      }
-    }
-  }
-  .nominator-table {
+.era-wrapper {
+  .era-table {
     .el-table {
       .el-table__header-wrapper {
         th,
@@ -325,6 +396,28 @@ export default {
         }
         td {
           padding: 0;
+          &.el-table__expand-column {
+            .el-table__expand-icon {
+              width: 48px;
+              height: 26px;
+              background: rgba(255, 255, 255, 1);
+              border-radius: 4px;
+              border: 1px solid rgba(219, 219, 219, 1);
+              font-size: 10px;
+              text-align: center;
+              cursor: pointer;
+              user-select: none;
+              .el-icon {
+                transition: transform 0.2s ease-in-out;
+              }
+              &.el-table__expand-icon--expanded {
+                transform: rotate(0);
+                .el-icon {
+                  transform: rotate(90deg);
+                }
+              }
+            }
+          }
         }
       }
     }

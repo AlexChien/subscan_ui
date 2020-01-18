@@ -15,12 +15,10 @@
       <template v-else-if="validatorInfo">
         <div class="validator-header space-between align-items-center">
           <div class="header-left align-items-center">
-            <div
-              class="address"
-            >{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
+            <div class="address">{{$t('validator_hash_tag') + ' ' + validatorIndex}}</div>
             <div
               class="copy-btn"
-              v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')"
+              v-clipboard:copy="validatorIndex"
               v-clipboard:success="clipboardSuccess"
             >
               <icon-svg class="iconfont" icon-class="copy" />
@@ -28,12 +26,10 @@
           </div>
           <div
             class="header-left align-items-center mobile"
-            v-clipboard:copy="(validatorInfo.nickname || validatorInfo.account_index || '')"
+            v-clipboard:copy="validatorIndex"
             v-clipboard:success="clipboardSuccess"
           >
-            <div
-              class="address"
-            >{{$t('validator_hash_tag') + ' ' + (validatorInfo.nickname || validatorInfo.account_index || '')}}</div>
+            <div class="address">{{$t('validator_hash_tag') + ' ' + validatorIndex}}</div>
           </div>
           <search-input
             class="header-right"
@@ -152,6 +148,87 @@
                 </el-table-column>
               </el-table>
             </el-tab-pane>
+            <el-tab-pane :label="`${$t('era')}${eras.count>0?` (${eras.count})`:''}`" name="era">
+              <el-table :data="eras.list" style="width: 100%" ref="eraTable">
+                <el-table-column min-width="100" prop="era" :label="$t('era')">
+                  <template slot-scope="scope">{{scope.row.era}}</template>
+                </el-table-column>
+                <el-table-column min-width="100" prop="start_block_num" :label="$t('start_block')">
+                  <template slot-scope="scope">
+                    <div class="link">
+                      <router-link
+                        :to="`/block/${scope.row.start_block_num}`"
+                      >{{scope.row.start_block_num}}</router-link>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="150" prop="end_block_num" :label="$t('end_block')">
+                  <template slot-scope="scope">
+                    <div class="link">
+                      <router-link
+                        :to="`/block/${scope.row.end_block_num}`"
+                      >{{scope.row.end_block_num}}</router-link>
+                    </div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-if="hasReward"
+                  min-width="150"
+                  prop="reward"
+                  :label="$t('reward')"
+                >
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.reward === '0'">-</div>
+                    <div
+                      v-else
+                    >{{scope.row.reward|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="150" prop="slash" :label="$t('slash')">
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.slash === '0'">-</div>
+                    <div
+                      v-else
+                    >{{scope.row.slash|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  min-width="150"
+                  prop="block_produced"
+                  :label="$t('blocks_produced')"
+                >
+                  <template slot-scope="scope">
+                    <div
+                      class="link toggle-row"
+                      @click="toggleRowExpansion(scope.row)"
+                    >{{getBlockProduced(scope.row.block_produced).length}}</div>
+                  </template>
+                </el-table-column>
+                <el-table-column width="100" type="expand">
+                  <template slot-scope="props">
+                    <div class="expand-form">
+                      <div v-if="props.row.block_produced && props.row.block_produced.length > 0">
+                        <div class="form-item align-items-center">
+                          <div class="label">{{$t('blocks_produced')}} :</div>
+                          <div class="block-produced-items">
+                            <div
+                              class="block-produced-item link"
+                              v-for="item in getBlockProduced(props.row.block_produced)"
+                              :key="item"
+                            >
+                              <router-link :to="`/block/${item}`">{{item}}</router-link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-else>
+                        <div class="label">{{$t('no_data')}}</div>
+                      </div>
+                    </div>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-tab-pane>
           </el-tabs>
           <div class="view-all-extrinsic" @click="goTransferOrExtrinsicByAddress">{{$t('view_all')}}</div>
         </div>
@@ -207,9 +284,9 @@ export default {
         count: 0,
         list: []
       },
-      extrinsicsInfo: {
+      eras: {
         count: 0,
-        extrinsics: []
+        list: []
       },
       activeTab: "nominator",
       notFound: false,
@@ -242,12 +319,24 @@ export default {
       sourceSelected: state => state.global.sourceSelected
     }),
     shouldShowKton() {
-      return (
-        this.sourceSelected === "icefrog"
-      );
+      return this.sourceSelected === "icefrog";
     },
     tokenDetail() {
       return getTokenDetail(this.token, this.sourceSelected, this.currency);
+    },
+    hasReward() {
+      let result = false;
+      this.eras.list.forEach(era => {
+        if (era && era.reward !== "0") {
+          result = true;
+        }
+      });
+      return result;
+    },
+    validatorIndex() {
+      return (
+        this.validatorInfo.nickname || this.validatorInfo.account_index || ""
+      );
     }
   },
   created() {
@@ -263,7 +352,18 @@ export default {
     init() {
       this.getValidatorInfo();
       this.getNominatorInfo();
+      this.getEraInfo();
       this.activeTab = "nominator";
+    },
+    toggleRowExpansion(row) {
+      this.$refs.eraTable.toggleRowExpansion(row, true);
+    },
+    getBlockProduced(blockProduced) {
+      let blocks = [];
+      if (blockProduced) {
+        blocks = blockProduced.split(",");
+      }
+      return blocks;
     },
     getMyShare(vote, total, digits) {
       return fmtPercentage(vote, total, digits) + "%";
@@ -300,6 +400,19 @@ export default {
       this.isLoading = false;
       data.list === null && (data.list = []);
       this.nominators = data;
+    },
+    async getEraInfo() {
+      this.isLoading = true;
+      const data = await this.$api["polkaGetEras"]({
+        row: 10,
+        page: 0,
+        address: this.address
+      }).catch(() => {
+        this.eras = { count: 0, list: [] };
+      });
+      this.isLoading = false;
+      data.list === null && (data.list = []);
+      this.eras = data;
     },
     goTransferOrExtrinsicByAddress() {
       this.$router.push(`/${this.activeTab}?address=${this.address}`);
@@ -450,6 +563,21 @@ export default {
         .label {
         }
         .value {
+        }
+      }
+    }
+    .toggle-row {
+      cursor: pointer;
+    }
+    .block-produced-item {
+      display: inline-block;
+      margin-right: 10px;
+      &::after {
+        content: ",";
+      }
+      &:last-child {
+        &::after {
+          content: "";
         }
       }
     }

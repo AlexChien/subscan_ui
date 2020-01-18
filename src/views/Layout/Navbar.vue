@@ -128,6 +128,10 @@ export default {
         {
           label: "Darwinia Icefrog",
           value: "icefrog"
+        },
+        {
+          label: "Edgeware Testnet",
+          value: "edgeware"
         }
       ]
     };
@@ -319,6 +323,11 @@ export default {
         background: url("../../assets/images/kusama-button.png") no-repeat left center;
         background-size: contain;
       }
+
+      .edgeware-button {
+        background: url("../../assets/images/edgeware-button.png") no-repeat left center;
+        background-size: contain;
+      }
     }
   }
   .nav-bar-search {
@@ -414,7 +423,7 @@ export default {
 }
 </style>
 <style lang="scss">
-@each $theme in kusama, icefrog {
+@each $theme in kusama, icefrog, edgeware {
   .#{$theme} {
     > .nav-bar-wrapper {
       background: var(--navbar-bg);

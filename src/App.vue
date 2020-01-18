@@ -29,6 +29,10 @@ export default {
           value: "kusama"
         },
         {
+          key: "edgeware",
+          value: "edgeware"
+        },
+        {
           key: "icefrog",
           value: "icefrog"
         }

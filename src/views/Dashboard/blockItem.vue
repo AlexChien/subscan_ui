@@ -27,8 +27,8 @@
     </div>
     <div class="block-right align-items-center">
       <span>{{blockData.block_timestamp|timeAgo(currentTime)}}</span>
-      <el-tooltip class="item" effect="light" :content="blockData.finalize ? $t('finalized') : $t('unfinalized')" placement="top-start">
-        <icon-svg class="icon" :icon-class="blockData.finalize?'success':'pending'" />
+      <el-tooltip class="item" effect="light" :content="blockData.finalized ? $t('finalized') : $t('unfinalized')" placement="top-start">
+        <icon-svg class="icon" :icon-class="blockData.finalized ? 'success':'pending'" />
       </el-tooltip>
     </div>
   </div>

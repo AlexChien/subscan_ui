@@ -286,7 +286,7 @@ export default {
         Stash: this.address
       });
       this.isIntroLoading = false;
-      this.validatorInfo = data && data.info;
+      this.validatorInfo = (data && data.info) || {};
     },
     async getNominatorInfo() {
       this.isLoading = true;

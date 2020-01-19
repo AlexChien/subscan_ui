@@ -1,10 +1,20 @@
 import Cookies from 'js-cookie'
-
+/**
+ * 获取主域名
+ */
+export const getHostName = () => {
+  let host = window.location && window.location.hostname;
+  if (host === 'localhost') {
+    return host;
+  }
+  return '.subscan.io'
+}
 /**
  * 存储cookie
  */
 export const setCookie = (name, value, options) => {
   if (!name) return
+  options.domain = getHostName();
   Cookies.set(name, value, options);
 }
 
@@ -13,6 +23,7 @@ export const setCookie = (name, value, options) => {
  */
 export const getCookie = (name, options = {}) => {
   if (!name) return
+  options.domain = getHostName();
   Cookies.get(name, options);
 }
 
@@ -21,6 +32,7 @@ export const getCookie = (name, options = {}) => {
  */
 export const removeCookie = (name, options = {}) => {
   if (!name) return
+  options.domain = getHostName();
   Cookies.remove(name, options);
 }
 

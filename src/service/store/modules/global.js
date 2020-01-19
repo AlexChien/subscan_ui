@@ -1,17 +1,24 @@
-import { setLocalStore, getLocalStore } from "Utils/storage";
+import {
+  getCookie,
+  setCookie,
+  setLocalStore,
+  getLocalStore
+} from "Utils/storage";
 
 let language =
-  getLocalStore("local_language") ||
+  getCookie("local_language") ||
   (navigator.browserLanguage ? navigator.browserLanguage : navigator.language);
-let language_bak = getLocalStore("local_language");
+let language_bak = getCookie("local_language");
 language === "en-US" && (language = "en");
 language === "zh-cn" && (language = "zh-CN");
 if (["en", "zh-CN"].indexOf(language) === -1) {
   // 浏览器语言不在列表中
   language = "en";
 }
-if (language_bak === null) {
-  setLocalStore("local_language", language);
+if (language_bak == null) {
+  setCookie("local_language", language, {
+    expires: 30
+  });
 }
 
 const global = {
@@ -28,11 +35,17 @@ const global = {
     }
   },
   actions: {
-    SetLanguage({ commit }, language) {
+    SetLanguage({
+      commit
+    }, language) {
       commit("SET_LANGUAGE", language);
-      setLocalStore("local_language", language);
+      setCookie("local_language", language, {
+        expires: 30
+      });
     },
-    SetSourceSelected({ commit }, source) {
+    SetSourceSelected({
+      commit
+    }, source) {
       GLOBAL.vbus.$emit("CHANGE_SOURCE", source);
       commit("SET_SOURCE_SELECTED", source);
       setLocalStore("polkascan_source", source);

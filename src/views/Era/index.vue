@@ -42,7 +42,7 @@
               <div v-if="scope.row.reward === '0'">-</div>
               <div
                 v-else
-              >{{scope.row.reward|accuracyFormat(tokenDetail.accuracy)}} {{formatSymbol('balances', true)}}</div>
+              >{{scope.row.reward|accuracyFormat(currencyTokenDetail.accuracy)}} {{formatSymbol('balances')}}</div>
             </template>
           </el-table-column>
           <el-table-column min-width="150" prop="slash" :label="$t('slash')">
@@ -103,7 +103,7 @@ import SearchInput from "@/views/Components/SearchInput";
 import CsvDownload from "Components/CsvDownload";
 import Pagination from "Components/Pagination";
 import { timeAgo, hashFormat, accuracyFormat } from "Utils/filters";
-import { getTokenDetail, formatSymbol } from "../../utils/tools";
+import { getTokenDetail, getCurrencyTokenDetail, formatSymbol } from "../../utils/tools";
 export default {
   name: "era",
   components: {
@@ -146,6 +146,9 @@ export default {
     }),
     tokenDetail() {
       return getTokenDetail(this.token, this.sourceSelected, this.currency);
+    },
+    currencyTokenDetail() {
+      return getCurrencyTokenDetail(this.token, this.sourceSelected, this.currency);
     },
     validatorIndex() {
       let info = this.validatorInfo;

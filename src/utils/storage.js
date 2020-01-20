@@ -24,7 +24,7 @@ export const setCookie = (name, value, options) => {
 export const getCookie = (name, options = {}) => {
   if (!name) return
   options.domain = getHostName();
-  Cookies.get(name, options);
+  return Cookies.get(name, options);
 }
 
 /**
